@@ -1,0 +1,10 @@
+{
+    "port": 8080,
+    "download_path": "http://repository.cloudifysource.org/org/apache/tomcat/7.0.23/apache-tomcat-7.0.23.zip",
+    "war_url": "https://repository.cloudifysource.org/org/cloudifysource/examples/helloworld/helloworld.war",
+    "war_filename": "helloworld.war",
+    "tomcat_version": "apache-tomcat-7.0.23",
+    "java_url": "http://repository.cloudifysource.org/com/oracle/java/1.6.0_32/jdk-6u32-linux-x64.bin",
+    "application_name": "helloworld"
+}
+
