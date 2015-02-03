@@ -1,7 +1,7 @@
 # LAB 1
 
 ## Download ubuntu-14.04 vagrant box
-wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
+wget [https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box](https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box)
 
 ## Add the box to vagrant:
 vagrant box add --name ub1404 ubuntu-14.04-amd64-vbox.box
@@ -50,7 +50,8 @@ cfy --version
  Cloudify CLI 3.1.0     (build: 85, date: )
 
 ## Get the manager blueprints repo content:
-wget https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip
+wget [https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip](https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)
+wget [!(https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)](https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)
 
 ## unzip 
 unzip 3.1.zip
