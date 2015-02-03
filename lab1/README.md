@@ -43,7 +43,7 @@ ssh vagrant@192.168.33.10
 ```
 
 ### In the VM
-Once you've ssh'd into the box run the following (use sudo only if you're not root).
+Once you've ssh'd into the box, run the following (use sudo only if you're not root).
 If you image isn't updated : 
 ```bash
 sudo apt-get -y -q update 
