@@ -37,13 +37,13 @@ vagrant ssh
  #or
 ssh vagrant@192.168.33.10
 ```
- or on win
+ or on Windows
 ```bat
  putty.exe -ssh 192.168.33.10 -l vagrant -pw vagrant
 ```
 
 ### In the VM
-Once you've ssh'd into the box run the following (use sudo only if you're not root): 
+Once you've ssh'd into the box run the following (use sudo only if you're not root).
 If you image isn't updated : 
 ```bash
 sudo apt-get -y -q update 
@@ -72,7 +72,7 @@ pip install cloudify==3.1
 cfy --version
 ```
 
-### You should see the following output :
+#### You should see the following output :
 ```bat
  Cloudify CLI 3.1.0     (build: 85, date: )
 ```
