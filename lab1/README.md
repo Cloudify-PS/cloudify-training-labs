@@ -47,6 +47,9 @@ Once you've ssh'd into the box, run the following (use sudo only if you're not r
 If you image isn't updated : 
 ```bash
 sudo apt-get -y -q update 
+```
+
+```bash
 sudo apt-get install -y -q python-dev
 sudo apt-get install -y -q python-virtualenv
 sudo apt-get install -y -q unzip 
