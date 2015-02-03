@@ -62,7 +62,7 @@ virtualenv myenv
 source myenv/bin/activate
 ```
 
-### Install...
+### Installation
 ```bash
 pip install cloudify==3.1
 ```
