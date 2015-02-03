@@ -4,7 +4,7 @@
 Download [https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box](https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box)
 
 ```bash
-wget [https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box](https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box)
+wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
 ```
 
 ### Add the box to vagrant:
@@ -18,7 +18,8 @@ vagrant box add --name ub1404 ubuntu-14.04-amd64-vbox.box
 vagrant init 
 ```
 
-### Edit the Vagrantfile and set the following in the Vagrantfile (make sure it's uncommented)
+### Vagrantfile
+Edit the Vagrantfile and set the following in the Vagrantfile (make sure it's uncommented)
 ```bash
 config.vm.box = "ub1404"
 config.vm.network "private_network", ip: "192.168.33.10"
@@ -29,7 +30,8 @@ config.vm.network "private_network", ip: "192.168.33.10"
 vagrant up
 ```
 
-### Now use one of the following (user and password are vagrant):
+### Login
+Now use one of the following (user and password are vagrant):
 ```bash
 vagrant ssh 
  #or
@@ -76,9 +78,10 @@ cfy --version
 ```
 
 ### Get the manager blueprints repo content:
+
+Download [!(https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)](https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)
 ```bash
-wget [https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip](https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)
-wget [!(https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)](https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)
+wget https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip
 ```
 
 ### unzip 
