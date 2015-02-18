@@ -5,16 +5,19 @@ Before starting, make sure you have the following details from the trainer:
 *	The private and public IP of the server you should bootstrap on. One server per trainee. 
 *	The keypair of the server 
 
-*Step 1: Download the manager blueprint*
+### Step 1: Download the manager blueprint
 In a terminal window (where you installed the CLI) execute the following command: 
 wget https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip
 unzip 3.1.zip
 cd cloudify-manager-blueprints-3.1/simple
-*Step 2: Configure the inputs file*
+### Step 2: Configure the inputs file
+```bash
 cp inputs.json.template inputs.json
 vi inputs.json
+```
 
-Fill in the public and private IP, ssh user (ubuntu), as well as the path of the keyfile you were given by the trainer: 
+Fill in the public and private IP, ssh user (ubuntu), as well as the path of the keyfile you were given by the trainer:
+```json
 {
     "public_ip": "PUBLIC IP GOES HERE",
     "private_ip": "PRIVATE IP GOES HERE",
@@ -24,7 +27,9 @@ Fill in the public and private IP, ssh user (ubuntu), as well as the path of the
     "agents_user": "ubuntu",
     "resources_prefix": ""
 }
-Step 3: Trigger the bootstrap process
+```
+
+### Step 3: Trigger the bootstrap process
 Activate the virtualenv in which you installed the Cloudify CLI, and type the following: 
 cfy init
 cfy bootstrap --install-plugins -p simple.yaml -i inputs.json
@@ -35,13 +40,14 @@ This should take a few minutes, during which you will see the output of the boot
 bootstrapping complete
 management server is up at 54.91.114.221
 
-Step 4: Verify the manager started successfully 
+### Step 4: Verify the manager started successfully 
 Type the following command to verify that all manager components are up and running: 
 cfy status
 
 You should see the output similar to the following, make sure all components are running:
 Getting management services status... [ip=54.91.114.221]
 
+```bash
 Services:
 +--------------------------------+---------+
 |            service             |  status |
@@ -57,8 +63,9 @@ Services:
 | Syslog                         | running |
 | Logstash                       | running |
 +--------------------------------+---------+
+```
 
-Step 5: Access the web UI
+### Step 5: Access the web UI
 Copy the IP address you received at the end of the bootstrap process to your browser's address line. You should get the web UI: 
 
   
