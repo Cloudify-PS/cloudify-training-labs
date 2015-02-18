@@ -7,9 +7,12 @@ Before starting, make sure you have the following details from the trainer:
 
 ### Step 1: Download the manager blueprint
 In a terminal window (where you installed the CLI) execute the following command: 
+```bash
 wget https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip
 unzip 3.1.zip
 cd cloudify-manager-blueprints-3.1/simple
+```
+
 ### Step 2: Configure the inputs file
 ```bash
 cp inputs.json.template inputs.json
@@ -30,19 +33,24 @@ Fill in the public and private IP, ssh user (ubuntu), as well as the path of the
 ```
 
 ### Step 3: Trigger the bootstrap process
-Activate the virtualenv in which you installed the Cloudify CLI, and type the following: 
+Activate the virtualenv in which you installed the Cloudify CLI, and type the following:
+```bash
 cfy init
 cfy bootstrap --install-plugins -p simple.yaml -i inputs.json
+```
 
 This should take a few minutes, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the manager, e.g.: 
-
+```bash
 015-01-20 16:13:15 CFY <manager> 'install' workflow execution succeeded
 bootstrapping complete
 management server is up at 54.91.114.221
+```
 
 ### Step 4: Verify the manager started successfully 
 Type the following command to verify that all manager components are up and running: 
+```bash
 cfy status
+```
 
 You should see the output similar to the following, make sure all components are running:
 Getting management services status... [ip=54.91.114.221]
