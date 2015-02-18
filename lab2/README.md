@@ -75,5 +75,5 @@ Services:
 
 ### Step 5: Access the web UI
 Copy the IP address you received at the end of the bootstrap process to your browser's address line. You should get the web UI: 
-
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 
