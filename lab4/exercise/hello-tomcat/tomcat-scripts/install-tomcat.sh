@@ -108,7 +108,3 @@ REPLACE_THIS_WITH_A_COMMAND_THAT_STORES_THE_APPLICATION_URL_IN_THE_RUNTIME_PROPE
 
 ctx logger info "${currHostName}:${currFilename} End of $0"
 echo "End of $0"
-
-
-
-

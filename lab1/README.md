@@ -1,4 +1,24 @@
-# LAB 1
+# Lab 1: Configuring Vagrant and Installing CLI
+
+## Prerequisites
+
+### Install Vagrant
+Download from [http://www.vagrantup.com/downloads.html] (http://www.vagrantup.com/downloads.html)
+
+### Install the vbguest plugin
+Check whether the vbguest plugin is installed:
+
+```bash
+vagrant plugin list
+```
+
+If `vagrant-vbguest` is not listed, install it:
+
+```bash
+vagrant plugin install vagrant-vbguest
+```
+
+## Process
 
 ### Download ubuntu-14.04 vagrant box
 Download [https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box](https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box)
@@ -10,7 +30,7 @@ wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubun
 ### Add the box to vagrant:
 
 ```bash
-vagrant box add --name ub1404 ubuntu-14.04-amd64-vbox.box
+vagrant box add --name ub1404 ubuntu-14.04-amd64.box
 ```
 
 ### initialize a vagrant file  
@@ -45,15 +65,13 @@ ssh vagrant@192.168.33.10
 ### In the VM
 Once you've ssh'd into the box, run the following (use sudo only if you're not root).
 
-If you image isn't updated : 
+If your image isn't updated: 
 ```bash
-sudo apt-get -y -q update 
+sudo apt-get -y -q update
 ```
 
 ```bash
-sudo apt-get install -y -q python-dev
-sudo apt-get install -y -q python-virtualenv
-sudo apt-get install -y -q unzip 
+sudo apt-get install -y -q python-dev python-virtualenv unzip
 ```
 
 ### Create virtualenv name myenv
@@ -68,7 +86,7 @@ source myenv/bin/activate
 
 ### Installation
 ```bash
-pip install cloudify==3.1
+pip install cloudify==3.2
 ```
 
 ### Run the following command : 
@@ -78,18 +96,5 @@ cfy --version
 
 #### You should see the following output :
 ```bat
- Cloudify CLI 3.1.0     (build: 85, date: )
+ Cloudify CLI 3.2.0     (build: 85, date: )
 ```
-
-### Get the manager blueprints repo content:
-
-Download [!(https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)](https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)
-```bash
-wget https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip
-```
-
-### unzip 
-```bash
-unzip 3.1.zip
-```
-

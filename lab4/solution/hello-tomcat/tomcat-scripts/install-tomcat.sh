@@ -108,7 +108,3 @@ ctx instance runtime_properties application_url ${application_url}
 
 ctx logger info "${currHostName}:${currFilename} End of $0"
 echo "End of $0"
-
-
-
-

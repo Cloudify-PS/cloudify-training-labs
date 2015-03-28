@@ -1,7 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_0
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.1/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
 
 inputs:
   vm_ip_address:
@@ -36,7 +36,7 @@ node_types:
     derived_from: cloudify.nodes.WebServer
     properties:
       tomcat_version:
-        description: 'The tomcat version that you aer using. E.g :apache-tomcat-7.0.23'
+        description: 'The tomcat version that you are using. E.g: apache-tomcat-7.0.23'
       download_path:
         description: 'A full url path to the Tomcat zip file'
       war_url:
@@ -50,17 +50,17 @@ node_types:
 
 node_templates:  
   tomcat_vm:
-    type: REPLACE_THIS_WITH_A_NODE_TYPE    
+    type: vm_host
     instances:
       deploy: 1
 
   tomcat_server:
     type: web_server
     properties:
-      port: { get_input: REPLACE_THIS_WITH_A_SUITABLE_INPUT_NAME }
+      port: { get_input: port }
       download_path: { get_input: download_path }
       war_url: { get_input: war_url }
-      war_filename: REPLACE_THIS_WITH_A_SUITABLE_INPUT
+      war_filename: { get_input: war_filename }
       tomcat_version: { get_input: tomcat_version }
       java_url: { get_input: java_url }
       application_name: { get_input: application_name }
@@ -71,13 +71,13 @@ node_templates:
           inputs:
             process:
               args: [get_input: vm_ip_address]
-        configure: REPLACE_THIS_WITH_THE_SUITABLE_SHELL_SCRIPT_PATH
+        configure: tomcat-scripts/configure-tomcat.sh
         start: tomcat-scripts/start-tomcat.sh
-        stop: tomcat-scripts/REPLACE_THIS_WITH_THE_SUITABLE_SHELL_SCRIPT_NAME  
+        stop: tomcat-scripts/stop-tomcat.sh
         uninstall: tomcat-scripts/uninstall-tomcat.sh
 
     relationships:
-      - type: cloudify.relationships.REPLACE_THIS_WITH_THE_SUITABLE_RELATIONSHIP_NAME
+      - type: cloudify.relationships.contained_in
         target: tomcat_vm
 
 outputs:
@@ -85,5 +85,5 @@ outputs:
     description: My application endpoint
     value:
       ip_address: { get_attribute: [ tomcat_vm, ip ] }
-      port: { REPLACE_THIS_WITH_THE_SUITABLE_INTRINSIC_FUNCTION: [ tomcat_server, port ] }      
+      port: { get_property: [ tomcat_server, port ] }
       application_url: { get_attribute: [tomcat_server, application_url] }

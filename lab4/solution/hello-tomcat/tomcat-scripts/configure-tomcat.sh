@@ -4,7 +4,7 @@ currHostName=`hostname`
 currFilename=$(basename "$0")
 
 newPort=$(ctx node properties port)
-ctx logger info "${currHostName}:${currFilename} :newPort ${newPort}"
+ctx logger info "${currHostName}:${currFilename} :newPort ${port}"
 
 war_url=$(ctx node properties war_url)
 ctx logger info "${currHostName}:${currFilename} :war_url ${war_url}"

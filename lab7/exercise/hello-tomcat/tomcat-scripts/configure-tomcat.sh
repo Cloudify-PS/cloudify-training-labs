@@ -68,8 +68,6 @@ ctx logger info "${currHostName}:${currFilename} applicationWar is ${application
 ctx logger info "${currHostName}:${currFilename} tomcatContextPathFolder is ${tomcatContextPathFolder}"
 ctx logger info "${currHostName}:${currFilename} tomcatContextFile is ${tomcatContextFile}"
 
-mkdir -p $tomcatHome
-
 download "WarFile" $war_url $applicationWar
 
 mkdir -p $tomcatContextPathFolder

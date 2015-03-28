@@ -1,0 +1,136 @@
+tosca_definitions_version: cloudify_dsl_1_0
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - https://raw.githubusercontent.com/cloudify-cosmo/cloudify-docker-plugin/1.2/plugin.yaml
+
+inputs:
+
+  host_ip:
+      description: >
+        The ip of the host the application will be deployed on  
+      default: 127.0.0.1
+
+  agent_user:
+      description: >
+        User name used when SSH-ing into the started machine
+      default: ubuntu
+
+  agent_private_key_path:
+      description: >
+        Path to a private key that resided on the management machine.
+        SSH-ing into agent machines will be done with this key.
+      default: ~/.ssh/agent_key.pem
+
+  install_agent: 
+      description: > 
+        When running in local mode set this to false
+      default: true
+
+  web_port:
+      description: >
+        Which port you want to map the web port to.
+      default: 8080
+  
+  mongo_port:
+      description: >
+        Which port you want to map the mongo port to.
+      default: 27017
+  
+  web_status_port:
+      description: >
+        Which port for the mongo web status page.
+      default: 28017
+
+  nodecellar_container_port_bindings:
+    description: >
+      A dict of port bindings for the node container.
+    default:
+      REPLACE_WITH_BINDING_DEFINITIONS
+
+  mongo_container_port_bindings:
+    description: >
+      A dict of port bindings for the mongo container.
+    default:
+      REPLACE_WITH_BINDING_DEFINITIONS
+
+node_templates:
+
+  host:
+    type: cloudify.nodes.Compute
+    properties:
+      install_agent: { get_input: install_agent }
+      ip: { get_input: host_ip }
+      cloudify_agent:
+        user: { get_input: agent_user }
+        key: { get_input: agent_private_key_path }
+
+  mongod_container:
+    type: REPLACE_WITH_TYPE
+    properties:
+      name: mongod
+      image:
+        repository: REPLACE_WITH_MONGO_REPOSITORY
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: docker.docker_plugin.tasks.create_container
+          inputs:
+            params:
+              ports:
+                - { get_input: mongo_port }
+                - { get_input: web_status_port }
+              stdin_open: true
+              tty: true
+              command: mongod --rest --httpinterface --smallfiles
+        start:
+          implementation: docker.docker_plugin.tasks.start
+          inputs:
+            params:
+              port_bindings: { get_input: mongo_container_port_bindings }
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: host
+
+  nodecellar_container:
+    type: REPLACE_WITH_TYPE
+    properties:
+      name: nodecellar
+      image:
+        repository: REPLACE_WITH_NODECELLAR_REPOSITORY
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: docker.docker_plugin.tasks.create_container
+          inputs:
+            params:
+              ports:
+                - { get_input: web_port }
+              stdin_open: true
+              tty: true
+              command: nodejs server.js
+              environment:
+                NODECELLAR_PORT: { get_input: web_port }
+                MONGO_PORT: { get_input: mongo_port }
+                MONGO_HOST: { get_property: [ mongod_container, name ] }
+        start:
+          implementation: docker.docker_plugin.tasks.start
+          inputs:
+            params:
+              links:
+                 mongod: { get_property: [ mongod_container, name ] }
+              port_bindings: { get_input: nodecellar_container_port_bindings }
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: host
+      - type: cloudify.relationships.depends_on
+        target: mongod_container
+
+outputs:
+  endpoint:
+    description: Web application endpoint
+    value:
+      ip_address: { get_attribute: [ host, ip ] }
+      port: { get_input: web_port }
+
+

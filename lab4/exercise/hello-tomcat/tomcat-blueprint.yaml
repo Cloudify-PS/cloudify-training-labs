@@ -1,8 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_0
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.1/types.yaml
-  - http://www.getcloudify.org/spec/diamond-plugin/1.1/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
 
 inputs:
   vm_ip_address:
@@ -25,7 +24,6 @@ inputs:
     type: string
 
 node_types:
-
   vm_host:
     derived_from: cloudify.nodes.Compute
     properties:
@@ -33,37 +31,12 @@ node_types:
         default: { get_input: vm_ip_address }
       install_agent:
         default: { get_input: install_agent }
-    interfaces:
-      cloudify.interfaces.monitoring_agent:
-        install:
-          implementation: diamond.diamond_agent.tasks.install
-          inputs:
-            diamond_config:
-              default:
-                interval: 1
-        start: diamond.diamond_agent.tasks.start
-        stop: diamond.diamond_agent.tasks.stop
-        uninstall: diamond.diamond_agent.tasks.uninstall
-
-      cloudify.interfaces.monitoring:
-        start:
-          implementation: diamond.diamond_agent.tasks.add_collectors
-          inputs:
-            collectors_config:
-              default:
-                CPUCollector: {}
-                MemoryCollector: {}
-                LoadAverageCollector: {}
-                DiskUsageCollector:
-                  config:
-                    devices: x?vd[a-z]+[0-9]*$
-                NetworkCollector: {}
 
   web_server:
     derived_from: cloudify.nodes.WebServer
     properties:
       tomcat_version:
-        description: 'The tomcat version that you aer using. E.g :apache-tomcat-7.0.23'
+        description: 'The tomcat version that you are using. E.g: apache-tomcat-7.0.23'
       download_path:
         description: 'A full url path to the Tomcat zip file'
       war_url:
@@ -77,7 +50,7 @@ node_types:
 
 node_templates:  
   tomcat_vm:
-    type: vm_host    
+    type: vm_host
     instances:
       deploy: 1
 
@@ -100,7 +73,7 @@ node_templates:
               args: [get_input: vm_ip_address]
         configure: tomcat-scripts/configure-tomcat.sh
         start: tomcat-scripts/start-tomcat.sh
-        stop: tomcat-scripts/stop-tomcat.sh  
+        stop: tomcat-scripts/stop-tomcat.sh
         uninstall: tomcat-scripts/uninstall-tomcat.sh
 
     relationships:
@@ -112,5 +85,5 @@ outputs:
     description: My application endpoint
     value:
       ip_address: { get_attribute: [ tomcat_vm, ip ] }
-      port: { get_property: [ tomcat_server, port ] }      
+      port: { get_property: [ tomcat_server, port ] }
       application_url: { get_attribute: [tomcat_server, application_url] }
