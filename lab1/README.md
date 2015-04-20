@@ -3,10 +3,10 @@
 ## Prerequisites
 
 ### Install Vagrant
-Download from [http://www.vagrantup.com/downloads.html] (http://www.vagrantup.com/downloads.html)
+Download from [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html).
 
-### Install the vbguest plugin
-Check whether the vbguest plugin is installed:
+### Install the `vbguest` plugin
+Check whether the `vbguest` plugin is installed:
 
 ```bash
 vagrant plugin list
@@ -20,8 +20,9 @@ vagrant plugin install vagrant-vbguest
 
 ## Process
 
-### Download ubuntu-14.04 vagrant box
-Download [https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box](https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box)
+### Download Cloudify's ubuntu-14.04 vagrant box
+
+Download [https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box](https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box):
 
 ```bash
 wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
@@ -33,68 +34,70 @@ wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubun
 vagrant box add --name ub1404 ubuntu-14.04-amd64.box
 ```
 
-### initialize a vagrant file  
+### Initialize a vagrant file and edit it
+
 ```bash
-vagrant init 
+vagrant init
 ```
 
-### Vagrantfile
-Edit the Vagrantfile and set the following in the Vagrantfile (make sure it's uncommented)
-```bash
+Then, edit `Vagrantfile` and set the following (certain keys may already exist commented — just uncomment & modify them if so):
+
+```
 config.vm.box = "ub1404"
 config.vm.network "private_network", ip: "192.168.33.10"
 ```
 
-### Start the vm
+### Start the VM
+
 ```bash
 vagrant up
 ```
 
 ### Login
-Now use one of the following (user and password are vagrant):
+
+Use one of the following (user and password are `vagrant`):
+
 ```bash
-vagrant ssh 
- #or
+vagrant ssh
+```
+
+or
+
+```bash
 ssh vagrant@192.168.33.10
 ```
- or on Windows
+
+or, on Windows:
+
 ```bat
- putty.exe -ssh 192.168.33.10 -l vagrant -pw vagrant
+putty.exe vagrant@192.168.33.10 -pw vagrant
 ```
 
 ### In the VM
-Once you've ssh'd into the box, run the following (use sudo only if you're not root).
 
-If your image isn't updated: 
-```bash
-sudo apt-get -y -q update
-```
+Once you've `ssh`'d into the box, run the following:
 
 ```bash
-sudo apt-get install -y -q python-dev python-virtualenv unzip
+curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py
+python get-cloudify.py --virtualenv myenv
 ```
 
-### Create virtualenv name myenv
-```bash
-virtualenv myenv
-```
+That will install the Cloudify CLI, as well as its dependencies (such as `python-dev`, `gcc` and so forth), into a Python `virtualenv` named `myenv`.
 
-### Activate the myenv virtualenv
+### Activate the `myenv` virtualenv
+
 ```bash
 source myenv/bin/activate
 ```
 
-### Installation
-```bash
-pip install cloudify==3.2
-```
+### Check Cloudify's version
 
-### Run the following command : 
 ```bash
 cfy --version
 ```
 
-#### You should see the following output :
-```bat
- Cloudify CLI 3.2.0     (build: 85, date: )
+The output should be similar to the following:
+
+```
+Cloudify CLI 3.2.0     (build: 85, date: )
 ```

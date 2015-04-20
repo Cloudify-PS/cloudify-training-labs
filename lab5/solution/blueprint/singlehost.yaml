@@ -9,7 +9,6 @@ inputs:
   host_ip:
       description: >
         The ip of the host the application will be deployed on  
-      default: 127.0.0.1
 
   agent_user:
       description: >
@@ -133,5 +132,3 @@ outputs:
     value:
       ip_address: { get_attribute: [ host, ip ] }
       port: { get_input: web_port }
-
-
