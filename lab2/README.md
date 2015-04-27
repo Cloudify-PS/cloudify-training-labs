@@ -50,7 +50,7 @@ Activate the virtualenv in which you installed the Cloudify CLI (if it isn't alr
 
 ```bash
 cfy init
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2/simple/simple.yaml -i manager-inputs.yaml
+cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2/simple/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 This should take a few minutes, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the manager, e.g.:
