@@ -1,9 +1,11 @@
 # Lab 3: Uploading and Deploying a Sample Blueprint
 
-The purpose of this lab is to upload a sample blueprint to the manager you bootstrapped in the previous step and install it on the same VM.
+The purpose of this lab is to upload a sample blueprint to the manager you had bootstrapped in the previous step and install it on the same VM as the manager.
 
 Before starting, make sure you have the IP address of the manager you bootstrapped in the previous lab.
 
+The sample blueprint we are going to work on, will install a sample application called *nodecellar*.
+ 
 ## Step 1: Download the nodecellar blueprint
 
 In a terminal window (where you installed the CLI), execute the following command (this lab assumes that `~/work` is the working directory used during the previous lab):
@@ -14,7 +16,11 @@ wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-exa
 unzip nodecellar.zip
 ```
 
+That will download the latest nodecellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.2`.
+
 ## Step 2: Step 2: Configure the inputs file
+
+The nodecellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
 cp cloudify-nodecellar-example-3.2/inputs/singlehost.yaml.template nc-singlehost.yaml
@@ -24,7 +30,7 @@ vi nc-singlehost.yaml
 Fill in the host IP (your instance's private IP), agent user (`ubuntu`), as well as the path of the keyfile on the manager as written below:
 
 ```bash
-host_ip: YOUR INSTANCE'S PRIVATE IP
+host_ip: YOUR_INSTANCE'S_PRIVATE_IP
 agent_user: ubuntu
 agent_private_key_path: /home/ubuntu/.ssh/agent_key.pem
 ```
@@ -50,6 +56,8 @@ Go to the web UI and make sure you see a blueprint named 'nodecellar' in the blu
 
 ## Step 4: Create a deployment
 
+Once nodecellar's blueprints are uploaded, we need to create a deployment for it, using the inputs file we customized in step 2.
+
 ```bash
 cfy deployments create -b nodecellar -i nc-singlehost.yaml -d nodecellar
 ```
@@ -63,7 +71,7 @@ Deployment created, deployment's id is: nodecellar
 
 ## Step 5: Execute the `install` workflow
 
-Trigger the `install` workflow by typing: 
+Once the deployment has been created, we can install the nodecellar application. Trigger the `install` workflow by typing: 
 
 ```bash
 cfy executions start -d nodecellar -w install

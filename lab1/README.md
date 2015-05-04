@@ -20,7 +20,7 @@ vagrant plugin install vagrant-vbguest
 
 ## Process
 
-### Download Cloudify's ubuntu-14.04 vagrant box
+### Download Cloudify's `ubuntu-14.04` vagrant box
 
 ```bash
 wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
@@ -53,7 +53,7 @@ vagrant up
 
 ### Login
 
-Use one of the following (user and password are `vagrant`):
+Use one of the following (username and password are `vagrant`):
 
 ```bash
 vagrant ssh
@@ -77,7 +77,7 @@ Once you've `ssh`'d into the box, run the following:
 
 ```bash
 curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py
-python get-cloudify.py --virtualenv myenv
+python get-cloudify.py --virtualenv myenv --version 3.2
 ```
 
 That will install the Cloudify CLI, as well as its dependencies (such as `python-dev`, `gcc` and so forth), into a Python `virtualenv` named `myenv`.

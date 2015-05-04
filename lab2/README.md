@@ -25,7 +25,11 @@ wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-bluepr
 unzip blueprints.zip
 ```
 
+That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.2`.
+
 ### Step 3: Configure the inputs file
+
+The provided manager blueprints ship with templates for manager inputs. These templates have to be edited to reflect the environment in which the manager is to be installed.
 
 ```bash
 cp cloudify-manager-blueprints-3.2/simple/inputs.yaml.template manager-inputs.yaml
@@ -35,8 +39,8 @@ vi manager-inputs.yaml
 Fill in the public and private IP's, SSH user (`ubuntu`), as well as the path of the keyfile you were provided by the instructor:
 
 ```yaml
-public_ip: PUBLIC IP GOES HERE
-private_ip: PRIVATE IP GOES HERE
+public_ip: MANAGER_INSTANCE_PUBLIC_IP
+private_ip: MANAGER_INSTANCE_PRIVATE_IP
 ssh_user: ubuntu
 ssh_key_filename: /path/to/key.pem
 
@@ -53,7 +57,9 @@ cfy init
 cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2/simple/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
-This should take a few minutes, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the manager, e.g.:
+The first command initializes a Cloudify CLI working directory inside the current working directory.
+
+The second command triggers the bootstrap process. It should take a few minutes to complete, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the manager printed out, e.g.:
 
 ```
 015-01-20 16:13:15 CFY <manager> 'install' workflow execution succeeded
@@ -61,7 +67,7 @@ bootstrapping complete
 management server is up at 54.91.114.221
 ```
 
-### Step 5: Verify the manager started successfully
+### Step 5: Verify that the manager started successfully
 
 Type the following command to verify that all manager components are up and running:
 
@@ -69,7 +75,7 @@ Type the following command to verify that all manager components are up and runn
 cfy status
 ```
 
-You should see the output similar to the following. Make sure all components are running:
+You should see output similar to the following. Make sure all components are running:
 
 ```bash
 Getting management services status... [ip=54.91.114.221]

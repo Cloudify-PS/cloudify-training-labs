@@ -13,17 +13,17 @@ cfy local init -p ... -i ...
 cfy local execute -w execute_operation ...
 ```
 
-The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). Note that the operation should only be performed on the relevant node instance (there is more than one way to achieve this).
+The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node instance*.
 
 _Tip_: Use the `execute_operation` workflow documentation.
 
 ## Part II: `heal`
 
-In this part, we will demonstrate the usage of the `heal` internal workflow.
+In this part, we will demonstrate the `heal` workflow.
 
 ### Step 1: Deploy and install the `hello-tomcat` application
 
-In Part I, you ran the `hello-tomcat` application in local mode. Use commands studied in previous labs to install `hello-tomcat` on your Cloudify Manager.
+In Part I, you ran the `hello-tomcat` application in local mode. Use commands learned in previous labs to install `hello-tomcat` on your Cloudify Manager.
 
 For the purpose of this exercise, it will be assumed that the deployment's name is `hellotomcat`.
 
@@ -39,6 +39,8 @@ cfy executions start -d hellotomcat -w heal -p 'node_instance_id: host_f4c49'
 
 ## Part III: `scale`
 
+In this part, we will demonstrate the `scale` workflow.
+
 ### Step 1: Execute the `scale` workflow
 
 First, we need to find the ID of the node we would like to scale (*note*: unlike the `heal` workflow, the `scale` workflow requires the node's ID, *not* a node's instance ID).
@@ -51,7 +53,7 @@ cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_
 
 ### Step 2: Verify
 
-Log in to the Cloudify web UI. Select your deployment and then the "Topology" tab. You should see that the number of instances of the `tomcat_server` node has changed to `2`.
+Log in to the Cloudify web UI. Select your deployment and then the "Topology" tab. You should see that the number of instances of the `tomcat_server` node has changed from `1` to `2`.
 
 ### Step 3: Scale down
 

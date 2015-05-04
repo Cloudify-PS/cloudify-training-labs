@@ -2,7 +2,7 @@
 
 The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify manager.
 
-It is assumed that the exercise's files are extracted into `LAB_ROOT`.
+It is assumed that the exercise's files are extracted into `$LAB_ROOT`.
 
 ### Step 1: Replace the placeholder
 
@@ -13,7 +13,7 @@ There are placeholders in `tomcat-blueprint.yaml`, in some of the shell scripts 
 
 ### Step 2: Run in local mode
 
-Once you're done, you can run it in local mode:
+Once you're done, you can run the application in local mode:
 
 ```bash
 cd ~work
@@ -21,7 +21,7 @@ cfy local init -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -i $LAB_ROOT/hell
 cfy local execute -w install
 ```
 
-Now Browse to `http://127.0.0.1:8080/helloworld` (from the box itself, or `http://192.168.33.10:8080/helloworld` from the host) and then run the following CLI command:
+Now browse to `http://127.0.0.1:8080/helloworld` (from the vagrant box itself, or `http://192.168.33.10:8080/helloworld` from the host) and then run the following CLI command:
 
 ```bash
 cfy local outputs
@@ -44,6 +44,11 @@ cfy deployments create -b hellotomcat -d hellotomcat -i $LAB_ROOT/hello-tomcat/t
 cfy executions start -d hellotomcat -w install
 ```
 
+Notes:
+
+1. For the `deployments create` command, we used a different YAML file for inputs.
+2. The blueprint is uploaded under the name `hellotomcat`. The deployment created is also named `hellotomcat`. That is *not* a requirement; the deployment's name may be different from its associated blueprint's name.
+
 To test, navigate to port 8080 of the public IP associated with the VM on which installation was made:
 
 ```
@@ -52,7 +57,11 @@ http://15.125.87.108:8080
 
 ### Step 4: Cleanup
 
-In order to clean up, remove the deployment and its blueprint:
+In order to clean up:
+
+1. Uninstall the application.
+2. Remove the `hellotomcat` deployment.
+3. Remove the `hellotomcat` blueprint.
 
 ```bash
 cfy executions start -d hellotomcat -w uninstall
