@@ -1,10 +1,44 @@
 # Lab 2: Manager Bootstrapping Using the Simple Manager Blueprint
 
 The purpose of this lab is to bootstrap a Cloudify manager on a fresh instance using the simple manager blueprint.
+
+## Prerequisites
+
 Before starting, make sure you have the following details from the instructor:
 
 * The private and public IP's of the server you are going to bootstrap the manager on (one server per trainee).
 * The keypair of the server.
+
+Also, ensure that your intended Manager server has Docker properly installed and configured:
+
+### Ensure that Docker is installed
+
+`docker --version`
+
+If Docker is not installed, install it as follows:
+
+```bash
+curl -o install.sh -sSL https://get.docker.com/
+sudo sh install.sh
+sudo gpasswd -a ubuntu docker
+sudo service docker restart
+```
+
+### Ensure that the user, installing the Cloudify Manager, belongs to the `docker` group
+
+Log in with the user that is intended to be installing the Cloudify Manager, and type:
+
+```bash
+groups
+```
+
+If `docker` is not there, add it (the following example assumes that the user in question is `docker`):
+
+```bash
+sudo gpasswd -a ubuntu docker
+```
+
+## Process
 
 ### Step 1: Create a working directory
 
@@ -100,4 +134,4 @@ Services:
 
 Copy the IP address you received at the end of the bootstrap process to your browser's address line. You should get the web UI:
 
-![alt text](https://raw.githubusercontent.com/cloudify-cosmo/cloudify-training-labs/master/lab2/cfy32.png "Cloudify 3.2 Web UI")
+![alt text](https://raw.githubusercontent.com/isaac-s/cloudify-training-labs/master/lab2/cfy32.png "Cloudify 3.2 Web UI")
