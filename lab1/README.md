@@ -6,6 +6,8 @@
 
 Download from [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html).
 
+On Windows, make sure that Vagrant's `bin` subdirectory is added to your `PATH`).
+
 ### Install the `vbguest` plugin
 
 Check whether the `vbguest` plugin is installed:
