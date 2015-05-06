@@ -149,4 +149,4 @@ Services:
 
 Copy the IP address you received at the end of the bootstrap process to your browser's address line. You should get the web UI:
 
-![alt text](https://raw.githubusercontent.com/isaac-s/cloudify-training-labs/master/lab2/cfy32.png "Cloudify 3.2 Web UI")
+![alt text](../../../raw/master/lab2/cfy32.png "Cloudify 3.2 Web UI")
