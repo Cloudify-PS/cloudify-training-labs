@@ -2,7 +2,11 @@
 
 The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify Manager.
 
-It is assumed that the exercise's files are extracted into `$LAB_ROOT`.
+It is assumed that the exercise's files are extracted into `$LAB_ROOT`. Otherwise, export it:
+
+```bash
+export LAB_ROOT=~/cloudify-training-labs/lab4/exercise
+```
 
 ### Step 1: Replace the placeholder
 
