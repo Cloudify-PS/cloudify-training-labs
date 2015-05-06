@@ -30,11 +30,21 @@ Create a directory that will serve as the Vagrant working directory for the trai
 mkdir ~/cfy-vagrant && cd ~/cfy-vagrant
 ```
 
+Or, on Windows:
+
+```bat
+cd /d %USERPROFILE%
+mkdir cfy-vagrant
+cd cfy-vagrant
+```
+
 Next, download the latest Vagrant box:
 
 ```bash
 wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
 ```
+
+(On Windows, simply paste the box's URL into the browser's address bar, and download the file into ~/cfy-vagrant)
 
 ### Add the box to Vagrant:
 
