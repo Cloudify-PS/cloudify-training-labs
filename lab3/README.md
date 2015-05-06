@@ -54,7 +54,7 @@ Uploaded blueprint, blueprint's id is: nodecellar
 
 Go to the web UI and make sure you see a blueprint named 'nodecellar' in the blueprints screen.
 
-![alt text](https://raw.githubusercontent.com/cloudify-cosmo/cloudify-training-labs/master/lab3/blueprints-screen.png "Blueprints screen")
+![alt text](../../../raw/master/lab3/blueprints-screen.png "Blueprints screen")
 
 ## Step 4: Create a deployment
 
