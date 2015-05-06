@@ -1,37 +1,23 @@
-# Lab 8: Deploying Collectors and Using the Grafana Dashboard
+# Lab 8: Security
 
-The purpose of this lab is to add monitoring to the Tomcat blueprint used in lab 4.
+In this lab, we will demonstrate security configuration on the Cloudify manager. Our starting point will be a simple manager blueprint, with its security configuration incomplete; your task will be to complete the security configuration and demonstrate that it works.
 
 It is assumed that the lab's files are extracted into `$LAB_ROOT`.
 
-### Step 1: Replace the placeholders
+The blueprint, located in `$LAB_ROOT/blueprint/simple-secured.yaml`, contains placeholders for your modifications. These placeholders begin with the string `REPLACE_WITH`.
 
-You need to replace all the occurrences of the placeholders (`REPLACE_THIS_WITH`) in `tomcat.yaml` and in the blueprint file to add monitoring to the blueprint.
+## Step 1: Logging
 
-### Step 2: Upload and install the blueprint
+Replace the strings `REPLACE_WITH_LOG_FILE_PATH` and `REPLACE_WITH_LOG_LEVEL` with applicable values for your environment.
 
-```bash
-cfy blueprints upload -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -b hellotomcat-mon
-cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/hello-tomcat/tomcat.yaml
-cfy executions start -d hellotomcat-mon -w install
-```
+## Step 2: Users configuration
 
-### Step 3: Review monitoring in the UI
+Replace the string `REPLACE_WITH_USERS_CONFIGURATION` with either one or many user configurations. Note that these configurations must be understood by the user store driver being used; for the built-in `SimpleUserstore`, the expected fields are:
 
-1. In the web UI, go to the deployment screen.
-2. Click your deployment.
-3. Click the "Monitoring" tab.
+* `username`
+* `password`
+* `email`
 
-Now you can see the Grafana dashboard, with a few default metrics defined. This dashboard is dynamically created for every deployment when you click the "Monitoring" tab.
+## Step 3: SSL
 
-### Step 4: Add a new graph to the dashboard
-
-Now let's add a new graph to the dashboard:
-
-1. Click the add a row button at the bottom right part of the screen 
-2. Click the right handle button, and then *Add panel* -> *Graph*
-3. Click the graph's title -> Edit
-4. Type `cpu` in the *Series* field. You should see a list of series names available in influx (these were pushed into influx by the CPU collector you installed in your blueprint). Choose one of them.
-5. Go to the *General* tab and give a meaningful title to your graph. You can also change the `span` attribute to control the width of the graph you just created (`12` being 100% of the dashboard's width). Feel free to play around with the other tabs as well to define your graph.
-6. You can also control other aspects of the dashboard, such as the resolution, auto-refresh rate, etc.
-7. You can also export your dashboard to JSON by clicking *Save* -> *Export dashboard*.
+Replace the strings `REPLACE_WITH_CERT_PATH` and `REPLACE_WITH_PRIVATE_KEY_PATH` with applicable values for your environment.

@@ -1,7 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_0
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2m8/types.yaml
 
 inputs:
   vm_ip_address:
@@ -67,14 +67,14 @@ node_templates:
     interfaces:
       cloudify.interfaces.lifecycle:
         create:
-          implementation: tomcat-scripts/install-tomcat.sh
+          implementation: REPLACE_WITH_APPROPRIATE_SCRIPT
           inputs:
             process:
               args: [get_input: vm_ip_address]
-        configure: tomcat-scripts/configure-tomcat.sh
-        start: tomcat-scripts/start-tomcat.sh
-        stop: tomcat-scripts/stop-tomcat.sh
-        uninstall: tomcat-scripts/uninstall-tomcat.sh
+        configure: REPLACE_WITH_APPROPRIATE_SCRIPT
+        start: REPLACE_WITH_APPROPRIATE_SCRIPT
+        stop: REPLACE_WITH_APPROPRIATE_SCRIPT
+        uninstall: REPLACE_WITH_APPROPRIATE_SCRIPT
 
     relationships:
       - type: cloudify.relationships.contained_in

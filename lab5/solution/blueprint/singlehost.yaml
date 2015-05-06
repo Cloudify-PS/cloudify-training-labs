@@ -1,8 +1,8 @@
 tosca_definitions_version: cloudify_dsl_1_0
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
-  - https://raw.githubusercontent.com/cloudify-cosmo/cloudify-docker-plugin/1.2/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2m8/types.yaml
+  - https://raw.githubusercontent.com/cloudify-cosmo/cloudify-docker-plugin/1.2m8/plugin.yaml
 
 inputs:
 
@@ -70,7 +70,7 @@ node_templates:
     properties:
       name: mongod
       image:
-        repository: dockerfile/mongodb
+        repository: library/mongo
     interfaces:
       cloudify.interfaces.lifecycle:
         create:

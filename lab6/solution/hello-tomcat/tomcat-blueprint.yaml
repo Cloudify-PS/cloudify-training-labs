@@ -1,8 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_0
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
-  - http://www.getcloudify.org/spec/diamond-plugin/1.2/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2m8/types.yaml
 
 inputs:
   vm_ip_address:
@@ -32,21 +31,6 @@ node_types:
         default: { get_input: vm_ip_address }
       install_agent:
         default: { get_input: install_agent }
-    interfaces:
-      cloudify.interfaces.monitoring_agent:
-        install:
-          implementation: diamond.diamond_agent.tasks.install
-          inputs:
-            diamond_config:
-              default:
-                interval: 1
-        start: diamond.diamond_agent.tasks.start
-        stop: diamond.diamond_agent.tasks.stop
-        uninstall: diamond.diamond_agent.tasks.uninstall
-
-      cloudify.interfaces.monitoring:
-        start:
-          REPLACE_WITH_MONITORING_COLLECTORS
 
   web_server:
     derived_from: cloudify.nodes.WebServer
@@ -63,6 +47,10 @@ node_types:
         description: 'A full url to jdk-6u32-linux-x64.bin'
       application_name:
         description: 'The name of the application. E.g: helloworld'
+    interfaces:
+      my_custom_interface:
+        my_logging_operation: {}
+
 
 node_templates:  
   tomcat_vm:
@@ -91,6 +79,9 @@ node_templates:
         start: tomcat-scripts/start-tomcat.sh
         stop: tomcat-scripts/stop-tomcat.sh
         uninstall: tomcat-scripts/uninstall-tomcat.sh
+      my_custom_interface:
+        my_logging_operation:
+          implementation: tomcat-scripts/my-logging-operation.sh
 
     relationships:
       - type: cloudify.relationships.contained_in

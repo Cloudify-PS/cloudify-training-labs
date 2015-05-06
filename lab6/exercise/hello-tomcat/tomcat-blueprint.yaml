@@ -1,7 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_0
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2m8/types.yaml
 
 inputs:
   vm_ip_address:
@@ -79,10 +79,7 @@ node_templates:
         start: tomcat-scripts/start-tomcat.sh
         stop: tomcat-scripts/stop-tomcat.sh
         uninstall: tomcat-scripts/uninstall-tomcat.sh
-      my_custom_interface:
-        my_logging_operation:
-          implementation: tomcat-scripts/my-logging-operation.sh
-
+      REPLACE_THIS_WITH_AN_OPERATION_MAPPING_FOR_THE_NEW_SCRIPT_ACCORDING_TO_THE_NEW_INTERFACE_DECLARED_ON_THE_TYPE_OF_THIS_NODE
     relationships:
       - type: cloudify.relationships.contained_in
         target: tomcat_vm

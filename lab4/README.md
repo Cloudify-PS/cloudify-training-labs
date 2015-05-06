@@ -1,22 +1,19 @@
 # Lab 4: Create and run a blueprint
 
-The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify manager.
+The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify Manager.
 
 It is assumed that the exercise's files are extracted into `$LAB_ROOT`.
 
 ### Step 1: Replace the placeholder
 
-You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_THIS_WITH`”) in **_all_** files, with the suitable values and to add missing parts as well.
-
-Hint: Start with `tomcat-blueprint.yaml` and then fix the broken shell scripts.
-There are placeholders in `tomcat-blueprint.yaml`, in some of the shell scripts and in the `tomcat.yaml` and `tomcat-local.yaml` files.
+You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located, with the suitable values and to add missing parts as well.
 
 ### Step 2: Run in local mode
 
 Once you're done, you can run the application in local mode:
 
 ```bash
-cd ~work
+cd ~/work
 cfy local init -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -i $LAB_ROOT/hello-tomcat/tomcat-local.yaml
 cfy local execute -w install
 ```
@@ -46,7 +43,7 @@ cfy executions start -d hellotomcat -w install
 
 Notes:
 
-1. For the `deployments create` command, we used a different YAML file for inputs.
+1. For the `deployments create` command, we used a different YAML file for inputs, than we used for running locally.
 2. The blueprint is uploaded under the name `hellotomcat`. The deployment created is also named `hellotomcat`. That is *not* a requirement; the deployment's name may be different from its associated blueprint's name.
 
 To test, navigate to port 8080 of the public IP associated with the VM on which installation was made:

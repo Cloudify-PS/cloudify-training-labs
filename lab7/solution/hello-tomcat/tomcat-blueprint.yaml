@@ -1,7 +1,8 @@
 tosca_definitions_version: cloudify_dsl_1_0
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2m8/types.yaml
+  - http://www.getcloudify.org/spec/diamond-plugin/1.2m8/plugin.yaml
 
 inputs:
   vm_ip_address:
@@ -31,6 +32,31 @@ node_types:
         default: { get_input: vm_ip_address }
       install_agent:
         default: { get_input: install_agent }
+    interfaces:
+      cloudify.interfaces.monitoring_agent:
+        install:
+          implementation: diamond.diamond_agent.tasks.install
+          inputs:
+            diamond_config:
+              default:
+                interval: 1
+        start: diamond.diamond_agent.tasks.start
+        stop: diamond.diamond_agent.tasks.stop
+        uninstall: diamond.diamond_agent.tasks.uninstall
+
+      cloudify.interfaces.monitoring:
+        start:
+          implementation: diamond.diamond_agent.tasks.add_collectors
+          inputs:
+            collectors_config:
+              default:
+                CPUCollector: {}
+                MemoryCollector: {}
+                LoadAverageCollector: {}
+                DiskUsageCollector:
+                  config:
+                    devices: x?vd[a-z]+[0-9]*$
+                NetworkCollector: {}
 
   web_server:
     derived_from: cloudify.nodes.WebServer
@@ -47,10 +73,6 @@ node_types:
         description: 'A full url to jdk-6u32-linux-x64.bin'
       application_name:
         description: 'The name of the application. E.g: helloworld'
-    interfaces:
-      my_custom_interface:
-        my_logging_operation: {}
-
 
 node_templates:  
   tomcat_vm:
@@ -79,7 +101,7 @@ node_templates:
         start: tomcat-scripts/start-tomcat.sh
         stop: tomcat-scripts/stop-tomcat.sh
         uninstall: tomcat-scripts/uninstall-tomcat.sh
-      REPLACE_THIS_WITH_AN_OPERATION_MAPPING_FOR_THE_NEW_SCRIPT_ACCORDING_TO_THE_NEW_INTERFACE_DECLARED_ON_THE_TYPE_OF_THIS_NODE
+
     relationships:
       - type: cloudify.relationships.contained_in
         target: tomcat_vm

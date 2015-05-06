@@ -3,9 +3,11 @@
 ## Prerequisites
 
 ### Install Vagrant
+
 Download from [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html).
 
 ### Install the `vbguest` plugin
+
 Check whether the `vbguest` plugin is installed:
 
 ```bash
@@ -20,28 +22,38 @@ vagrant plugin install vagrant-vbguest
 
 ## Process
 
-### Download Cloudify's `ubuntu-14.04` vagrant box
+### Download an Ubuntu 14.04 Vagrant box
+
+Create a directory that will serve as the Vagrant working directory for the training session. For documentation purposes, it is assumed that this directory is `~/cfy-vagrant`.
+
+```bash
+mkdir ~/cfy-vagrant && cd ~/cfy-vagrant
+```
+
+Next, download the latest Vagrant box:
 
 ```bash
 wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
 ```
 
-### Add the box to vagrant:
+### Add the box to Vagrant:
 
 ```bash
-vagrant box add --name ub1404 ubuntu-14.04-amd64.box
+vagrant box add --name cfy-training ubuntu-14.04-amd64.box
 ```
 
-### Initialize a vagrant file and edit it
+### Initialize a `Vagrantfile`
 
 ```bash
 vagrant init
 ```
 
-Then, edit `Vagrantfile` and set the following (certain keys may already exist commented — just uncomment & modify them if so):
+### Edit the `Vagrantfile`
+
+Edit `Vagrantfile` and set the following (certain keys may already exist commented — just uncomment & modify them if so):
 
 ```
-config.vm.box = "ub1404"
+config.vm.box = "cfy-training"
 config.vm.network "private_network", ip: "192.168.33.10"
 ```
 
@@ -76,16 +88,18 @@ putty.exe vagrant@192.168.33.10 -pw vagrant
 Once you've `ssh`'d into the box, run the following:
 
 ```bash
+sudo apt-get update
+sudo apt-get -y install python-pip python-virtualenv python-dev unzip
 curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py
-python get-cloudify.py --virtualenv myenv --version 3.2
+python get-cloudify.py --virtualenv cfyenv --version 3.2a8
 ```
 
-That will install the Cloudify CLI, as well as its dependencies (such as `python-dev`, `gcc` and so forth), into a Python `virtualenv` named `myenv`.
+That will install the Cloudify CLI, as well as its dependencies, into a Python `virtualenv` named `cfyenv`.
 
-### Activate the `myenv` virtualenv
+### Activate the `cfyenv` virtualenv
 
 ```bash
-source myenv/bin/activate
+source cfyenv/bin/activate
 ```
 
 ### Check Cloudify's version
@@ -97,5 +111,5 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 3.2.0     (build: 85, date: )
+Cloudify CLI 3.2.0-m8     (build: 85, date: )
 ```

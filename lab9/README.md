@@ -1,68 +1,84 @@
-# Lab 9: Workflows
+# Lab 9: OpenStack Bootstrapping and Deployment
 
-## Part I: `execute_workflow`
+### Step 1: Download Manager Blueprints and Nodecellar-Docker
 
-In the exercise folder of this lab, you’ll find a folder which contains the `hello-tomcat` blueprint, where an additional interface has been added to the `web_server` type, and an additional simple script `my-logging-operation.sh` now appears.
-
-Your task is to fix this blueprint, so that the `tomcat_server` node will have an operation mapping for the new interface, and so that the mapping's implementation will be the new `my-logging-operation.sh` script. Note that the latter uses a `message` parameter.
-
-Then, run the `execute_operation` plugin (in local mode):
+The blueprints may have already been downloaded during previous labs. If not:
 
 ```bash
-cfy local init -p ... -i ...
-cfy local execute -w execute_operation ...
+cd ~/work
+wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.2.zip
+unzip blueprints.zip
 ```
 
-The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node instance*.
-
-_Tip_: Use the `execute_operation` workflow documentation.
-
-## Part II: `heal`
-
-In this part, we will demonstrate the `heal` workflow.
-
-### Step 1: Deploy and install the `hello-tomcat` application
-
-In Part I, you ran the `hello-tomcat` application in local mode. Use commands learned in previous labs to install `hello-tomcat` on your Cloudify Manager.
-
-For the purpose of this exercise, it will be assumed that the deployment's name is `hellotomcat`.
-
-### Step 2: Execute the `heal` workflow
-
-First, we need to find the instance ID of the node we would like to heal. Remember: the `heal` workflow uninstalls, and then reinstalls, the *entire* Compute node containing the node we wish to heal; therefore, you may either look for the instance ID of the Compute node itself, or of any node which is contained in (directly or indirectly) that Compute node.
-
-Then, execute the `heal` workflow. For example:
+To download the Nodecellar-Docker example:
 
 ```bash
-cfy executions start -d hellotomcat -w heal -p 'node_instance_id: host_f4c49'
+wget -O nodecellar-docker.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-docker-example/archive/3.2.zip
+unzip nodecellar-docker.zip
 ```
 
-## Part III: `scale`
+### Step 2: Prepare `openstack_config.json`
 
-In this part, we will demonstrate the `scale` workflow.
+Create a file named `~/openstack_config.json` according to the following template:
 
-### Step 1: Execute the `scale` workflow
+```yaml
+{
+    "username": "your-keystone-username",
+    "password": "your-keystone-password",
+    "tenant_name": "openstack-tenant-name",
+    "auth_url": "keystone-url",
+    "region": "region-code",
+    "nova_url": "nova-service-url",
+    "neutron_url": "neutron-service-url"
+}
+```
 
-First, we need to find the ID of the node we would like to scale (*note*: unlike the `heal` workflow, the `scale` workflow requires the node's ID, *not* a node's instance ID).
+Notes:
 
-We will scale the `tomcat_server` node.
+* `region` is optional in environments where only one region is available
+* `nova_url` and `neutron_url` are optional, and should only be used in cases when it is required to override the Nova and/or Neutron URLs provided by Keystone.
+
+### Step 3: Prepare `inputs.yaml`
 
 ```bash
-cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_compute: false, delta: 1}'
+cp cloudify-manager-blueprints-3.2/openstack/inputs.yaml.template inputs-os.yaml
 ```
 
-### Step 2: Verify
+Then, edit `~/work/inputs-os.yaml` for your values.
 
-Log in to the Cloudify web UI. Select your deployment and then the "Topology" tab. You should see that the number of instances of the `tomcat_server` node has changed from `1` to `2`.
+**NOTE**: ensure that you assign unique names to the various resources (management network, router etc). While Cloudify supports using existing resources, the sample `openstack-manager-blueprint` does not provide the option to specify a value for the `use_external_resource` property. Alternatively, you can copy `openstack-manager-blueprint.yaml` aside and edit it to include `use_external_resource` wherever necessary.
 
-### Step 3: Scale down
-
-Execute a similar command, to scale the `tomcat_server` node down by 1:
+### Step 4: Bootstrap the manager
 
 ```bash
-cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_compute: false, delta: -1}'
+cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2/openstack/openstack-manager-blueprint.yaml -i inputs-os.yaml
 ```
 
-### Step 4: Verify
+### Step 5: Prepare nodecellar's blueprint
 
-At the same view as in Step 2 above, you should now see that the instance count of `tomcat_server` has decreased to 1.
+```bash
+cp cloudify-nodecellar-docker-example-3.2/blueprint/cfy-openstack-inputs.json .
+```
+
+Then edit `cfy-openstack-inputs.json` to add the image ID and the flavor ID of the image on which you want Node Cellar to be installed.
+
+### Step 6: Upload the blueprint, create a deployment, run install
+
+```bash
+cfy blueprints upload -p cloudify-nodecellar-docker-example-3.2/blueprint/openstack.yaml -b nc-docker-os
+cfy deployments create -d nc-docker-os -b nc-docker-os -i cfy-openstack-inputs.json
+cfy executions start -d nc-docker-os -w install
+```
+
+### Step 7: Test the application
+
+Find out the floating IP attached to the Compute node running Node Cellar, and browse it: `http://<ip-address>:8080`.
+
+
+### Step 8: Cleanup
+
+```bash
+cfy executions start -d nc-docker-os -w uninstall
+cfy deployments delete -d nc-docker-os
+cfy blueprints delete -b nc-docker-os
+```
