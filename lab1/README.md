@@ -101,12 +101,18 @@ Once you've `ssh`'d into the box, run the following:
 
 ```bash
 sudo apt-get update
-sudo apt-get -y install python-pip python-virtualenv python-dev unzip
+sudo apt-get -y install python-pip python-virtualenv python-dev unzip git
 curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py
 python get-cloudify.py --virtualenv cfyenv --version 3.2a8
 ```
 
 That will install the Cloudify CLI, as well as its dependencies, into a Python `virtualenv` named `cfyenv`.
+
+### Clone the training labs
+
+```bash
+git clone https://github.com/cloudify-cosmo/cloudify-training-labs
+```
 
 ### Activate the `cfyenv` virtualenv
 
