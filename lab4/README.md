@@ -8,9 +8,9 @@ It is assumed that the exercise's files are extracted into `$LAB_ROOT`. Otherwis
 export LAB_ROOT=~/cloudify-training-labs/lab4/exercise
 ```
 
-### Step 1: Replace the placeholder
+### Step 1: Replace placeholders
 
-You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located, with the suitable values and to add missing parts as well.
+You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT`, with the suitable values and to add missing parts as well.
 
 ### Step 2: Run in local mode
 
