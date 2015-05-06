@@ -9,7 +9,7 @@ Before starting, make sure you have the following details from the instructor:
 * The private and public IP's of the server you are going to bootstrap the manager on (one server per trainee).
 * The keypair of the server.
 
-### Ensure that Docker is installed
+### Ensure that Docker is installed on the intended manager VM
 
 `docker --version`
 
@@ -37,6 +37,8 @@ sudo gpasswd -a ubuntu docker
 ```
 
 ## Process
+
+*Note*: These steps should be executed on your Vagrant box.
 
 ### Step 1: Create a working directory
 
