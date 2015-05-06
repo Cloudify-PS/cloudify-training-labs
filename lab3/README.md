@@ -96,7 +96,7 @@ Executing workflow 'install' on deployment 'nodecellar' at management server 52.
 
 Point your browser to your manager's public IP, port 8080. You should now see the Nodecellar application. click the "Start browsing nodecellar" button and see the list of wines that is retrieved from the mongo database.
 
-![alt text](https://raw.githubusercontent.com/cloudify-cosmo/cloudify-training-labs/master/lab3/nodecellar.png "Nodecellar")
+![alt text](../../../raw/master/lab3/nodecellar.png "Nodecellar")
 
 ## Step 7: Cleanup
 
