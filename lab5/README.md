@@ -12,6 +12,8 @@ export LAB_ROOT=~/cloudify-training-labs/lab5/exercise
 
 Edit the file `$LAB_ROOT/blueprint/singlehost.yaml` by replacing all strings beginning with `REPLACE_WITH` with correct values.
 
+Some of the values you'll have to put in, are names of Docker images. Browse to [http://hub.docker.com](http://hub.docker.com) and look for those images.
+
 ### Step 2: Edit `inputs.yaml`
 
 Edit the file `$LAB_ROOT/blueprint/inputs.yaml` to contain values applicable to your environment.
