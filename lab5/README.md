@@ -2,7 +2,11 @@
 
 In this lab, we will demonstrate how to deploy and install a Docker container. We will use a Docker version of the Nodecellar application introduced in previous labs.
 
-It is assumed that the lab's files are extracted into `$LAB_ROOT`.
+It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
+
+```bash
+export LAB_ROOT=~/cloudify-training-labs/lab5/exercise
+```
 
 ### Step 1: Edit `singlehost.yaml`
 

@@ -74,7 +74,7 @@ The Cloudify Manager, implemented as a Docker container, ships in two forms:
 
 The manager blueprints, available through GitHub, refer to the non-commercial Docker container. For the purpose of this course, we will edit the manager blueprint to point at the commercial version.
 
-Edit `./cloudify-manager-blueprints-3.2m8/simple/simple-manager-blueprint.yaml` and replace the value for `docker_url` with the following: `http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.2.0/m8-RELEASE/cloudify-docker-commercial_3.2.0-m8-b178.tar `
+Edit `./cloudify-manager-blueprints-3.2m8/simple/simple-manager-blueprint.yaml` and replace the value for `docker_url` with the following: `http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.2.0/m8-RELEASE/cloudify-docker-commercial_3.2.0-m8-b178.tar`
  
 ### Step 5: Configure the inputs file
 
