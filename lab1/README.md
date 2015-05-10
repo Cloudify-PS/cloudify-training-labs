@@ -1,95 +1,142 @@
-# LAB 1
+# Lab 1: Configuring Vagrant and Installing CLI
 
-### Download ubuntu-14.04 vagrant box
-Download [https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box](https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box)
+## Prerequisites
+
+### Install Vagrant
+
+Download from [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html).
+
+On Windows, make sure that Vagrant's `bin` subdirectory is added to your `PATH`.
+
+### Install the `vbguest` plugin
+
+Check whether the `vbguest` plugin is installed:
+
+```bash
+vagrant plugin list
+```
+
+If `vagrant-vbguest` is not listed, install it:
+
+```bash
+vagrant plugin install vagrant-vbguest
+```
+
+## Process
+
+### Download an Ubuntu 14.04 Vagrant box
+
+Create a directory that will serve as the Vagrant working directory for the training session. For documentation purposes, it is assumed that this directory is `~/cfy-vagrant`.
+
+```bash
+mkdir ~/cfy-vagrant && cd ~/cfy-vagrant
+```
+
+Or, on Windows:
+
+```bat
+cd /d %USERPROFILE%
+mkdir cfy-vagrant
+cd cfy-vagrant
+```
+
+Next, download the latest Vagrant box:
 
 ```bash
 wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
 ```
 
-### Add the box to vagrant:
+(On Windows, simply paste the box's URL into the browser's address bar, and download the file into `%USERPROFILE%/cfy-vagrant`)
+
+### Add the box to Vagrant:
 
 ```bash
-vagrant box add --name ub1404 ubuntu-14.04-amd64-vbox.box
+vagrant box add --name cfy-training ubuntu-14.04-amd64.box
 ```
 
-### initialize a vagrant file  
+### Initialize a `Vagrantfile`
+
 ```bash
-vagrant init 
+vagrant init
 ```
 
-### Vagrantfile
-Edit the Vagrantfile and set the following in the Vagrantfile (make sure it's uncommented)
-```bash
-config.vm.box = "ub1404"
+### Edit the `Vagrantfile`
+
+Edit `Vagrantfile` and ensure the following keys are set (certain keys may already exist commented — just uncomment & modify them if so):
+
+```
+config.vm.box = "cfy-training"
 config.vm.network "private_network", ip: "192.168.33.10"
 ```
 
-### Start the vm
+*Notes*:
+
+1. Certain keys may already exist; make sure that their values match the values above and change if necessary.
+2. There may be multiple `config.vm.network` keys. The one you need to uncomment and/or edit is the key for `private_network`.
+
+### Start the VM
+
 ```bash
 vagrant up
 ```
 
 ### Login
-Now use one of the following (user and password are vagrant):
+
+SSH into the Vagrant box. Both the username and password are `vagrant`. You may do this using the `vagrant` command-line interface:
+
 ```bash
-vagrant ssh 
- #or
+vagrant ssh
+```
+
+That will start your local SSH client against the Vagrant box. Alternatively:
+
+```bash
 ssh vagrant@192.168.33.10
 ```
- or on Windows
+
+Or, on Windows, you can use PuTTY:
+
 ```bat
- putty.exe -ssh 192.168.33.10 -l vagrant -pw vagrant
+putty.exe vagrant@192.168.33.10 -pw vagrant
 ```
 
 ### In the VM
-Once you've ssh'd into the box, run the following (use sudo only if you're not root).
 
-If you image isn't updated : 
-```bash
-sudo apt-get -y -q update 
-```
+Once you've `ssh`'d into the box, run the following:
 
 ```bash
-sudo apt-get install -y -q python-dev
-sudo apt-get install -y -q python-virtualenv
-sudo apt-get install -y -q unzip 
+sudo apt-get update
+sudo apt-get -y install python-pip python-virtualenv python-dev unzip git
+curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py
+python get-cloudify.py --virtualenv cfyenv --version 3.2a8
 ```
 
-### Create virtualenv name myenv
+The first two commands will update `apt`'s sources and then install the dependencies for the Cloudify CLI installer, as well as `git` (`git` is not a dependency of the Cloudify CLI; it is a dependency for this lab).
+
+The `curl` command downloads the Cloudify CLI installer, which is then executed in order to install the Cloudify CLI into a Python `virtualenv` called `cfyenv`.
+
+### Clone the training labs
+
 ```bash
-virtualenv myenv
+git clone https://github.com/cloudify-cosmo/cloudify-training-labs
 ```
 
-### Activate the myenv virtualenv
+*Note*: an alternative clone URL may be provided by the instructor.
+
+### Activate the `cfyenv` virtualenv
+
 ```bash
-source myenv/bin/activate
+source cfyenv/bin/activate
 ```
 
-### Installation
-```bash
-pip install cloudify==3.1
-```
+### Check Cloudify's version
 
-### Run the following command : 
 ```bash
 cfy --version
 ```
 
-#### You should see the following output :
-```bat
- Cloudify CLI 3.1.0     (build: 85, date: )
+The output should be similar to the following:
+
 ```
-
-### Get the manager blueprints repo content:
-
-Download [!(https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)](https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip)
-```bash
-wget https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.1.zip
+Cloudify CLI 3.2.0-m8     (build: 85, date: )
 ```
-
-### unzip 
-```bash
-unzip 3.1.zip
-```
-
