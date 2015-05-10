@@ -38,11 +38,11 @@ sudo gpasswd -a ubuntu docker
 
 ## Process
 
-*Note*: These steps should be executed on your Vagrant box.
+*Note*: These steps should be executed on your Vagrant box, *not* on the intended Manager VM.
 
 ### Step 1: Create a working directory
 
-For clarity and convenience, create a new directory that will serve as Cloudify's working directory. We will also place edited files there, in order to simplify the `cfy` commands we run.
+For clarity and convenience, create a new directory that will serve as Cloudify's working directory.
 
 Our labs will assume that the chosen directory is `~/work`.
 
@@ -50,7 +50,7 @@ Our labs will assume that the chosen directory is `~/work`.
 mkdir ~/work && cd ~/work
 ```
 
-### Step 2: Have your manager VM's private key available
+### Step 2: Have your Manager VM's private key available
 
 The private key, required to connect to your manager VM, needs to be accessible to the Cloudify CLI. Copy the private key file to your Vagrant box (by either `scp` or pasting the key's contents into an editor). For documentation purposes, it is assumed that the key file is available at `/home/vagrant/work/cfy-training.pem`.
 
@@ -113,7 +113,7 @@ The first command initializes a Cloudify CLI working directory inside the curren
 The second command triggers the bootstrap process. It should take a few minutes to complete, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the manager printed out, e.g.:
 
 ```
-015-01-20 16:13:15 CFY <manager> 'install' workflow execution succeeded
+2015-01-20 16:13:15 CFY <manager> 'install' workflow execution succeeded
 bootstrapping complete
 management server is up at 54.91.114.221
 ```

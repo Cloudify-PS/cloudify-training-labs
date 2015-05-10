@@ -6,7 +6,7 @@
 
 Download from [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html).
 
-On Windows, make sure that Vagrant's `bin` subdirectory is added to your `PATH`).
+On Windows, make sure that Vagrant's `bin` subdirectory is added to your `PATH`.
 
 ### Install the `vbguest` plugin
 
@@ -46,7 +46,7 @@ Next, download the latest Vagrant box:
 wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
 ```
 
-(On Windows, simply paste the box's URL into the browser's address bar, and download the file into `~/cfy-vagrant`)
+(On Windows, simply paste the box's URL into the browser's address bar, and download the file into `%USERPROFILE%/cfy-vagrant`)
 
 ### Add the box to Vagrant:
 
@@ -62,12 +62,17 @@ vagrant init
 
 ### Edit the `Vagrantfile`
 
-Edit `Vagrantfile` and set the following (certain keys may already exist commented — just uncomment & modify them if so):
+Edit `Vagrantfile` and ensure the following keys are set (certain keys may already exist commented — just uncomment & modify them if so):
 
 ```
 config.vm.box = "cfy-training"
 config.vm.network "private_network", ip: "192.168.33.10"
 ```
+
+*Notes*:
+
+1. Certain keys may already exist; make sure that their values match the values above and change if necessary.
+2. There may be multiple `config.vm.network` keys. The one you need to uncomment and/or edit is the key for `private_network`.
 
 ### Start the VM
 
@@ -77,19 +82,19 @@ vagrant up
 
 ### Login
 
-Use one of the following (username and password are `vagrant`):
+SSH into the Vagrant box. Both the username and password are `vagrant`. You may do this using the `vagrant` command-line interface:
 
 ```bash
 vagrant ssh
 ```
 
-or
+That will start your local SSH client against the Vagrant box. Alternatively:
 
 ```bash
 ssh vagrant@192.168.33.10
 ```
 
-or, on Windows:
+Or, on Windows, you can use PuTTY:
 
 ```bat
 putty.exe vagrant@192.168.33.10 -pw vagrant
@@ -106,13 +111,17 @@ curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify
 python get-cloudify.py --virtualenv cfyenv --version 3.2a8
 ```
 
-That will install the Cloudify CLI, as well as its dependencies, into a Python `virtualenv` named `cfyenv`.
+The first two commands will update `apt`'s sources and then install the dependencies for the Cloudify CLI installer, as well as `git` (`git` is not a dependency of the Cloudify CLI; it is a dependency for this lab).
+
+The `curl` command downloads the Cloudify CLI installer, which is then executed in order to install the Cloudify CLI into a Python `virtualenv` called `cfyenv`.
 
 ### Clone the training labs
 
 ```bash
 git clone https://github.com/cloudify-cosmo/cloudify-training-labs
 ```
+
+*Note*: an alternative clone URL may be provided by the instructor.
 
 ### Activate the `cfyenv` virtualenv
 
