@@ -3,8 +3,8 @@
 currHostName=`hostname`
 currFilename=$(basename "$0")
 
-newPort=$(ctx node properties port)
-ctx logger info "${currHostName}:${currFilename} :newPort ${newPort}"
+newPort=REPLACE_THIS_WITH_A_COMMAND_THAT_RETRIEVES_THE_TOMCAT_PORT_VIA_THE_OPERATION_CONTEXT
+REPLACE_THIS_WITH_A_COMMAND_THAT_WRITES_THE_TOMCAT_PORT_TO_THE_LOG_VIA_THE_OPERATION_CONTEXT
 
 download_path=$(ctx node properties download_path)
 ctx logger info "${currHostName}:${currFilename} :download_path ${download_path}"
@@ -102,7 +102,7 @@ ctx logger info "${currHostName}:${currFilename} :myPublicIP ${myPublicIP}"
 application_url=${myPublicIP}:${newPort}/${application_name}
 ctx logger info "${currHostName}:${currFilename} :application_url ${application_url}"
 
-ctx instance runtime_properties application_url ${application_url}
+REPLACE_THIS_WITH_A_COMMAND_THAT_STORES_THE_APPLICATION_URL_IN_THE_RUNTIME_PROPERTIES_OF_THE_INSTANCE_VIA_THE_OPERATION_CONTEXT
 
 
 
