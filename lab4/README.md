@@ -1,4 +1,4 @@
-# Lab 4: Create and run a blueprint
+# Lab 4: Using Scripts in Lifecycle Events
 
 The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify Manager.
 

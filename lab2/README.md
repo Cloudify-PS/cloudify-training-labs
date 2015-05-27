@@ -59,11 +59,11 @@ The private key, required to connect to your manager VM, needs to be accessible 
 Execute the following command:
 
 ```bash
-wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.2m8.zip
+wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.2rc1.zip
 unzip blueprints.zip
 ```
 
-That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.2m8`.
+That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.2rc1`.
 
 ### Step 4: Edit the sample `simple` blueprint for the correct Docker container URL
 
@@ -74,7 +74,7 @@ The Cloudify Manager, implemented as a Docker container, ships in two forms:
 
 The manager blueprints, available through GitHub, refer to the non-commercial Docker container. For the purpose of this course, we will edit the manager blueprint to point at the commercial version.
 
-Edit `./cloudify-manager-blueprints-3.2m8/simple/simple-manager-blueprint.yaml` and replace the value for `docker_url` with the following: `http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.2.0/m8-RELEASE/cloudify-docker-commercial_3.2.0-m8-b178.tar`
+Edit `./cloudify-manager-blueprints-3.2rc1/simple/simple-manager-blueprint.yaml` and replace the value for `docker_url` with the following: `http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.2.0/rc1-RELEASE/cloudify-docker-commercial_3.2.0-rc1-b179.tar`
  
 ### Step 5: Configure the inputs file
 
@@ -83,7 +83,7 @@ The provided manager blueprints ship with templates for manager inputs. These te
 (Back at `~/work`)
 
 ```bash
-cp cloudify-manager-blueprints-3.2m8/simple/inputs.yaml.template manager-inputs.yaml
+cp cloudify-manager-blueprints-3.2rc1/simple/inputs.yaml.template manager-inputs.yaml
 vi manager-inputs.yaml
 ```
 
@@ -105,7 +105,7 @@ Activate the virtualenv in which you installed the Cloudify CLI (if it isn't alr
 
 ```bash
 cfy init
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2m8/simple/simple-manager-blueprint.yaml -i manager-inputs.yaml
+cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2rc1/simple/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 The first command initializes a Cloudify CLI working directory inside the current working directory.
