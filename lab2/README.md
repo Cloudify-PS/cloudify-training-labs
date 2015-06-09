@@ -93,7 +93,7 @@ Fill in the public and private IP's, SSH user (`ubuntu`), as well as the path of
 public_ip: MANAGER_INSTANCE_PUBLIC_IP
 private_ip: MANAGER_INSTANCE_PRIVATE_IP
 ssh_user: ubuntu
-ssh_key_filename: /home/vagrant/work/cfy-training.pem
+ssh_key_filename: /root/.ssh/agent_key.pem
 
 agents_user: ubuntu
 resources_prefix: ''
