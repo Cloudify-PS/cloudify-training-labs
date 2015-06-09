@@ -1,0 +1,99 @@
+tosca_definitions_version: cloudify_dsl_1_1
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - http://www.getcloudify.org/spec/aws-plugin/1.2/plugin.yaml
+  - http://www.getcloudify.org/spec/fabric-plugin/1.2/plugin.yaml
+
+inputs:
+
+  aws_access_key_id:
+    type: string
+    default: ''
+
+  aws_secret_access_key:
+    type: string
+    default: ''
+
+  training_security_group_name:
+    type: string
+
+  training_server_name:
+    type: string
+
+  image_id:
+    type: string
+
+  instance_type:
+    type: string
+
+
+node_templates:
+
+  training_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      resource_id: { get_input: training_security_group_name }
+      description: Training Security Group
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+      aws_config: { get_property: [ aws_configuration, aws_config ] }
+
+  training_server:
+    type: cloudify.aws.nodes.Instance
+    instances:
+      deploy: 6
+    properties:
+      resource_id: { get_input: training_server_name }
+      image_id: { get_input: image_id }
+      instance_type: { get_input: instance_type }
+      install_agent: false
+      aws_config: { get_property: [ aws_configuration, aws_config ] }
+    relationships:
+      - type: cloudify.aws.relationships.instance_connected_to_security_group
+        target: training_security_group
+
+  training_environment:
+    type: cloudify.nodes.ApplicationModule
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: fabric.fabric_plugin.tasks.run_commands
+          inputs:
+            commands:
+              - sudo apt-get update
+              - sudo apt-get -y install python-pip python-virtualenv python-dev unzip git
+              - sudo pip install virtualenv
+              - cd ~ && virtualenv cfyenv
+              - source ~/cfyenv/bin/activate && pip install -r https://raw.githubusercontent.com/cloudify-cosmo/cloudify-cli/3.2rc1/dev-requirements.txt
+              - source ~/cfyenv/bin/activate && pip install https://github.com/cloudify-cosmo/cloudify-cli/archive/3.2rc1.zip
+              - cd ~ && source ~/cfyenv/bin/activate && git clone https://github.com/cloudify-cosmo/cloudify-training-labs
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: training_server
+
+  aws_configuration:
+    type: aws_configuration
+    properties:
+      aws_config:
+        aws_access_key_id: { get_input: aws_access_key_id }
+        aws_secret_access_key: { get_input: aws_secret_access_key }
+
+node_types:
+  aws_configuration:
+    derived_from: cloudify.nodes.Root
+    properties:
+      aws_config: {}
+
+outputs:
+  private_ip:
+    value: { get_attribute: [ training_server, ip ] }
+  public_ip:
+    value: { get_attribute: [ training_server, public_ip_address ] }
