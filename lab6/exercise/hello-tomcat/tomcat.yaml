@@ -5,5 +5,5 @@ war_filename: helloworld.war
 tomcat_version: apache-tomcat-7.0.23
 java_url: http://repository.cloudifysource.org/com/oracle/java/1.6.0_32/jdk-6u32-linux-x64.bin
 install_agent: true
-vm_ip_address: 10.67.79.12
+vm_ip_address: REPLACE_WITH_THE_VMs_PRIVATE_IP_ADDRESS
 application_name: helloworld

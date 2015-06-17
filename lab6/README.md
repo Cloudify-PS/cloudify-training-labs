@@ -1,68 +1,71 @@
-# Lab 6: Workflows
+# Lab 6: Using Scripts in Lifecycle Events
 
-## Part I: `execute_workflow`
+The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify Manager.
 
-In the exercise folder of this lab, you’ll find a folder which contains the `hello-tomcat` blueprint, where an additional interface has been added to the `web_server` type, and an additional simple script `my-logging-operation.sh` now appears.
-
-Your task is to fix this blueprint, so that the `tomcat_server` node will have an operation mapping for the new interface, and so that the mapping's implementation will be the new `my-logging-operation.sh` script. Note that the latter uses a `message` parameter.
-
-Then, run the `execute_operation` workflow (in local mode):
+It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
 ```bash
-cfy local init -p ... -i ...
-cfy local execute -w execute_operation ...
+export LAB_ROOT=~/cloudify-training-labs/lab6/exercise
 ```
 
-The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node instance*.
+### Step 1: Replace placeholders
 
-_Tip_: Use the `execute_operation` workflow documentation.
+You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT`, with the suitable values and to add missing parts as well.
 
-## Part II: `heal`
+### Step 2: Run in local mode
 
-In this part, we will demonstrate the `heal` workflow.
-
-### Step 1: Deploy and install the `hello-tomcat` application
-
-In Part I, you ran the `hello-tomcat` application in local mode. Use commands learned in previous labs to install `hello-tomcat` on your Cloudify Manager.
-
-For the purpose of this exercise, it will be assumed that the deployment's name is `hellotomcat`.
-
-### Step 2: Execute the `heal` workflow
-
-First, we need to find the instance ID of the node we would like to heal. Remember: the `heal` workflow uninstalls, and then reinstalls, the *entire* Compute node containing the node we wish to heal; therefore, you may either look for the instance ID of the Compute node itself, or of any node which is contained in (directly or indirectly) that Compute node.
-
-Then, execute the `heal` workflow. For example:
+Once you're done, you can run the application in local mode:
 
 ```bash
-cfy executions start -d hellotomcat -w heal -p 'node_instance_id: host_f4c49'
+cd ~/work
+cfy local init -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -i $LAB_ROOT/hello-tomcat/tomcat-local.yaml
+cfy local execute -w install
 ```
 
-## Part III: `scale`
-
-In this part, we will demonstrate the `scale` workflow.
-
-### Step 1: Execute the `scale` workflow
-
-First, we need to find the ID of the node we would like to scale (*note*: unlike the `heal` workflow, the `scale` workflow requires the node's ID, *not* a node's instance ID).
-
-We will scale the `tomcat_server` node.
+Now browse to `http://127.0.0.1:8080/helloworld` (from the vagrant box itself, or `http://192.168.33.10:8080/helloworld` from the host) and then run the following CLI command:
 
 ```bash
-cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_compute: false, delta: 1}'
+cfy local outputs
 ```
 
-### Step 2: Verify
-
-Log in to the Cloudify web UI. Select your deployment and then the "Topology" tab. You should see that the number of instances of the `tomcat_server` node has changed from `1` to `2`.
-
-### Step 3: Scale down
-
-Execute a similar command, to scale the `tomcat_server` node down by 1:
+To clean up:
 
 ```bash
-cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_compute: false, delta: -1}'
+cfy local execute -w uninstall
 ```
 
-### Step 4: Verify
+### Step 3: Existing manager
 
-At the same view as in Step 2 above, you should now see that the instance count of `tomcat_server` has decreased to 1.
+Upload the blueprint to the existing Cloudify manager, created in previous labs:
+
+```bash
+cd ~/work
+cfy blueprints upload -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -b hellotomcat
+cfy deployments create -b hellotomcat -d hellotomcat -i $LAB_ROOT/hello-tomcat/tomcat.yaml
+cfy executions start -d hellotomcat -w install
+```
+
+Notes:
+
+1. For the `deployments create` command, we used a different YAML file for inputs, than we used for running locally.
+2. The blueprint is uploaded under the name `hellotomcat`. The deployment created is also named `hellotomcat`. That is *not* a requirement; the deployment's name may be different from its associated blueprint's name.
+
+To test, navigate to port 8080 of the public IP associated with the VM on which installation was made:
+
+```
+http://15.125.87.108:8080
+```
+
+### Step 4: Cleanup
+
+In order to clean up:
+
+1. Uninstall the application.
+2. Remove the `hellotomcat` deployment.
+3. Remove the `hellotomcat` blueprint.
+
+```bash
+cfy executions start -d hellotomcat -w uninstall
+cfy deployments delete -d hellotomcat
+cfy blueprints delete -b hellotomcat
+```

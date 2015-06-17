@@ -1,114 +1,21 @@
-# Lab 1: Configuring Vagrant and Installing CLI
+# Lab 1: Installing the CLI
 
 ## Prerequisites
 
-### Install Vagrant
+You should receive the following from the instructor:
 
-Download from [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html).
+* Public and private IP's of the virtual machine on which the CLI is going to be installed
+* Private key to use in order to access that virtual machine
 
-On Windows, make sure that Vagrant's `bin` subdirectory is added to your `PATH`.
+## Preparing Your CLI VM
 
-### Install the `vbguest` plugin
-
-Check whether the `vbguest` plugin is installed:
-
-```bash
-vagrant plugin list
-```
-
-If `vagrant-vbguest` is not listed, install it:
-
-```bash
-vagrant plugin install vagrant-vbguest
-```
-
-## Process
-
-### Download an Ubuntu 14.04 Vagrant box
-
-Create a directory that will serve as the Vagrant working directory for the training session. For documentation purposes, it is assumed that this directory is `~/cfy-vagrant`.
-
-```bash
-mkdir ~/cfy-vagrant && cd ~/cfy-vagrant
-```
-
-Or, on Windows:
-
-```bat
-cd /d %USERPROFILE%
-mkdir cfy-vagrant
-cd cfy-vagrant
-```
-
-Next, download the latest Vagrant box:
-
-```bash
-wget https://github.com/kraksoft/vagrant-box-ubuntu/releases/download/14.04/ubuntu-14.04-amd64.box
-```
-
-(On Windows, simply paste the box's URL into the browser's address bar, and download the file into `%USERPROFILE%/cfy-vagrant`)
-
-### Add the box to Vagrant:
-
-```bash
-vagrant box add --name cfy-training ubuntu-14.04-amd64.box
-```
-
-### Initialize a `Vagrantfile`
-
-```bash
-vagrant init
-```
-
-### Edit the `Vagrantfile`
-
-Edit `Vagrantfile` and ensure the following keys are set (certain keys may already exist commented — just uncomment & modify them if so):
-
-```
-config.vm.box = "cfy-training"
-config.vm.network "private_network", ip: "192.168.33.10"
-```
-
-*Notes*:
-
-1. Certain keys may already exist; make sure that their values match the values above and change if necessary.
-2. There may be multiple `config.vm.network` keys. The one you need to uncomment and/or edit is the key for `private_network`.
-
-### Start the VM
-
-```bash
-vagrant up
-```
-
-### Login
-
-SSH into the Vagrant box. Both the username and password are `vagrant`. You may do this using the `vagrant` command-line interface:
-
-```bash
-vagrant ssh
-```
-
-That will start your local SSH client against the Vagrant box. Alternatively:
-
-```bash
-ssh vagrant@192.168.33.10
-```
-
-Or, on Windows, you can use PuTTY:
-
-```bat
-putty.exe vagrant@192.168.33.10 -pw vagrant
-```
-
-### In the VM
-
-Once you've `ssh`'d into the box, run the following:
+`ssh` into your CLI VM, and run the following:
 
 ```bash
 sudo apt-get update
 sudo apt-get -y install python-pip python-virtualenv python-dev unzip git
 curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py
-python get-cloudify.py --virtualenv cfyenv --version 3.2rc1
+python get-cloudify.py --virtualenv cfyenv --version 3.2
 ```
 
 The first two commands will update `apt`'s sources and then install the dependencies for the Cloudify CLI installer, as well as `git` (`git` is not a dependency of the Cloudify CLI; it is a dependency for this lab).
@@ -138,5 +45,5 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 3.2.0-rc1
+Cloudify CLI 3.2.0
 ```

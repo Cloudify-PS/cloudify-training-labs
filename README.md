@@ -4,12 +4,14 @@ This project contains the labs material for the official Cloudify training cours
 
 ## Lab index
 
-* Lab 1: Configuring Vagrant and Installing CLI
-* Lab 2: Manager Bootstrapping Using the Simple Manager Blueprint
-* Lab 3: Uploading and Deploying a Sample Blueprint
-* Lab 4: Using Scripts in Lifecycle Events
-* Lab 5: Deploying Docker Containers
-* Lab 6: Workflows
-* Lab 7: Deploying Collectors and Using the Grafana Dashboard
-* Lab 8: Security
-* Lab 9: OpenStack Bootstrapping and Deployment
+* Lab 1: Installing the CLI
+* Lab 2: Running Basic Blueprint Locally
+* Lab 3: Manager Bootstrapping Using the Simple Manager Blueprint
+* Lab 4: Uploading, Deploying and Installing a Sample Blueprint
+* Lab 5: Developing a Simple Plugin
+* Lab 6: Using Scripts in Lifecycle Events
+* Lab 7: Deploying Docker Containers
+* Lab 8: Workflows
+* Lab 9: Deploying Collectors and Using the Grafana Dashboard
+* Lab 10: Security
+* Lab 11: OpenStack Bootstrapping and Deployment

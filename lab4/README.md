@@ -1,71 +1,109 @@
-# Lab 4: Using Scripts in Lifecycle Events
+# Lab 4: Uploading, Deploying and Installing a Sample Blueprint
 
-The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify Manager.
+The purpose of this lab is to upload a sample blueprint to the manager you had bootstrapped in the previous step and install it on the same VM as the manager.
 
-It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
+Before starting, make sure you have the IP address of the manager you bootstrapped in the previous lab.
 
-```bash
-export LAB_ROOT=~/cloudify-training-labs/lab4/exercise
-```
+The sample blueprint we are going to work on, will install a sample application called *Nodecellar*.
+ 
+## Step 1: Download the Nodecellar blueprint
 
-### Step 1: Replace placeholders
-
-You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT`, with the suitable values and to add missing parts as well.
-
-### Step 2: Run in local mode
-
-Once you're done, you can run the application in local mode:
+In a terminal window (where you installed the CLI), execute the following command (this lab assumes that `~/work` is the working directory used during the previous lab):
 
 ```bash
 cd ~/work
-cfy local init -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -i $LAB_ROOT/hello-tomcat/tomcat-local.yaml
-cfy local execute -w install
+wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.2.zip
+unzip nodecellar.zip
 ```
 
-Now browse to `http://127.0.0.1:8080/helloworld` (from the vagrant box itself, or `http://192.168.33.10:8080/helloworld` from the host) and then run the following CLI command:
+That will download the latest nodecellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.2`.
+
+## Step 2: Step 2: Configure the inputs file
+
+The Nodecellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
-cfy local outputs
+cp cloudify-nodecellar-example-3.2/inputs/singlehost.yaml.template nc-singlehost.yaml
+vi nc-singlehost.yaml
 ```
 
-To clean up:
+Fill in the host IP (your instance's private IP), agent user (`ubuntu`), as well as the path of the keyfile on the manager as written below:
 
 ```bash
-cfy local execute -w uninstall
+host_ip: YOUR_INSTANCE'S_PRIVATE_IP
+agent_user: ubuntu
+agent_private_key_path: /root/.ssh/agent_key.pem
 ```
 
-### Step 3: Existing manager
+**Note**: the last parameter, `agent_private_key_path`, specifies the location of the manager's private key, *as known to the Cloudify Manager*.
 
-Upload the blueprint to the existing Cloudify manager, created in previous labs:
+## Step 3: Upload the blueprint
 
 ```bash
-cd ~/work
-cfy blueprints upload -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -b hellotomcat
-cfy deployments create -b hellotomcat -d hellotomcat -i $LAB_ROOT/hello-tomcat/tomcat.yaml
-cfy executions start -d hellotomcat -w install
+cfy blueprints upload -p cloudify-nodecellar-example-3.2/singlehost-blueprint.yaml -b nodecellar
 ```
 
-Notes:
-
-1. For the `deployments create` command, we used a different YAML file for inputs, than we used for running locally.
-2. The blueprint is uploaded under the name `hellotomcat`. The deployment created is also named `hellotomcat`. That is *not* a requirement; the deployment's name may be different from its associated blueprint's name.
-
-To test, navigate to port 8080 of the public IP associated with the VM on which installation was made:
+You should see the following output:
 
 ```
-http://15.125.87.108:8080
+Validating cloudify-nodecellar-example-3.2/singlehost-blueprint.yaml
+Blueprint validated successfully
+Uploading blueprint cloudify-nodecellar-example-3.2/singlehost-blueprint.yaml to management server 15.125.87.108
+Uploaded blueprint, blueprint's id is: nodecellar
 ```
 
-### Step 4: Cleanup
+Go to the web UI and make sure you see a blueprint named 'nodecellar' in the blueprints screen.
 
-In order to clean up:
+![alt text](../../../raw/master/lab4/blueprints-screen.png "Blueprints screen")
 
-1. Uninstall the application.
-2. Remove the `hellotomcat` deployment.
-3. Remove the `hellotomcat` blueprint.
+## Step 4: Create a deployment
+
+Once Nodecellar's blueprints are uploaded, we need to create a deployment for it, using the inputs file we customized in step 2.
 
 ```bash
-cfy executions start -d hellotomcat -w uninstall
-cfy deployments delete -d hellotomcat
-cfy blueprints delete -b hellotomcat
+cfy deployments create -b nodecellar -i nc-singlehost.yaml -d nodecellar
+```
+
+You should see the output similar to the following:
+
+```
+Creating new deployment from blueprint nodecellar at management server 15.125.87.108
+Deployment created, deployment's id is: nodecellar
+```
+
+## Step 5: Execute the `install` workflow
+
+Once the deployment has been created, we can install the nodecellar application. Trigger the `install` workflow by typing: 
+
+```bash
+cfy executions start -d nodecellar -w install
+```
+
+You should see the events being printed to the screen. You can also go to the deployments screen in the UI and see the events there. 
+
+```
+...
+2015-06-15T13:09:40 CFY <nodecellar> [nodecellar_ec86f] Starting node
+2015-06-15T13:09:40 CFY <nodecellar> [nodecellar_ec86f.start] Sending task 'script_runner.tasks.run'
+2015-06-15T13:09:43 CFY <nodecellar> [nodecellar_ec86f.start] Task started 'script_runner.tasks.run'
+2015-06-15T13:09:59 CFY <nodecellar> [nodecellar_ec86f.start] Task succeeded 'script_runner.tasks.run'
+2015-06-15T13:10:00 CFY <nodecellar> 'install' workflow execution succeeded
+Finished executing workflow 'install' on deployment 'nodecellar'
+* Run 'cfy events list --include-logs --execution-id edf07e1f-3826-41a9-84eb-a4ebe83ff7d9' to retrieve the execution's events/logs
+```
+
+## Step 6: Access the application
+
+Point your browser to your manager's public IP, port 8080. You should now see the Nodecellar application. click the "Start browsing nodecellar" button and see the list of wines that is retrieved from the mongo database.
+
+![alt text](../../../raw/master/lab4/nodecellar.png "Nodecellar")
+
+## Step 7: Cleanup
+
+To uninstall Nodecellar, first execute the `uninstall` workflow; then, delete the deployment, and finally, delete the blueprint.
+
+```bash
+cfy executions start -d nodecellar -w uninstall
+cfy deployments delete -d nodecellar
+cfy blueprints delete -b nodecellar
 ```

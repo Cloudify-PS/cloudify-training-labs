@@ -1,8 +1,8 @@
-tosca_definitions_version: cloudify_dsl_1_0
+tosca_definitions_version: cloudify_dsl_1_1
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.2rc1/types.yaml
-  - http://www.getcloudify.org/spec/diamond-plugin/1.2rc1/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - http://www.getcloudify.org/spec/diamond-plugin/1.2/plugin.yaml
 
 inputs:
   vm_ip_address:
@@ -46,17 +46,7 @@ node_types:
 
       cloudify.interfaces.monitoring:
         start:
-          implementation: diamond.diamond_agent.tasks.add_collectors
-          inputs:
-            collectors_config:
-              default:
-                CPUCollector: {}
-                MemoryCollector: {}
-                LoadAverageCollector: {}
-                DiskUsageCollector:
-                  config:
-                    devices: x?vd[a-z]+[0-9]*$
-                NetworkCollector: {}
+          REPLACE_WITH_MONITORING_COLLECTORS
 
   web_server:
     derived_from: cloudify.nodes.WebServer

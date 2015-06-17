@@ -1,8 +1,8 @@
-tosca_definitions_version: cloudify_dsl_1_0
+tosca_definitions_version: cloudify_dsl_1_1
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.2rc1/types.yaml
-  - https://raw.githubusercontent.com/cloudify-cosmo/cloudify-docker-plugin/1.2rc1/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - http://www.getcloudify.org/spec/docker-plugin/1.2/plugin.yaml
 
 inputs:
 
@@ -45,13 +45,14 @@ inputs:
     description: >
       A dict of port bindings for the node container.
     default:
-      REPLACE_WITH_BINDING_DEFINITIONS
+      8080: 8080
 
   mongo_container_port_bindings:
     description: >
       A dict of port bindings for the mongo container.
     default:
-      REPLACE_WITH_BINDING_DEFINITIONS
+      27017: 27017
+      28017: 28017
 
 node_templates:
 
@@ -65,11 +66,11 @@ node_templates:
         key: { get_input: agent_private_key_path }
 
   mongod_container:
-    type: REPLACE_WITH_TYPE
+    type: cloudify.docker.Container
     properties:
       name: mongod
       image:
-        repository: REPLACE_WITH_MONGO_REPOSITORY
+        repository: library/mongo
     interfaces:
       cloudify.interfaces.lifecycle:
         create:
@@ -92,11 +93,11 @@ node_templates:
         target: host
 
   nodecellar_container:
-    type: REPLACE_WITH_TYPE
+    type: cloudify.docker.Container
     properties:
       name: nodecellar
       image:
-        repository: REPLACE_WITH_NODECELLAR_REPOSITORY
+        repository: uric/nodecellar
     interfaces:
       cloudify.interfaces.lifecycle:
         create:

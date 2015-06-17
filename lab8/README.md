@@ -1,23 +1,68 @@
-# Lab 8: Security
+# Lab 8: Workflows
 
-In this lab, we will demonstrate security configuration on the Cloudify manager. Our starting point will be a simple manager blueprint, with its security configuration incomplete; your task will be to complete the security configuration and demonstrate that it works.
+## Part I: `execute_workflow`
 
-It is assumed that the lab's files are extracted into `$LAB_ROOT`.
+In the exercise folder of this lab, you’ll find a folder which contains the `hello-tomcat` blueprint, where an additional interface has been added to the `web_server` type, and an additional simple script `my-logging-operation.sh` now appears.
 
-The blueprint, located in `$LAB_ROOT/blueprint/simple-secured.yaml`, contains placeholders for your modifications. These placeholders begin with the string `REPLACE_WITH`.
+Your task is to fix this blueprint, so that the `tomcat_server` node will have an operation mapping for the new interface, and so that the mapping's implementation will be the new `my-logging-operation.sh` script. Note that the latter uses a `message` parameter.
 
-## Step 1: Logging
+Then, run the `execute_operation` workflow (in local mode):
 
-Replace the strings `REPLACE_WITH_LOG_FILE_PATH` and `REPLACE_WITH_LOG_LEVEL` with applicable values for your environment.
+```bash
+cfy local init -p ... -i ...
+cfy local execute -w execute_operation ...
+```
 
-## Step 2: Users configuration
+The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node instance*.
 
-Replace the string `REPLACE_WITH_USERS_CONFIGURATION` with either one or many user configurations. Note that these configurations must be understood by the user store driver being used; for the built-in `SimpleUserstore`, the expected fields are:
+_Tip_: Use the `execute_operation` workflow documentation.
 
-* `username`
-* `password`
-* `email`
+## Part II: `heal`
 
-## Step 3: SSL
+In this part, we will demonstrate the `heal` workflow.
 
-Replace the strings `REPLACE_WITH_CERT_PATH` and `REPLACE_WITH_PRIVATE_KEY_PATH` with applicable values for your environment.
+### Step 1: Deploy and install the `hello-tomcat` application
+
+In Part I, you ran the `hello-tomcat` application in local mode. Use commands learned in previous labs to install `hello-tomcat` on your Cloudify Manager.
+
+For the purpose of this exercise, it will be assumed that the deployment's name is `hellotomcat`.
+
+### Step 2: Execute the `heal` workflow
+
+First, we need to find the instance ID of the node we would like to heal. Remember: the `heal` workflow uninstalls, and then reinstalls, the *entire* Compute node containing the node we wish to heal; therefore, you may either look for the instance ID of the Compute node itself, or of any node which is contained in (directly or indirectly) that Compute node.
+
+Then, execute the `heal` workflow. For example:
+
+```bash
+cfy executions start -d hellotomcat -w heal -p 'node_instance_id: host_f4c49'
+```
+
+## Part III: `scale`
+
+In this part, we will demonstrate the `scale` workflow.
+
+### Step 1: Execute the `scale` workflow
+
+First, we need to find the ID of the node we would like to scale (*note*: unlike the `heal` workflow, the `scale` workflow requires the node's ID, *not* a node's instance ID).
+
+We will scale the `tomcat_server` node.
+
+```bash
+cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_compute: false, delta: 1}'
+```
+
+### Step 2: Verify
+
+Log in to the Cloudify web UI. Select your deployment and then the "Topology" tab. You should see that the number of instances of the `tomcat_server` node has changed from `1` to `2`.
+
+### Step 3: Scale down
+
+Execute a similar command, to scale the `tomcat_server` node down by 1:
+
+```bash
+cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_compute: false, delta: -1}'
+```
+
+### Step 4: Verify
+
+At the same view as in Step 2 above, you should now see that the instance count of `tomcat_server` has decreased to 1.

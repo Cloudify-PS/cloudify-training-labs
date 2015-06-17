@@ -1,45 +1,85 @@
-# Lab 5: Deploying Docker Containers
+# Lab 5: Developing a Simple Plugin
 
-In this lab, we will demonstrate how to deploy and install a Docker container. We will use a Docker version of the Nodecellar application introduced in previous labs.
+In this lab, we will develop a very simple plugin and use it within a blueprint.
 
-It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
+The lab is designed so the developed plugin is embedded with the blueprint; however, if you have access to a Git repository, you are encouraged to store the plugin there instead, and modify the plugin declaration accordingly.
 
-```bash
-export LAB_ROOT=~/cloudify-training-labs/lab5/exercise
-```
-
-### Step 1: Edit `singlehost.yaml`
-
-Edit the file `$LAB_ROOT/blueprint/singlehost.yaml` by replacing all strings beginning with `REPLACE_WITH` with correct values.
-
-Some of the values you'll have to put in, are names of Docker images. Browse to [http://hub.docker.com](http://hub.docker.com) and look for those images.
-
-### Step 2: Edit `inputs.yaml`
-
-Edit the file `$LAB_ROOT/blueprint/inputs.yaml` to contain values applicable to your environment.
-
-### Step 3: Upload the blueprint, create a deployment and install
+## Step 1: Download the plugin template
 
 ```bash
-cfy blueprints upload -p $LAB_ROOT/blueprint/singlehost.yaml -b nc-docker
-cfy deployments create -b nc-docker -d nc-docker -i $LAB_ROOT/blueprint/inputs.yaml
-cfy executions start -d nc-docker -w install
+mkdir ~/work/plugin-lab && cd ~/work/plugin-lab
+wget -O template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.2.zip
+rm template.zip
+mv cloudify-plugin-template-3.2 test-plugin
 ```
 
-### Step 4: Verify installation
+That will download `cloudify-plugin-template`, extract it and rename the resulting directory.
 
-Navigate to port 8080 on the public IP that is associated with the machine on which Nodecellar was installed. For example:
-
-```
-http://15.125.87.108:8080
-```
-
-You should be presented with the Nodecellar application.
-
-### Step 5: Cleanup
+## Step 2: Edit `setup.py`
 
 ```bash
-cfy executions start -d nc-docker -w uninstall
-cfy deployments delete -d nc-docker
-cfy blueprints delete -b nc-docker
+vi test-plugin/setup.py
+```
+
+Edit the `setup.py` file for your needs. In particular, note the `install_requires` and `test_requires` keys: these ensure that proper dependencies are provided to the plugin during build and runtime.
+
+## Step 3: Edit `tasks.py`
+
+```bash
+vi test-plugin/plugin/tasks.py
+```
+
+Modify the `my_task` method (you may rename it as well). Our goal is to write a plugin that receives two arguments, `str1` and `str2`, and stores a concat of these two strings under a runtime property called `result` on the same node that the plugin operates on.
+
+Also, the plugin should log the received arguments before processing, and the result after processing.
+
+## Step 4: Edit `test_plugin.yaml`
+
+```bash
+vi test-plugin/plugin/tests/blueprint/test_plugin.yaml
+```
+
+This YAML file is intended to function as a `plugin.yaml` file for the plugin, when run through integration tests. Edit it as follows:
+
+* `plugin_name` should be replaced with any name you desire. That would be the plugin's name.
+
+## Step 5: Edit `blueprint.yaml`
+
+```bash
+vi test-plugin/plugin/tests/blueprint/blueprint.yaml
+```
+```
+
+This YAML file is a standard blueprints file, against which the plugin test runs. Change it to accommodate your plugin. In particular, pay attention to the following:
+
+* `inputs`: while not mandatory, define two inputs, one for `str1` and one for `str2`.
+* `implementation`: make sure you compose the path to the Python operation correctly.
+* `inputs` (under `node_templates`): these should correspond to your plugin's parameters.
+* `outputs`: make sure you collect the correct runtime property
+
+## Step 6: Edit `test_plugin.py`
+
+```bash
+vi test-plugin/plugin/tests/test_plugin.py
+```
+
+* Edit the `inputs` (in the `setUp` method) dictionary to include `str1` and `str2`.
+* Add appropriate assertions in the `test_my_task` method.
+
+## Step 7: Install plugin requirements
+
+Before running the tester, you need to install its Python dependencies. You may either use your current virtualenv, or create another; for simplicity, we will use the same virtualenv
+we use elsewhere. If that virtualenv is not currently active, then activate it.
+
+Then:
+
+```bash
+cd test-plugin
+pip install -r dev-requirements.txt
+```
+
+## Step 8: Run the unit test
+
+```bash
+python -m unittest plugin.tests.test_plugin
 ```

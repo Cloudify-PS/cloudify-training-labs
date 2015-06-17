@@ -1,84 +1,37 @@
-# Lab 9: OpenStack Bootstrapping and Deployment
+# Lab 9: Deploying Collectors and Using the Grafana Dashboard
 
-### Step 1: Download Manager Blueprints and Nodecellar-Docker
+The purpose of this lab is to add monitoring to the Tomcat blueprint used in lab 4.
 
-The blueprints may have already been downloaded during previous labs. If not:
+It is assumed that the lab's files are extracted into `$LAB_ROOT`.
 
-```bash
-cd ~/work
-wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.2.zip
-unzip blueprints.zip
-```
+### Step 1: Replace the placeholders
 
-To download the Nodecellar-Docker example:
+You need to replace all the occurrences of the placeholders (`REPLACE_THIS_WITH`) in `tomcat.yaml` and in the blueprint file to add monitoring to the blueprint.
+
+### Step 2: Upload and install the blueprint
 
 ```bash
-wget -O nodecellar-docker.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-docker-example/archive/3.2.zip
-unzip nodecellar-docker.zip
+cfy blueprints upload -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -b hellotomcat-mon
+cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/hello-tomcat/tomcat.yaml
+cfy executions start -d hellotomcat-mon -w install
 ```
 
-### Step 2: Prepare `openstack_config.json`
+### Step 3: Review monitoring in the UI
 
-Create a file named `~/openstack_config.json` according to the following template:
+1. In the web UI, go to the deployment screen.
+2. Click your deployment.
+3. Click the "Monitoring" tab.
 
-```yaml
-{
-    "username": "your-keystone-username",
-    "password": "your-keystone-password",
-    "tenant_name": "openstack-tenant-name",
-    "auth_url": "keystone-url",
-    "region": "region-code",
-    "nova_url": "nova-service-url",
-    "neutron_url": "neutron-service-url"
-}
-```
+Now you can see the Grafana dashboard, with a few default metrics defined. This dashboard is dynamically created for every deployment when you click the "Monitoring" tab.
 
-Notes:
+### Step 4: Add a new graph to the dashboard
 
-* `region` is optional in environments where only one region is available
-* `nova_url` and `neutron_url` are optional, and should only be used in cases when it is required to override the Nova and/or Neutron URLs provided by Keystone.
+Now let's add a new graph to the dashboard:
 
-### Step 3: Prepare `inputs.yaml`
-
-```bash
-cp cloudify-manager-blueprints-3.2/openstack/inputs.yaml.template inputs-os.yaml
-```
-
-Then, edit `~/work/inputs-os.yaml` for your values.
-
-**NOTE**: ensure that you assign unique names to the various resources (management network, router etc). While Cloudify supports using existing resources, the sample `openstack-manager-blueprint` does not provide the option to specify a value for the `use_external_resource` property. Alternatively, you can copy `openstack-manager-blueprint.yaml` aside and edit it to include `use_external_resource` wherever necessary.
-
-### Step 4: Bootstrap the manager
-
-```bash
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2/openstack/openstack-manager-blueprint.yaml -i inputs-os.yaml
-```
-
-### Step 5: Prepare nodecellar's blueprint
-
-```bash
-cp cloudify-nodecellar-docker-example-3.2/blueprint/cfy-openstack-inputs.json .
-```
-
-Then edit `cfy-openstack-inputs.json` to add the image ID and the flavor ID of the image on which you want Node Cellar to be installed.
-
-### Step 6: Upload the blueprint, create a deployment, run install
-
-```bash
-cfy blueprints upload -p cloudify-nodecellar-docker-example-3.2/blueprint/openstack.yaml -b nc-docker-os
-cfy deployments create -d nc-docker-os -b nc-docker-os -i cfy-openstack-inputs.json
-cfy executions start -d nc-docker-os -w install
-```
-
-### Step 7: Test the application
-
-Find out the floating IP attached to the Compute node running Node Cellar, and browse it: `http://<ip-address>:8080`.
-
-
-### Step 8: Cleanup
-
-```bash
-cfy executions start -d nc-docker-os -w uninstall
-cfy deployments delete -d nc-docker-os
-cfy blueprints delete -b nc-docker-os
-```
+1. Click the add a row button at the bottom right part of the screen 
+2. Click the right handle button, and then *Add panel* -> *Graph*
+3. Click the graph's title -> Edit
+4. Type `cpu` in the *Series* field. You should see a list of series names available in influx (these were pushed into influx by the CPU collector you installed in your blueprint). Choose one of them.
+5. Go to the *General* tab and give a meaningful title to your graph. You can also change the `span` attribute to control the width of the graph you just created (`12` being 100% of the dashboard's width). Feel free to play around with the other tabs as well to define your graph.
+6. You can also control other aspects of the dashboard, such as the resolution, auto-refresh rate, etc.
+7. You can also export your dashboard to JSON by clicking *Save* -> *Export dashboard*.

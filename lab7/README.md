@@ -1,37 +1,45 @@
-# Lab 7: Deploying Collectors and Using the Grafana Dashboard
+# Lab 7: Deploying Docker Containers
 
-The purpose of this lab is to add monitoring to the Tomcat blueprint used in lab 4.
+In this lab, we will demonstrate how to deploy and install a Docker container. We will use a Docker version of the Nodecellar application introduced in previous labs.
 
-It is assumed that the lab's files are extracted into `$LAB_ROOT`.
-
-### Step 1: Replace the placeholders
-
-You need to replace all the occurrences of the placeholders (`REPLACE_THIS_WITH`) in `tomcat.yaml` and in the blueprint file to add monitoring to the blueprint.
-
-### Step 2: Upload and install the blueprint
+It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
 ```bash
-cfy blueprints upload -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -b hellotomcat-mon
-cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/hello-tomcat/tomcat.yaml
-cfy executions start -d hellotomcat-mon -w install
+export LAB_ROOT=~/cloudify-training-labs/lab5/exercise
 ```
 
-### Step 3: Review monitoring in the UI
+### Step 1: Edit `singlehost.yaml`
 
-1. In the web UI, go to the deployment screen.
-2. Click your deployment.
-3. Click the "Monitoring" tab.
+Edit the file `$LAB_ROOT/blueprint/singlehost.yaml` by replacing all strings beginning with `REPLACE_WITH` with correct values.
 
-Now you can see the Grafana dashboard, with a few default metrics defined. This dashboard is dynamically created for every deployment when you click the "Monitoring" tab.
+Some of the values you'll have to put in, are names of Docker images. Browse to [http://hub.docker.com](http://hub.docker.com) and look for those images.
 
-### Step 4: Add a new graph to the dashboard
+### Step 2: Edit `inputs.yaml`
 
-Now let's add a new graph to the dashboard:
+Edit the file `$LAB_ROOT/blueprint/inputs.yaml` to contain values applicable to your environment.
 
-1. Click the add a row button at the bottom right part of the screen 
-2. Click the right handle button, and then *Add panel* -> *Graph*
-3. Click the graph's title -> Edit
-4. Type `cpu` in the *Series* field. You should see a list of series names available in influx (these were pushed into influx by the CPU collector you installed in your blueprint). Choose one of them.
-5. Go to the *General* tab and give a meaningful title to your graph. You can also change the `span` attribute to control the width of the graph you just created (`12` being 100% of the dashboard's width). Feel free to play around with the other tabs as well to define your graph.
-6. You can also control other aspects of the dashboard, such as the resolution, auto-refresh rate, etc.
-7. You can also export your dashboard to JSON by clicking *Save* -> *Export dashboard*.
+### Step 3: Upload the blueprint, create a deployment and install
+
+```bash
+cfy blueprints upload -p $LAB_ROOT/blueprint/singlehost.yaml -b nc-docker
+cfy deployments create -b nc-docker -d nc-docker -i $LAB_ROOT/blueprint/inputs.yaml
+cfy executions start -d nc-docker -w install
+```
+
+### Step 4: Verify installation
+
+Navigate to port 8080 on the public IP that is associated with the machine on which Nodecellar was installed. For example:
+
+```
+http://15.125.87.108:8080
+```
+
+You should be presented with the Nodecellar application.
+
+### Step 5: Cleanup
+
+```bash
+cfy executions start -d nc-docker -w uninstall
+cfy deployments delete -d nc-docker
+cfy blueprints delete -b nc-docker
+```

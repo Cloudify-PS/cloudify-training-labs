@@ -1,109 +1,151 @@
-# Lab 3: Uploading and Deploying a Sample Blueprint
+# Lab 3: Manager Bootstrapping Using the Simple Manager Blueprint
 
-The purpose of this lab is to upload a sample blueprint to the manager you had bootstrapped in the previous step and install it on the same VM as the manager.
+The purpose of this lab is to bootstrap a Cloudify manager on a fresh instance using the simple manager blueprint.
 
-Before starting, make sure you have the IP address of the manager you bootstrapped in the previous lab.
+## Prerequisites
 
-The sample blueprint we are going to work on, will install a sample application called *Nodecellar*.
+Before starting, make sure you have the following details from the instructor:
+
+* The private and public IP's of the server you are going to bootstrap the manager on.
+* The keypair of the server.
+
+### Ensure that Docker is installed on the intended manager VM
+
+`docker --version`
+
+If Docker is not installed, install it as follows:
+
+```bash
+curl -o install.sh -sSL https://get.docker.com/
+sudo sh install.sh
+```
+
+### Ensure that the user, installing the Cloudify Manager, belongs to the `docker` group
+
+```bash
+groups ubuntu
+```
+
+If `docker` is not there, add it (the following example assumes that the group in question is `docker`):
+
+```bash
+sudo gpasswd -a ubuntu docker
+sudo service docker restart
+```
+
+## Process
+
+*Note*: These steps should be executed on your CLI VM, *not* on the intended Manager VM.
+
+### Step 1: Create a working directory
+
+For clarity and convenience, create a new directory that will serve as Cloudify's working directory.
+
+Our labs will assume that the chosen directory is `~/work`.
+
+```bash
+mkdir ~/work && cd ~/work
+```
+
+### Step 2: Have your Manager VM's private key available
+
+The private key, required to connect to your manager VM, needs to be accessible to the Cloudify CLI. Copy the private key file to your Vagrant box (by either `scp` or pasting the key's contents into an editor). For documentation purposes, it is assumed that the key file is available at `/home/ubuntu/work/cfy-training.pem`.
+
+### Step 3: Download the manager blueprint
+
+Execute the following command:
+
+```bash
+wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.2.zip
+unzip blueprints.zip
+```
+
+That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.2`.
+
+### Step 4: Edit the sample `simple` blueprint for the correct Docker container URL
+
+The Cloudify Manager, implemented as a Docker container, ships in two forms:
+
+* A non-commercial version
+* A commercial version, which includes the Cloudify UI
+
+The manager blueprints, available through GitHub, refer to the non-commercial Docker container. For the purpose of this course, we will edit the manager blueprint to point at the commercial version.
+
+Edit `./cloudify-manager-blueprints-3.2/simple/simple-manager-blueprint.yaml` and replace the value for `docker_url` with the following: `http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.2.0/ga-RELEASE/cloudify-docker-commercial_3.2.0-ga-b200.tar`
  
-## Step 1: Download the Nodecellar blueprint
+### Step 5: Configure the inputs file
 
-In a terminal window (where you installed the CLI), execute the following command (this lab assumes that `~/work` is the working directory used during the previous lab):
+The provided manager blueprints ship with templates for manager inputs. These templates have to be edited to reflect the environment in which the manager is to be installed.
 
-```bash
-cd ~/work
-wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.2rc1.zip
-unzip nodecellar.zip
-```
-
-That will download the latest nodecellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.2rc1`.
-
-## Step 2: Step 2: Configure the inputs file
-
-The Nodecellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
+(Back at `~/work`)
 
 ```bash
-cp cloudify-nodecellar-example-3.2rc1/inputs/singlehost.yaml.template nc-singlehost.yaml
-vi nc-singlehost.yaml
+cp cloudify-manager-blueprints-3.2/simple/inputs.yaml.template manager-inputs.yaml
+vi manager-inputs.yaml
 ```
 
-Fill in the host IP (your instance's private IP), agent user (`ubuntu`), as well as the path of the keyfile on the manager as written below:
+Fill in the public and private IP's, SSH user (`ubuntu`), as well as the path of the keyfile you were provided by the instructor:
+
+```yaml
+public_ip: MANAGER_INSTANCE_PUBLIC_IP
+private_ip: MANAGER_INSTANCE_PRIVATE_IP
+ssh_user: ubuntu
+ssh_key_filename: /home/ubuntu/work/cfy-training.pem
+
+agents_user: ubuntu
+resources_prefix: ''
+```
+
+### Step 6: Trigger the bootstrap process
+
+Activate the `virtualenv` in which you installed the Cloudify CLI (if it isn't already activated), and type the following:
 
 ```bash
-host_ip: YOUR_INSTANCE'S_PRIVATE_IP
-agent_user: ubuntu
-agent_private_key_path: /root/.ssh/agent_key.pem
+cfy init
+cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2/simple/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
-**Note**: the last parameter, `agent_private_key_path`, specifies the location of the manager's private key, *as known to the Cloudify Manager*.
+The first command initializes a Cloudify CLI working directory inside the current working directory.
 
-## Step 3: Upload the blueprint
+The second command triggers the bootstrap process. It should take a few minutes to complete, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the manager printed out, e.g.:
+
+```
+2015-06-15 02:18:42 CFY <manager> 'install' workflow execution succeeded
+bootstrapping complete
+management server is up at 15.125.87.108
+```
+
+### Step 7: Verify that the manager started successfully
+
+Type the following command to verify that all manager components are up and running:
 
 ```bash
-cfy blueprints upload -p cloudify-nodecellar-example-3.2rc1/singlehost-blueprint.yaml -b nodecellar
+cfy status
 ```
 
-You should see the following output:
-
-```
-Validating cloudify-nodecellar-example-3.2rc1/singlehost-blueprint.yaml
-Blueprint validated successfully
-Uploading blueprint cloudify-nodecellar-example-3.2rc1/singlehost-blueprint.yaml to management server 52.0.27.130
-Uploaded blueprint, blueprint's id is: nodecellar
-```
-
-Go to the web UI and make sure you see a blueprint named 'nodecellar' in the blueprints screen.
-
-![alt text](../../../raw/master/lab3/blueprints-screen.png "Blueprints screen")
-
-## Step 4: Create a deployment
-
-Once Nodecellar's blueprints are uploaded, we need to create a deployment for it, using the inputs file we customized in step 2.
+You should see output similar to the following. Make sure all components are running:
 
 ```bash
-cfy deployments create -b nodecellar -i nc-singlehost.yaml -d nodecellar
+Getting management services status... [ip=15.125.87.108]
+
+Services:
++--------------------------------+---------+
+|            service             |  status |
++--------------------------------+---------+
+| Riemann                        |    up   |
+| Celery Management              |    up   |
+| Manager Rest-Service           |    up   |
+| AMQP InfluxDB                  |    up   |
+| RabbitMQ                       |    up   |
+| Elasticsearch                  |    up   |
+| Webserver                      |    up   |
+| Cloudify UI                    |    up   |
+| Logstash                       |    up   |
++--------------------------------+---------+
 ```
 
-You should see the output similar to the following:
+### Step 8: Access the web UI
 
-```
-Creating new deployment from blueprint nodecellar at management server 52.0.27.130
-Deployment created, deployment's id is: nodecellar
-```
+Copy the IP address you received at the end of the bootstrap process to your browser's address bar. You should get the web UI:
 
-## Step 5: Execute the `install` workflow
-
-Once the deployment has been created, we can install the nodecellar application. Trigger the `install` workflow by typing: 
-
-```bash
-cfy executions start -d nodecellar -w install
-```
-
-You should see the events being printed to the screen. You can also go to the deployments screen in the UI and see the events there. 
-
-```
-Executing workflow 'install' on deployment 'nodecellar' at management server 52.0.27.130 [timeout=900 seconds]
-2015-05-05T23:09:39 CFY <nodecellar> Starting 'install' workflow execution
-2015-05-05T23:09:39 CFY <nodecellar> [host_e4657] Creating node
-2015-05-05T23:09:40 CFY <nodecellar> [host_e4657] Configuring node
-2015-05-05T23:09:40 CFY <nodecellar> [host_e4657] Starting node
-2015-05-05T23:09:40 CFY <nodecellar> [host_e4657] Installing worker
-2015-05-05T23:09:40 CFY <nodecellar> [host_e4657.install] Sending task 'worker_installer.tasks.install'
-...
-```
-
-## Step 6: Access the application
-
-Point your browser to your manager's public IP, port 8080. You should now see the Nodecellar application. click the "Start browsing nodecellar" button and see the list of wines that is retrieved from the mongo database.
-
-![alt text](../../../raw/master/lab3/nodecellar.png "Nodecellar")
-
-## Step 7: Cleanup
-
-To uninstall Nodecellar, first execute the `uninstall` workflow; then, delete the deployment, and finally, delete the blueprint.
-
-```bash
-cfy executions start -d nodecellar -w uninstall
-cfy deployments delete -d nodecellar
-cfy blueprints delete -b nodecellar
-```
+![alt text](../../../raw/master/lab3/cfy32.png "Cloudify 3.2 Web UI")
