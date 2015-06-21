@@ -27,10 +27,10 @@ cp cloudify-nodecellar-example-3.2/inputs/singlehost.yaml.template nc-singlehost
 vi nc-singlehost.yaml
 ```
 
-Fill in the host IP (your instance's private IP), agent user (`ubuntu`), as well as the path of the keyfile on the manager as written below:
+Fill in the manager host's private IP, agent user (`ubuntu`), as well as the path of the keyfile on the manager as written below:
 
 ```bash
-host_ip: YOUR_INSTANCE'S_PRIVATE_IP
+host_ip: YOUR_MANAGER_INSTANCE'S_PRIVATE_IP
 agent_user: ubuntu
 agent_private_key_path: /root/.ssh/agent_key.pem
 ```
