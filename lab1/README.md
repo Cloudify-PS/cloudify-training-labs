@@ -7,6 +7,12 @@ You should receive the following from the instructor:
 * Public and private IP's of the virtual machine on which the CLI is going to be installed
 * Private key to use in order to access that virtual machine
 
+**NOTE**: make sure that the private key file has suitable permissions attached to it (`0400` or `0600` would do):
+
+```bash
+chmod 0400 <pem_file>
+```
+
 ## Preparing Your CLI VM
 
 `ssh` into your CLI VM, and run the following:
