@@ -9,6 +9,7 @@ The lab is designed so the developed plugin is embedded with the blueprint; howe
 ```bash
 mkdir ~/work/plugin-lab && cd ~/work/plugin-lab
 wget -O template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.2.zip
+unzip template.zip
 rm template.zip
 mv cloudify-plugin-template-3.2 test-plugin
 ```
