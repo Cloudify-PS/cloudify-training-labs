@@ -4,6 +4,12 @@ In this lab, we will develop a very simple plugin and use it within a blueprint.
 
 The lab is designed so the developed plugin is embedded with the blueprint; however, if you have access to a Git repository, you are encouraged to store the plugin there instead, and modify the plugin declaration accordingly.
 
+**NOTE**: Make sure that you had activated your Cloudify virtualenv before proceeding:
+
+```bash
+source ~/cfyenv/bin/activate
+```
+
 ## Step 1: Download the plugin template
 
 ```bash
