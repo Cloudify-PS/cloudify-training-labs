@@ -49,7 +49,6 @@ This YAML file is intended to function as a `plugin.yaml` file for the plugin, w
 ```bash
 vi test-plugin/plugin/tests/blueprint/blueprint.yaml
 ```
-```
 
 This YAML file is a standard blueprints file, against which the plugin test runs. Change it to accommodate your plugin. In particular, pay attention to the following:
 
