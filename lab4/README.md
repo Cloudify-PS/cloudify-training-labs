@@ -98,7 +98,15 @@ Point your browser to your manager's public IP, port 8080. You should now see th
 
 ![alt text](../../../raw/master/lab4/nodecellar.png "Nodecellar")
 
-## Step 7: Cleanup
+## Step 7: View executions
+
+```bash
+cfy executions list -d nodecellar
+```
+
+That will view all workflow executions that have been started on the `nodecellar` deployment. 
+
+## Step 8: Cleanup
 
 To uninstall Nodecellar, first execute the `uninstall` workflow; then, delete the deployment, and finally, delete the blueprint.
 

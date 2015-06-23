@@ -78,7 +78,7 @@ fi
 tomcatHome=~/$tomcat_version
 
 ctx logger info "${currHostName}:${currFilename} Unzipping ${destZip} to ${tomcatHome}/ ..."
-unzip $destZip -d ~/
+unzip -o $destZip -d ~/
 chmod +x $tomcatHome/bin/*.sh
 
 download "JDK" $java_url ~/java.bin
