@@ -53,7 +53,7 @@ Notes:
 To test, navigate to port 8080 of the public IP associated with the VM on which the installation was made:
 
 ```
-http://<manager-machine-public-ip>:8080
+http://<manager-machine-public-ip>:8080/helloworld
 ```
 
 ### Step 4: Cleanup
