@@ -50,10 +50,10 @@ Notes:
 1. For the `deployments create` command, we used a different YAML file for inputs, than we used for running locally.
 2. The blueprint is uploaded under the name `hellotomcat`. The deployment created is also named `hellotomcat`. That is *not* a requirement; the deployment's name may be different from its associated blueprint's name.
 
-To test, navigate to port 8080 of the public IP associated with the VM on which installation was made:
+To test, navigate to port 8080 of the public IP associated with the VM on which the installation was made:
 
 ```
-http://15.125.87.108:8080
+http://<manager-machine-public-ip>:8080
 ```
 
 ### Step 4: Cleanup
