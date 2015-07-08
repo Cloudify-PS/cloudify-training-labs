@@ -52,7 +52,7 @@ function wait_for_server() {
 
     ctx logger info "Running ${server_name} liveness detection on port ${port}"
 
-    for i in $(seq 1 360)
+    for i in $(seq 1 12)
     do
         response_code=$(get_response_code ${port})
         ctx logger info "[GET] http://localhost:${port} ${response_code}"
