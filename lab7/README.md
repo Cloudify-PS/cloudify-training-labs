@@ -5,7 +5,7 @@ In this lab, we will demonstrate how to deploy and install a Docker container. W
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
 ```bash
-export LAB_ROOT=~/cloudify-training-labs/lab5/exercise
+export LAB_ROOT=~/cloudify-training-labs/lab7/exercise
 ```
 
 ### Step 1: Edit `singlehost.yaml`
