@@ -22,7 +22,7 @@ cfy local init -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -i $LAB_ROOT/hell
 cfy local execute -w install
 ```
 
-Now browse to `http://127.0.0.1:8080/helloworld` (from the CLI machine, or `http://<cli-machine-public-ip>/helloworld` from elsewhere) and then run the following CLI command:
+Now browse to `http://127.0.0.1:8080/helloworld` (from the CLI machine, or `http://<cli-machine-public-ip>:8080/helloworld` from elsewhere) and then run the following CLI command:
 
 ```bash
 cfy local outputs
