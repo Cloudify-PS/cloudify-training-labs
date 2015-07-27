@@ -18,8 +18,11 @@ chmod 0400 <pem_file>
 `ssh` into your CLI VM, and run the following commands:
 
 `sudo apt-get update`
+
 `sudo apt-get -y install python-pip python-virtualenv python-dev unzip git`
+
 `curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py`
+
 `python get-cloudify.py --virtualenv cfyenv --version 3.2`
 
 The first two commands will update `apt`'s sources and then install the dependencies for the Cloudify CLI installer, as well as `git` (`git` is not a dependency of the Cloudify CLI; it is a dependency for this lab).
