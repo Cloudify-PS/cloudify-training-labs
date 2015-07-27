@@ -4,12 +4,12 @@ imports:
   - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
 
 node_templates:
-  host:
+  main_host:
     type: cloudify.nodes.Compute
     properties:
       install_agent: false
 
-  node1:
+  test_application_server:
     type: cloudify.nodes.ApplicationServer
     interfaces:
       cloudify.interfaces.lifecycle:
@@ -17,4 +17,4 @@ node_templates:
         stop: scripts/goodbye.sh
     relationships:
       - type: cloudify.relationships.contained_in
-        target: host
+        target: main_host
