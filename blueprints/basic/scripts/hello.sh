@@ -1,2 +1,2 @@
 #!/bin/bash -e
-ctx logger info "Starting"
+ctx logger info "Hello!"

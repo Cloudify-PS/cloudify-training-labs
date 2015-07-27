@@ -10,7 +10,7 @@ node_templates:
       install_agent: false
 
   node1:
-    type: cloudify.nodes.Root
+    type: cloudify.nodes.ApplicationServer
     interfaces:
       cloudify.interfaces.lifecycle:
         start: scripts/hello.sh

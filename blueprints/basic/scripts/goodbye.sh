@@ -1,2 +1,2 @@
 #!/bin/bash -e
-ctx logger info "Ending"
+ctx logger info "Goodbye!"
