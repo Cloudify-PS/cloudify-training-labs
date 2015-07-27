@@ -15,10 +15,12 @@ chmod 0400 <pem_file>
 
 ## Preparing Your CLI VM
 
-`ssh` into your CLI VM, and run the following:
+`ssh` into your CLI VM, and run the following commands:
 
 ```bash
 sudo apt-get update
+```
+```bash
 sudo apt-get -y install python-pip python-virtualenv python-dev unzip git
 curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py
 python get-cloudify.py --virtualenv cfyenv --version 3.2
