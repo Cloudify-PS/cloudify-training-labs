@@ -22,7 +22,7 @@ cfy local init -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -i $LAB_ROOT/hell
 cfy local execute -w install
 ```
 
-Now browse to `http://127.0.0.1:8080/helloworld` (from the CLI machine, or `http://<cli-machine-public-ip>:8080/helloworld` from elsewhere) and then run the following CLI command:
+Now browse to `http://127.0.0.1:8081/helloworld` (from the CLI machine, or `http://<cli-machine-public-ip>:8081/helloworld` from elsewhere) and then run the following CLI command:
 
 ```bash
 cfy local outputs
@@ -50,10 +50,10 @@ Notes:
 1. For the `deployments create` command, we used a different YAML file for inputs, than we used for running locally.
 2. The blueprint is uploaded under the name `hellotomcat`. The deployment created is also named `hellotomcat`. That is *not* a requirement; the deployment's name may be different from its associated blueprint's name.
 
-To test, navigate to port 8080 of the public IP associated with the VM on which the installation was made:
+To test, navigate to port 8081 of the public IP associated with the VM on which the installation was made:
 
 ```
-http://<manager-machine-public-ip>:8080/helloworld
+http://<manager-machine-public-ip>:8081/helloworld
 ```
 
 ### Step 4: Cleanup

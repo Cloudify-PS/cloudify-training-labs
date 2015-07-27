@@ -13,8 +13,6 @@ inputs:
     type: string
   management_network:
     type: string
-  external_network_name:
-    type: string
     
 node_templates:
 
@@ -31,12 +29,6 @@ node_templates:
       resource_id: cfy-training
       private_key_path: ~/.ssh/training-kp.pem
   
-#  ip:
-#    type: cloudify.openstack.nodes.FloatingIP
-#    properties:
-#      floatingip:
-#        floating_network_name: { get_input: external_network_name }
-      
   server:
     type: cloudify.openstack.nodes.Server
     instances:
@@ -60,5 +52,3 @@ node_templates:
         target: security_group
       - target: keypair
         type: cloudify.openstack.server_connected_to_keypair
- #     - target: ip
- #       type: cloudify.openstack.server_connected_to_floating_ip
