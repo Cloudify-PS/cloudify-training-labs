@@ -31,7 +31,7 @@ The output should be similar to the following:
 2015-06-11 01:42:18 CFY <local> [node1_ca32f.start] Sending task 'script_runner.tasks.run'
 2015-06-11 01:42:18 CFY <local> [node1_ca32f.start] Task started 'script_runner.tasks.run'
 2015-06-11 01:42:18 LOG <local> [node1_ca32f.start] INFO: Executing: /tmp/tmpwdE5ut-hello.sh
-2015-06-11 01:42:19 LOG <local> [node1_ca32f.start] INFO: Starting
+2015-06-11 01:42:19 LOG <local> [node1_ca32f.start] INFO: Hello!
 2015-06-11 01:42:19 LOG <local> [node1_ca32f.start] INFO: Execution done (return_code=0): /tmp/tmpwdE5ut-hello.sh
 2015-06-11 01:42:19 CFY <local> [node1_ca32f.start] Task succeeded 'script_runner.tasks.run'
 2015-06-11 01:42:19 CFY <local> 'install' workflow execution succeeded
@@ -51,7 +51,7 @@ The output should be similar to the following:
 2015-06-11 02:58:55 CFY <local> [node1_ca32f.stop] Sending task 'script_runner.tasks.run'
 2015-06-11 02:58:55 CFY <local> [node1_ca32f.stop] Task started 'script_runner.tasks.run'
 2015-06-11 02:58:55 LOG <local> [node1_ca32f.stop] INFO: Executing: /tmp/tmpa9PcDp-goodbye.sh
-2015-06-11 02:58:55 LOG <local> [node1_ca32f.stop] INFO: Ending
+2015-06-11 02:58:55 LOG <local> [node1_ca32f.stop] INFO: Goodbye!
 2015-06-11 02:58:55 LOG <local> [node1_ca32f.stop] INFO: Execution done (return_code=0): /tmp/tmpa9PcDp-goodbye.sh
 2015-06-11 02:58:55 CFY <local> [node1_ca32f.stop] Task succeeded 'script_runner.tasks.run'
 2015-06-11 02:58:56 CFY <local> [node1_ca32f] Deleting node
