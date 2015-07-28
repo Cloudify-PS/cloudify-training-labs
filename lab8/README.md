@@ -45,24 +45,24 @@ In this part, we will demonstrate the `scale` workflow.
 
 First, we need to find the ID of the node we would like to scale (*note*: unlike the `heal` workflow, the `scale` workflow requires the node's ID, *not* a node's instance ID).
 
-We will scale the `tomcat_server` node.
+We will scale the `scale_node` node.
 
 ```bash
-cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_compute: false, delta: 1}'
+cfy executions start -d hellotomcat -w scale -p '{node_id: scale_node, scale_compute: false, delta: 1}'
 ```
 
 ### Step 2: Verify
 
-Log in to the Cloudify web UI. Select your deployment and then the "Topology" tab. You should see that the number of instances of the `tomcat_server` node has changed from `1` to `2`.
+Log in to the Cloudify web UI. Select your deployment and then the "Topology" tab. You should see that the number of instances of the `scale_node` node has changed from `1` to `2`.
 
 ### Step 3: Scale down
 
-Execute a similar command, to scale the `tomcat_server` node down by 1:
+Execute a similar command, to scale the `scale_node` node down by 1:
 
 ```bash
-cfy executions start -d hellotomcat -w scale -p '{node_id: tomcat_server, scale_compute: false, delta: -1}'
+cfy executions start -d hellotomcat -w scale -p '{node_id: scale_node, scale_compute: false, delta: -1}'
 ```
 
 ### Step 4: Verify
 
-At the same view as in Step 2 above, you should now see that the instance count of `tomcat_server` has decreased to 1.
+At the same view as in Step 2 above, you should now see that the instance count of `scale_node` has decreased to 1.

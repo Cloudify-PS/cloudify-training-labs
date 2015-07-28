@@ -84,6 +84,12 @@ node_templates:
       - type: cloudify.relationships.contained_in
         target: tomcat_vm
 
+  scale_node:
+    type: cloudify.nodes.Root
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: tomcat_vm
+
 outputs:
   endpoint:
     description: My application endpoint
