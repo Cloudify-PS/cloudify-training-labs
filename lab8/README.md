@@ -1,6 +1,6 @@
 # Lab 8: Workflows
 
-## Part I: `execute_workflow`
+## Part I: `execute_operation`
 
 In the exercise folder of this lab, you’ll find a folder which contains the `hello-tomcat` blueprint, where an additional interface has been added to the `web_server` type, and an additional simple script `my-logging-operation.sh` now appears.
 
