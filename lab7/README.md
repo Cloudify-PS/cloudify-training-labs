@@ -33,7 +33,7 @@ cfy executions start -d nc-docker -w install
 Navigate to port 8080 on the public IP that is associated with the machine on which Nodecellar was installed. For example:
 
 ```
-http://15.125.87.108:8080
+http://<manager-machine-public-ip>:8080
 ```
 
 You should be presented with the Nodecellar application.
