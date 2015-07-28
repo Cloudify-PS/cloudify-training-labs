@@ -1,5 +1,7 @@
 # Lab 7: Deploying Docker Containers
 
+**NOTE: If you currently have nodecellar installed on your manager, then uninstall it. Otherwise you will run into port conflicts.**
+
 In this lab, we will demonstrate how to deploy and install a Docker container. We will use a Docker version of the Nodecellar application introduced in previous labs.
 
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
