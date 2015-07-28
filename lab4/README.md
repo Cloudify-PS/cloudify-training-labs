@@ -106,12 +106,8 @@ cfy executions list -d nodecellar
 
 That will view all workflow executions that have been started on the `nodecellar` deployment. 
 
-## Step 8: Cleanup
-
-To uninstall Nodecellar, first execute the `uninstall` workflow; then, delete the deployment, and finally, delete the blueprint.
+## Step 8: View outputs
 
 ```bash
-cfy executions start -d nodecellar -w uninstall
-cfy deployments delete -d nodecellar
-cfy blueprints delete -b nodecellar
+cfy deployments outputs -d nodecellar 
 ```
