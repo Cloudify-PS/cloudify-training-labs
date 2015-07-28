@@ -28,6 +28,9 @@ cfy deployments create -b nc-docker -d nc-docker -i $LAB_ROOT/blueprint/inputs.y
 cfy executions start -d nc-docker -w install
 ```
 
+**NOTE**: if you get an error saying that the downloaded image could not be verified, please execute the `uninstall` workflow, delete the deployment
+and try again. We are currently looking into this issue.
+
 ### Step 4: Verify installation
 
 Navigate to port 8080 on the public IP that is associated with the machine on which Nodecellar was installed. For example:
