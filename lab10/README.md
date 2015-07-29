@@ -31,6 +31,39 @@ uninstall all existing deployments, delete those deployments, delete all bluepri
 cfy teardown -f
 ```
 
+The manager teardown process does not delete the two docker containers from the manager's machine; these have to be deleted manually. To do that, SSH into the manager's
+machine and run the following commands:
+
+```bash
+sudo docker stop cfy data
+sudo docker rm cfy data
+```
+
 ## Step 5: Bootstrap a new manager
 
 Follow instructions similar to those presented in earlier labs, to bootstrap a new Cloudify Manager using the security-enabled blueprint.
+
+**NOTE:** for bootstrap inputs, you can use the same inputs YAML file you had used previously (to bootstrap the non-secured manager).
+
+## Step 6: Configure CLI to use SSL
+
+As the manager is currently secured, you need to prepare the CLI environment accordingly:
+
+```bash
+export CLOUDIFY_SSL_TRUST_ALL=true
+export CLOUDIFY_USERNAME=some-username
+export CLOUDIFY_PASSWORD=some-password
+```
+
+* The `CLOUDIFY_SSL_TRUST_ALL` environment variable will ensure that certificate validation is skipped. This is required for this lab as we are using a self-signed certificate.
+* `CLOUDIFY_USERNAME` and `CLOUDIFY_PASSWORD` must be set to a username and password which are defined in the blueprint's user store section.
+
+## Step 7: Verify connectivity
+
+Execute:
+
+```bash
+cfy status
+```
+
+And ensure you receive a proper status response.
