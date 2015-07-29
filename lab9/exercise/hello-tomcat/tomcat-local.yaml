@@ -1,4 +1,4 @@
-port: 8081
+port: 8082
 download_path: http://repository.cloudifysource.org/org/apache/tomcat/7.0.23/apache-tomcat-7.0.23.zip
 war_url: https://repository.cloudifysource.org/org/cloudifysource/examples/helloworld/helloworld.war
 war_filename: helloworld.war

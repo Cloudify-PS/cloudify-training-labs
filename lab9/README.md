@@ -6,7 +6,7 @@ It is assumed that the lab's files are extracted into `$LAB_ROOT`.
 
 ### Step 1: Replace the placeholders
 
-You need to replace all the occurrences of the placeholders (`REPLACE_THIS_WITH`) in `tomcat.yaml` and in the blueprint file to add monitoring to the blueprint.
+You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in `tomcat.yaml` and in the blueprint file to add monitoring to the blueprint.
 
 ### Step 2: Upload and install the blueprint
 
