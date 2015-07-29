@@ -4,7 +4,7 @@ In this lab, we will demonstrate security configuration on the Cloudify manager.
 
 It is assumed that the lab's files are extracted into `$LAB_ROOT`.
 
-The blueprint, located in `$LAB_ROOT/blueprint/simple-secured.yaml`, contains placeholders for your modifications. These placeholders begin with the string `REPLACE_WITH`.
+The blueprint, located in `$LAB_ROOT/simple-secured.yaml`, contains placeholders for your modifications. These placeholders begin with the string `REPLACE_WITH`.
 
 ## Step 1: Logging
 
