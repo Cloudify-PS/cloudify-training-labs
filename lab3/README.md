@@ -49,7 +49,7 @@ mkdir ~/work && cd ~/work
 
 ### Step 2: Have your Manager VM's private key available
 
-The private key, required to connect to your manager VM, needs to be accessible to the Cloudify CLI. Copy the private key file to your CLI machine (by either `scp` or pasting the key's contents into an editor). For documentation purposes, it is assumed that the key file is available at `/home/ubuntu/work/cfy-training.pem`.
+The private key, required to connect to your manager VM, needs to be accessible to the Cloudify CLI. Copy the private key file to your CLI machine (either by either `scp` [linux], `pscp`/`winscp` [Windows] or by pasting the key's contents into an editor). For documentation purposes, it is assumed that the key file is available at `/home/ubuntu/work/cfy-training.pem`.
 
 ### Step 3: Download the manager blueprint
 
