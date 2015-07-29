@@ -90,7 +90,7 @@ node_templates:
               secret_key: my_secret
               expires_in_seconds: 600
           ssl:
-            enabled: false
+            enabled: true
             certificate_path: ""
             private_key_path: ""
 

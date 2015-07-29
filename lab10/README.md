@@ -21,3 +21,16 @@ Replace the string `REPLACE_WITH_USERS_CONFIGURATION` with either one or many us
 ## Step 3: SSL
 
 Replace the strings `REPLACE_WITH_CERT_PATH` and `REPLACE_WITH_PRIVATE_KEY_PATH` with applicable values for your environment.
+
+## Step 4: Tear existing manager down
+
+Your current Cloudify Manager is not secured; as security configuration can only occur during bootstrapping, you have to tear your existing manager down. To do that,
+uninstall all existing deployments, delete those deployments, delete all blueprints and then tear the manager down:
+
+```bash
+cfy teardown -f
+```
+
+## Step 5: Bootstrap a new manager
+
+Follow instructions similar to those presented in earlier labs, to bootstrap a new Cloudify Manager using the security-enabled blueprint.
