@@ -70,7 +70,7 @@ node_templates:
             implementation: flask_securest.userstores.simple:SimpleUserstore
             properties:
               userstore:
-			    REPLACE_WITH_USERS_CONFIGURATION
+                REPLACE_WITH_USERS_CONFIGURATION
               identifying_attribute: username
           authentication_providers:
             - name: password
