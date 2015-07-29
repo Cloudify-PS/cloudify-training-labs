@@ -35,6 +35,7 @@ The manager teardown process does not delete the two docker containers from the 
 machine and run the following commands:
 
 ```bash
+sudo service docker start
 sudo docker stop cfy data
 sudo docker rm cfy data
 ```
