@@ -10,7 +10,7 @@ export LAB_ROOT=~/cloudify-training-labs/lab6/exercise
 
 ### Step 1: Replace placeholders
 
-You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT`, with the suitable values and to add missing parts as well.
+You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT` (you can use `grep` to look for these occurrences), with the suitable values and to add missing parts as well. 
 
 ### Step 2: Run in local mode
 
@@ -55,6 +55,10 @@ To test, navigate to port 8081 of the public IP associated with the VM on which 
 ```
 http://<manager-machine-public-ip>:8081/helloworld
 ```
+
+You should be presented with the demo "hello world" application:
+
+![alt text](../../../raw/master/lab6/helloworld.png "Hello World")
 
 ### Step 4: Cleanup
 
