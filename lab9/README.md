@@ -4,6 +4,9 @@ The purpose of this lab is to add monitoring to the Tomcat blueprint used in lab
 
 It is assumed that the lab's files are extracted into `$LAB_ROOT`.
 
+**NOTE**: ensure that no existing Tomcat process is running on the manager's VM (from previous labs), otherwise you will run into problems
+deploying the updated Tomcat application in this lab.
+
 ### Step 1: Replace the placeholders
 
 You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in `tomcat.yaml` and in the blueprint file to add monitoring to the blueprint.

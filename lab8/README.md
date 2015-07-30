@@ -66,3 +66,7 @@ cfy executions start -d hellotomcat -w scale -p '{node_id: scale_node, scale_com
 ### Step 4: Verify
 
 At the same view as in Step 2 above, you should now see that the instance count of `scale_node` has decreased to 1.
+
+### Step 5: Uninstall
+
+Use the commands learned in previous labs to uninstall the deployment you had created, delete the deployment and remove the blueprint.
