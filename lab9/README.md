@@ -15,9 +15,7 @@ deploying the updated Tomcat application in this lab.
 
 You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in `tomcat.yaml` and in `tomcat-blueprint.yaml` to add monitoring to the blueprint.
 
-You can use the Diamond collectors' reference for information how to configure collectors:
-
-(https://github.com/python-diamond/Diamond/wiki/Collectors "Diamond Collectors")
+You can use the Diamond collectors' reference for information how to configure collectors: https://github.com/python-diamond/Diamond/wiki/Collectors
  
 ### Step 2: Upload and install the blueprint
 
