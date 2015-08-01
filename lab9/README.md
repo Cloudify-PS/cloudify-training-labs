@@ -17,7 +17,7 @@ You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in 
 
 You can use the Diamond collectors' reference for information how to configure collectors:
 
-![alt text](https://github.com/python-diamond/Diamond/wiki/Collectors "Diamond Collectors")
+(https://github.com/python-diamond/Diamond/wiki/Collectors "Diamond Collectors")
  
 ### Step 2: Upload and install the blueprint
 
