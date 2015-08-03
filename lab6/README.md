@@ -58,7 +58,7 @@ http://<manager-machine-public-ip>:8081/helloworld
 
 You should be presented with the demo "hello world" application:
 
-![alt text](../../../raw/master/lab6/helloworld.png "Hello World")
+![Hello World](../../../raw/master/lab6/helloworld.png "Hello World")
 
 ### Step 4: Cleanup
 

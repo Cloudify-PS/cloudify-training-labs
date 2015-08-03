@@ -54,7 +54,7 @@ Uploaded blueprint, blueprint's id is: nodecellar
 
 Go to the web UI and make sure you see a blueprint named 'nodecellar' in the blueprints screen.
 
-![alt text](../../../raw/master/lab4/blueprints-screen.png "Blueprints screen")
+![Blueprints screen](../../../raw/master/lab4/blueprints-screen.png "Blueprints screen")
 
 ## Step 4: Create a deployment
 
@@ -96,7 +96,7 @@ Finished executing workflow 'install' on deployment 'nodecellar'
 
 Point your browser to your manager's public IP, port 8080. You should now see the Nodecellar application. click the "Start browsing nodecellar" button and see the list of wines that is retrieved from the mongo database.
 
-![alt text](../../../raw/master/lab4/nodecellar.png "Nodecellar")
+![Nodecellar](../../../raw/master/lab4/nodecellar.png "Nodecellar")
 
 ## Step 7: View executions
 

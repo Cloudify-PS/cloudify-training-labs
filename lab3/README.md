@@ -163,4 +163,4 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the web UI:
 
-![alt text](../../../raw/master/lab3/cfy32.png "Cloudify 3.2 Web UI")
+![Cloudify 3.2 Web UI](../../../raw/master/lab3/cfy32.png "Cloudify 3.2 Web UI")

@@ -86,4 +86,6 @@ https://<manager-vm-public-ip>
 ```
 
 Contrary to before — when the manager was not secured — you will now be presented with a login screen. In order to log in, you must enter a username & password that are defined
-in the manager's blueprint (see step 2 above). 
+in the manager's blueprint (see step 2 above).
+
+![Secured Login](../../../raw/master/lab10/login.png "Secured Login")
