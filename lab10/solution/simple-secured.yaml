@@ -91,8 +91,8 @@ node_templates:
               expires_in_seconds: 600
           ssl:
             enabled: true
-            certificate_path: ""
-            private_key_path: ""
+            certificate_path: /home/ubuntu/cloudify-training-labs/lab10/solution/resources/cert.crt
+            private_key_path: /home/ubuntu/cloudify-training-labs/lab10/solution/resources/cert.key
 
     relationships:
       - type: cloudify.relationships.contained_in
