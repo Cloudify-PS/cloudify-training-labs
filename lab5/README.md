@@ -4,6 +4,9 @@ In this lab, we will develop a very simple plugin and use it within a blueprint.
 
 The lab is designed so the developed plugin is embedded with the blueprint; however, if you have access to a Git repository, you are encouraged to store the plugin there instead, and modify the plugin declaration accordingly.
 
+**NOTE**: Although you can run this lab on any VM (as it does not require communicating with the Cloudify Manager), it is recommended that you run it on the
+CLI VM, in order to keep all your work on the same machine. Also, your CLI VM already contains the Cloudify virtualenv, which is required for the completion of this lab. 
+
 **NOTE**: Make sure that you had activated your Cloudify virtualenv before proceeding:
 
 ```bash
@@ -88,4 +91,17 @@ pip install -r dev-requirements.txt
 
 ```bash
 python -m unittest plugin.tests.test_plugin
+```
+
+You will see output similar to the following:
+
+```
+2015-07-29 13:14:08 CFY <test_my_task> Starting 'install' workflow execution
+2015-07-29 13:14:08 CFY <test_my_task> [test_node_template_eeade] Creating node
+2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade] Configuring node
+2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade] Starting node
+2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Sending task 'plugin.tasks.my_task'
+2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Task started 'plugin.tasks.my_task'
+2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Task succeeded 'plugin.tasks.my_task'
+2015-07-29 13:14:09 CFY <test_my_task> 'install' workflow execution succeeded
 ```
