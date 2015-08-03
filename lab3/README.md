@@ -13,6 +13,12 @@ Before starting, make sure you have the following details from the instructor:
 
 `docker --version`
 
+If Docker is installed, you will get its version, such as:
+
+```
+Docker version 1.7.1, build 786b29d
+```
+
 If Docker is not installed, install it as follows:
 
 ```bash
@@ -26,7 +32,14 @@ sudo sh install.sh
 groups ubuntu
 ```
 
-If `docker` is not there, add it (the following example assumes that the group in question is `docker`):
+You will get a list of all groups that the user `ubuntu` is a member of. Example:
+
+```
+ubuntu@ip-10-0-0-83:~$ groups ubuntu
+ubuntu : ubuntu adm dialout cdrom floppy sudo audio dip video plugdev netdev docker
+```
+
+If `docker` is not in the groups list, add it:
 
 ```bash
 sudo gpasswd -a ubuntu docker
@@ -146,6 +159,8 @@ Services:
 
 ### Step 8: Access the web UI
 
-Copy the IP address you received at the end of the bootstrap process to your browser's address bar. You should get the web UI:
+Using your browser, navigate to your Cloudify Manager's public IP address. For example: `http://15.125.87.108`
+
+You should get the web UI:
 
 ![alt text](../../../raw/master/lab3/cfy32.png "Cloudify 3.2 Web UI")
