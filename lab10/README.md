@@ -31,6 +31,7 @@ Your current Cloudify Manager is not secured; as security configuration can only
 uninstall all existing deployments, delete those deployments, delete all blueprints and then tear the manager down:
 
 ```bash
+cd ~/work
 cfy teardown -f
 ```
 
