@@ -1,14 +1,25 @@
 # Lab 8: Workflows
 
-## Part I: `execute_operation`
-
-In the exercise folder of this lab, you’ll find a folder which contains the `hello-tomcat` blueprint, where an additional interface has been added to the `web_server` type, and an additional simple script `my-logging-operation.sh` now appears.
-
-Your task is to fix this blueprint, so that the `tomcat_server` node will have an operation mapping for the new interface, and so that the mapping's implementation will be the new `my-logging-operation.sh` script. Note that the latter uses a `message` parameter.
-
-Then, run the `execute_operation` workflow (in local mode):
+It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
 ```bash
+export LAB_ROOT=~/cloudify-training-labs/lab8/exercise
+```
+
+## Part I: `execute_operation`
+
+### Step 1: Replace placeholders
+
+In `$LAB_ROOT`, you’ll find a folder which contains the `hello-tomcat` blueprint, where an additional interface has been added to the `web_server` type, and an additional simple script `my-logging-operation.sh` now appears.
+
+Replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT` (you can use `grep` to look for these occurrences), with suitable values. At the end, the `tomcat_server` node will have an operation mapping for the new interface, and so that the mapping's implementation will be the new `my-logging-operation.sh` script. Note that the latter uses a `message` parameter.
+
+### Step 2: Run in local mode
+
+Run the `execute_operation` workflow in local mode (you should be able to complete the commands by yourself):
+
+```bash
+cd $LAB_ROOT
 cfy local init -p ... -i ...
 cfy local execute -w execute_operation ...
 ```
@@ -17,19 +28,20 @@ The execution should pass a message as a parameter (rather than the message bein
 
 _Tip_: Use the `execute_operation` workflow documentation.
 
+### Step 3: Upload to manager and run in non-local mode
+
+Use commands learned in previous labs to upload, deploy and install `hello-tomcat` on your Cloudify Manager.
+For the purpose of this exercise, it will be assumed that the deployment's name is `hellotomcat`.
+
+Use the `cfy executions start` command to start an execution of the `execute_operation` workflow, along with the required parameters to print a message similarly to how it was done in local mode.
+
 ## Part II: `heal`
 
 In this part, we will demonstrate the `heal` workflow.
 
-### Step 1: Deploy and install the `hello-tomcat` application
-
-In Part I, you ran the `hello-tomcat` application in local mode. Use commands learned in previous labs to install `hello-tomcat` on your Cloudify Manager.
-
-For the purpose of this exercise, it will be assumed that the deployment's name is `hellotomcat`.
-
-### Step 2: Execute the `heal` workflow
-
 First, we need to find the instance ID of the node we would like to heal. Remember: the `heal` workflow uninstalls, and then reinstalls, the *entire* Compute node containing the node we wish to heal; therefore, you may either look for the instance ID of the Compute node itself, or of any node which is contained in (directly or indirectly) that Compute node.
+
+**NOTE**: as of version 3.2, the only way to know a node's instance ID is through the Cloudify UI (see the "Deployments" screen).
 
 Then, execute the `heal` workflow. For example:
 
@@ -67,6 +79,6 @@ cfy executions start -d hellotomcat -w scale -p '{node_id: scale_node, scale_com
 
 At the same view as in Step 2 above, you should now see that the instance count of `scale_node` has decreased to 1.
 
-### Step 5: Uninstall
+## Part IV: Uninstall
 
-Use the commands learned in previous labs to uninstall the deployment you had created, delete the deployment and remove the blueprint.
+Use the commands learned in previous labs to uninstall the deployment you had created, delete the deployment and remove the `hello-tomcat` application.
