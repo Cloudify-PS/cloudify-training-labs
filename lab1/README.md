@@ -23,7 +23,7 @@ chmod 0400 <pem_file>
 
 `curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py`
 
-`python get-cloudify.py --virtualenv cfyenv --version 3.2`
+`python get-cloudify.py --virtualenv cfyenv --version 3.2.1`
 
 The first two commands will update `apt`'s sources and then install the dependencies for the Cloudify CLI installer, as well as `git` (`git` is not a dependency of the Cloudify CLI; it is a dependency for this lab).
 
@@ -52,5 +52,5 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 3.2.0
+Cloudify CLI 3.2.1
 ```

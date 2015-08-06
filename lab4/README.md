@@ -12,18 +12,18 @@ In a terminal window (where you installed the CLI), execute the following comman
 
 ```bash
 cd ~/work
-wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.2.zip
+wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.2.1.zip
 unzip nodecellar.zip
 ```
 
-That will download the latest nodecellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.2`.
+That will download the latest nodecellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.2.1`.
 
 ## Step 2: Step 2: Configure the inputs file
 
 The Nodecellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
-cp cloudify-nodecellar-example-3.2/inputs/singlehost.yaml.template nc-singlehost.yaml
+cp cloudify-nodecellar-example-3.2.1/inputs/singlehost.yaml.template nc-singlehost.yaml
 vi nc-singlehost.yaml
 ```
 
@@ -40,15 +40,15 @@ agent_private_key_path: /root/.ssh/agent_key.pem
 ## Step 3: Upload the blueprint
 
 ```bash
-cfy blueprints upload -p cloudify-nodecellar-example-3.2/singlehost-blueprint.yaml -b nodecellar
+cfy blueprints upload -p cloudify-nodecellar-example-3.2.1/singlehost-blueprint.yaml -b nodecellar
 ```
 
 You should see the following output:
 
 ```
-Validating cloudify-nodecellar-example-3.2/singlehost-blueprint.yaml
+Validating cloudify-nodecellar-example-3.2.1/singlehost-blueprint.yaml
 Blueprint validated successfully
-Uploading blueprint cloudify-nodecellar-example-3.2/singlehost-blueprint.yaml to management server 15.125.87.108
+Uploading blueprint cloudify-nodecellar-example-3.2.1/singlehost-blueprint.yaml to management server 15.125.87.108
 Uploaded blueprint, blueprint's id is: nodecellar
 ```
 

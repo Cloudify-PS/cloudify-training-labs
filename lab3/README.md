@@ -69,11 +69,11 @@ The private key, required to connect to your manager VM, needs to be accessible 
 Execute the following command:
 
 ```bash
-wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.2.zip
+wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.2.1.zip
 unzip blueprints.zip
 ```
 
-That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.2`.
+That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.2.1`.
 
 ### Step 4: Edit the sample `simple` blueprint for the correct Docker container URL
 
@@ -84,7 +84,7 @@ The Cloudify Manager, implemented as a Docker container, ships in two forms:
 
 The manager blueprints, available through GitHub, refer to the non-commercial Docker container. For the purpose of this course, we will edit the manager blueprint to point at the commercial version.
 
-Edit `./cloudify-manager-blueprints-3.2/simple/simple-manager-blueprint.yaml` and replace the value for `docker_url` with the following: `http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.2.0/ga-RELEASE/cloudify-docker-commercial_3.2.0-ga-b200.tar`
+Edit `./cloudify-manager-blueprints-3.2.1/simple/simple-manager-blueprint.yaml` and replace the value for `docker_url` with the following: `http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.2.1/ga-RELEASE/cloudify-docker-commercial_3.2.1-ga-b212.tar`
  
 ### Step 5: Configure the inputs file
 
@@ -93,7 +93,7 @@ The provided manager blueprints ship with templates for manager inputs. These te
 (Back at `~/work`)
 
 ```bash
-cp cloudify-manager-blueprints-3.2/simple/inputs.yaml.template manager-inputs.yaml
+cp cloudify-manager-blueprints-3.2.1/simple/inputs.yaml.template manager-inputs.yaml
 vi manager-inputs.yaml
 ```
 
@@ -115,7 +115,7 @@ Activate the `virtualenv` in which you installed the Cloudify CLI (if it isn't a
 
 ```bash
 cfy init
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2/simple/simple-manager-blueprint.yaml -i manager-inputs.yaml
+cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.2.1/simple/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 The first command initializes a Cloudify CLI working directory inside the current working directory.
@@ -163,4 +163,4 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the web UI:
 
-![Cloudify 3.2 Web UI](../../../raw/master/lab3/cfy32.png "Cloudify 3.2 Web UI")
+![Cloudify 3.2.1 Web UI](../../../raw/master/lab3/cfy-3.2.1-ui.png "Cloudify 3.2.1 Web UI")
