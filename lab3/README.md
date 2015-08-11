@@ -19,14 +19,19 @@ If Docker is installed, you will get its version, such as:
 Docker version 1.7.1, build 786b29d
 ```
 
-If Docker is not installed, install it as follows:
+If Docker is not installed:
+
+* If you are using Ubuntu 14.04, follow the instructions below to install it
+* Otherwise, refer to the Docker documentation for information how to install Docker on your machine: https://docs.docker.com/docker/installation/
+
+#### Installing Docker on Ubuntu 14.04
 
 ```bash
 curl -o install.sh -sSL https://get.docker.com/
 sudo sh install.sh
 ```
 
-### Ensure that the user, installing the Cloudify Manager, belongs to the `docker` group
+Then, ensure that the user, installing the Cloudify Manager, belongs to the `docker` group:
 
 ```bash
 groups ubuntu
