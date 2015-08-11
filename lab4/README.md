@@ -27,7 +27,8 @@ cp cloudify-nodecellar-example-3.2.1/inputs/singlehost.yaml.template nc-singleho
 vi nc-singlehost.yaml
 ```
 
-Fill in the manager host's private IP, agent user (`ubuntu`), as well as the path of the keyfile on the manager as written below:
+Fill in the manager host's private IP, agent user (`ubuntu`), as well as the path of the keyfile on the manager as written below (make sure you enter the value
+of `agent_private_key_path` *exactly* as shown):
 
 ```bash
 host_ip: YOUR_MANAGER_INSTANCE'S_PRIVATE_IP
@@ -35,7 +36,10 @@ agent_user: ubuntu
 agent_private_key_path: /root/.ssh/agent_key.pem
 ```
 
-**Note**: the last parameter, `agent_private_key_path`, specifies the location of the manager's private key, *as known to the Cloudify Manager*.
+**Note**: the last parameter, `agent_private_key_path`, specifies the location of the key that the manager is going to use when connecting
+to agent hosts. During bootstrapping, the agent hosts' key is being copied to the Cloudify Manager into `/root/.ssh/agent_key.pem`. The `agent_private_key_path`
+should denote the path to the agent hosts' key *as it is known to the Cloudify Manager* (that is, within the file system which is visible to the Cloudify Manager). As Managers
+in 3.2 run inside docker containers, and the Cloudify Manager runs as `root`, the location of the agent hosts' key is always going to be the same.
 
 ## Step 3: Upload the blueprint
 
