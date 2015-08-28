@@ -21,8 +21,14 @@ Run the `execute_operation` workflow in local mode (you should be able to comple
 ```bash
 cd $LAB_ROOT
 cfy local init -p ... -i ...
-cfy local execute -w execute_operation ...
+cfy local execute -w execute_operation -p <execution-parameters.yaml> ...
 ```
+
+The `<execution-parameters.yaml>` file should be a YAML file that you create, containing parameters to pass to the `execute_operation` workflow, such as:
+
+* `operation`
+* `node_ids`
+* etc.
 
 The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node instance*.
 
