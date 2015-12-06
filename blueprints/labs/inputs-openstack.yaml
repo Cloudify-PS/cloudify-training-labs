@@ -1,4 +1,0 @@
-image: bec3cab5-4722-40b9-a78a-3489218e22fe
-flavor: 101
-management_network: cloudify-management-network
-external_network_name: Ext-Net
