@@ -32,7 +32,7 @@ The `curl` command downloads the Cloudify CLI installer, which is then executed 
 ### Clone the training labs
 
 ```bash
-git clone https://github.com/cloudify-cosmo/cloudify-training-labs
+git clone https://github.com/cloudify-cosmo/cloudify-training-labs -b 3.2.1
 ```
 
 *Note*: an alternative clone URL may be provided by the instructor.
