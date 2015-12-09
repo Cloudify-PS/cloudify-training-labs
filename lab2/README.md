@@ -6,7 +6,7 @@ From within the VM containing the Cloudify CLI, create a directory to be used fo
 mkdir ~/cfylocal && cd ~/cfylocal
 ```
 
-Next, initialize a Cloudify environment, using the basic blueprint:
+Next, initialize a Cloudify environment, using the `basic` blueprint:
 
 ```bash
 cfy local init -p ~/cloudify-training-labs/blueprints/basic/basic.yaml
