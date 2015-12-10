@@ -74,7 +74,7 @@ node_templates:
           implementation: tomcat-scripts/install-tomcat.sh
           inputs:
             process:
-              args: [get_input: vm_ip_address]
+              args: [ {get_input: vm_ip_address} ]
         configure: tomcat-scripts/configure-tomcat.sh
         start: tomcat-scripts/start-tomcat.sh
         stop: tomcat-scripts/stop-tomcat.sh
