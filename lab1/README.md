@@ -13,7 +13,7 @@ You should receive the following from the instructor:
 chmod 0400 <pem_file>
 ```
 
-## Preparing Your CLI VM
+## Preparing your CLI VM
 
 `ssh` into your CLI VM, and run the following commands:
 
@@ -37,7 +37,7 @@ sudo yum install -y cloudify-centos-Core-cli-3.3.1-sp_b310.x86_64.rpm
 
 The above commands download the CLI RPM package, and install it.
 
-### Clone the Training Labs
+### Clone the training labs
 
 ```bash
 git clone -b 3.3.1 https://github.com/cloudify-cosmo/cloudify-training-labs
@@ -45,7 +45,7 @@ git clone -b 3.3.1 https://github.com/cloudify-cosmo/cloudify-training-labs
 
 **NOTE**: an alternative clone URL may be provided by the instructor.
 
-### Activate the `cfy` Virtual Environment
+### Activate the `cfy` virtual environment
 
 ```bash
 source /opt/cfy/env/bin/activate
@@ -59,7 +59,7 @@ For simplicity, execute the following command to ensure that the virtual environ
 echo "source /opt/cfy/env/bin/activate" >> ~/.bash_profile
 ```
 
-### Check Cloudify's Cersion
+### Check Cloudify's version
 
 ```bash
 cfy --version

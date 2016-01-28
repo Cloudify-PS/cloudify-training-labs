@@ -12,7 +12,7 @@ Next, initialize a Cloudify environment, using the basic blueprint:
 cfy local init -p ~/cloudify-training-labs/blueprints/basic/basic.yaml
 ```
 
-## Invoke the `install` Workflow
+## Invoke the `install` workflow
 
 ```bash
 cfy local execute -w install
@@ -37,7 +37,7 @@ The output should be similar to the following:
 2016-01-25 07:05:31 CFY <local> 'install' workflow execution succeeded
 ```
 
-## Invoke the `uninstall` Workflow
+## Invoke the `uninstall` workflow
 
 ```bash
 cfy local execute -w uninstall
