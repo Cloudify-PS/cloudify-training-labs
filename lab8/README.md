@@ -47,7 +47,11 @@ In this part, we will demonstrate the `heal` workflow.
 
 First, we need to find the instance ID of the node we would like to heal. Remember: the `heal` workflow uninstalls, and then reinstalls, the *entire* Compute node containing the node we wish to heal; therefore, you may either look for the instance ID of the Compute node itself, or of any node which is contained in (directly or indirectly) that Compute node.
 
-**NOTE**: as of version 3.2.1, the only way to know a node's instance ID is through the Cloudify UI (see the "Deployments" screen).
+To find the node instance, execute the following command (from the CLI VM):
+
+```bash
+cfy node-instances list -d <deployment_id>
+```
 
 Then, execute the `heal` workflow. For example:
 

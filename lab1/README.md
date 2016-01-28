@@ -7,7 +7,7 @@ You should receive the following from the instructor:
 * Public and private IP's of the virtual machine on which the CLI is going to be installed
 * Private key to use in order to access that virtual machine
 
-**NOTE**: on Linux, make sure that the private key file has restrictive enough permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
+**NOTE**: if you are accessing the CLI machine from Linux, make sure that the private key file has restrictive enough permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
 
 ```bash
 chmod 0400 <pem_file>
@@ -17,33 +17,49 @@ chmod 0400 <pem_file>
 
 `ssh` into your CLI VM, and run the following commands:
 
-`sudo apt-get update`
+`sudo yum install -y unzip git wget`
 
-`sudo apt-get -y install python-pip python-virtualenv python-dev unzip git`
+The command above installs all tools that we'll need on the CLI machine for the duration of the training program. Note that these are *not* dependencies for the CLI itself.
 
-`curl http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py -o get-cloudify.py`
-
-`python get-cloudify.py --virtualenv cfyenv --version 3.2.1`
-
-The first two commands will update `apt`'s sources and then install the dependencies for the Cloudify CLI installer, as well as `git` (`git` is not a dependency of the Cloudify CLI; it is a dependency for this lab).
-
-The `curl` command downloads the Cloudify CLI installer, which is then executed in order to install the Cloudify CLI into a Python `virtualenv` called `cfyenv`.
-
-### Clone the training labs
-
-```bash
-git clone https://github.com/cloudify-cosmo/cloudify-training-labs
+```
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+sudo python get-pip.py
 ```
 
-*Note*: an alternative clone URL may be provided by the instructor.
+The above commands download the `pip` installer and run it.
 
-### Activate the `cfyenv` virtualenv
+**NOTE**: For CentOS/RHEL machines, EPEL indeed contains `pip`; however, it is of an older version that is not supported by Cloudify.
 
-```bash
-source cfyenv/bin/activate
+```
+curl -J -O http://repository.cloudifysource.org/org/cloudify3/3.3.1/sp-RELEASE/cloudify-centos-Core-cli-3.3.1-sp_b310.x86_64.rpm
+sudo yum install -y cloudify-centos-Core-cli-3.3.1-sp_b310.x86_64.rpm
 ```
 
-### Check Cloudify's version
+The above commands download the CLI RPM package, and install it.
+
+### Clone the Training Labs
+
+```bash
+git clone -b 3.3.1 https://github.com/cloudify-cosmo/cloudify-training-labs
+```
+
+**NOTE**: an alternative clone URL may be provided by the instructor.
+
+### Activate the `cfy` Virtual Environment
+
+```bash
+source /opt/cfy/env/bin/activate
+```
+
+The command above activates the Cloudify CLI *virtual environment*. The virtual environment remains in effect until you either deactivate it (using the `deactivate` command), or log out.
+
+For simplicity, execute the following command to ensure that the virtual environment is activated automatically upon logging in:
+
+```bash
+echo "source /opt/cfy/env/bin/activate" >> ~/.bash_profile
+```
+
+### Check Cloudify's Cersion
 
 ```bash
 cfy --version
@@ -52,5 +68,5 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 3.2.1
+Cloudify CLI 3.3.1
 ```

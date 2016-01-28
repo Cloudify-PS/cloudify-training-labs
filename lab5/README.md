@@ -17,10 +17,10 @@ source ~/cfyenv/bin/activate
 
 ```bash
 mkdir ~/work/plugin-lab && cd ~/work/plugin-lab
-wget -O template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.2.1.zip
+wget -O template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.3.1.zip
 unzip template.zip
 rm template.zip
-mv cloudify-plugin-template-3.2.1 test-plugin
+mv cloudify-plugin-template-3.3.1 test-plugin
 ```
 
 That will download `cloudify-plugin-template`, extract it and rename the resulting directory.

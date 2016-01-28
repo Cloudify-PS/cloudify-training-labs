@@ -12,106 +12,107 @@ In a terminal window (where you installed the CLI), execute the following comman
 
 ```bash
 cd ~/work
-wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.2.1.zip
+wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip
 unzip nodecellar.zip
 ```
 
-That will download the latest nodecellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.2.1`.
+That will download the latest nodecellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.3.1`.
 
-## Step 2: Step 2: Configure the inputs file
+## Step 2: Copy key to manager
+
+The blueprint that we are going to install, instructs Cloudify to install the example application on an existing VM.
+Cloudify, therefore, needs access to the private key used to log into that existing VM. In this lab, that "existing VM"
+is actually the manager's VM. As all VM's in the training use the same private key, you can copy the private key from
+the CLI VM to the manager's VM:
+
+```bash
+scp -i cfy-training.pem cfy-training.pem centos@<manager-public-ip>:~/
+```
+
+## Step 3: Configure the inputs file
 
 The Nodecellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
-cp cloudify-nodecellar-example-3.2.1/inputs/singlehost.yaml.template nc-singlehost.yaml
+cp cloudify-nodecellar-example-3.3.1/inputs/singlehost.yaml.template ./nc-singlehost.yaml
 vi nc-singlehost.yaml
 ```
 
-Fill in the manager host's private IP, agent user (`ubuntu`), as well as the path of the keyfile on the manager as written below (make sure you enter the value
-of `agent_private_key_path` *exactly* as shown):
+Fill in the manager host's private IP, agent user (`centos`), as well as the path of the keyfile on the manager as written below:
 
 ```bash
 host_ip: YOUR_MANAGER_INSTANCE'S_PRIVATE_IP
 agent_user: ubuntu
-agent_private_key_path: /root/.ssh/agent_key.pem
+agent_private_key_path: /home/centos/cfy-training.pem
 ```
 
-**Note**: the last parameter, `agent_private_key_path`, specifies the location of the key that the manager is going to use when connecting
-to agent hosts. During bootstrapping, the agent hosts' key is being copied to the Cloudify Manager into `/root/.ssh/agent_key.pem`. The `agent_private_key_path`
-should denote the path to the agent hosts' key *as it is known to the Cloudify Manager* (that is, within the file system which is visible to the Cloudify Manager). As Managers
-in 3.2 run inside docker containers, and the Cloudify Manager runs as `root`, the location of the agent hosts' key is always going to be the same.
-
-## Step 3: Upload the blueprint
+## Step 4: Upload the blueprint
 
 ```bash
-cfy blueprints upload -p cloudify-nodecellar-example-3.2.1/singlehost-blueprint.yaml -b nodecellar
+cfy blueprints upload -p cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml -b nodecellar
 ```
 
 You should see the following output:
 
 ```
-Validating cloudify-nodecellar-example-3.2.1/singlehost-blueprint.yaml
+Validating cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml
 Blueprint validated successfully
-Uploading blueprint cloudify-nodecellar-example-3.2.1/singlehost-blueprint.yaml to management server 15.125.87.108
+Uploading blueprint cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml to management server <public-ip>
 Uploaded blueprint, blueprint's id is: nodecellar
 ```
 
 Go to the web UI and make sure you see a blueprint named 'nodecellar' in the blueprints screen.
 
-![Blueprints screen](../../../raw/master/lab4/blueprints-screen.png "Blueprints screen")
+## Step 5: Create a deployment
 
-## Step 4: Create a deployment
-
-Once Nodecellar's blueprints are uploaded, we need to create a deployment for it, using the inputs file we customized in step 2.
+Once Nodecellar's blueprints are uploaded, we need to create a deployment for it, using the inputs file we customized in step 3.
 
 ```bash
-cfy deployments create -b nodecellar -i nc-singlehost.yaml -d nodecellar
+cfy deployments create -b nodecellar -i nc-singlehost.yaml -d nc-dep-1
 ```
 
 You should see the output similar to the following:
 
 ```
-Creating new deployment from blueprint nodecellar at management server 15.125.87.108
-Deployment created, deployment's id is: nodecellar
+Creating new deployment from blueprint nodecellar at management server <public-ip>
+Deployment created, deployment's id is: nc-dep-1
 ```
 
-## Step 5: Execute the `install` workflow
+## Step 6: Execute the `install` workflow
 
 Once the deployment has been created, we can install the nodecellar application. Trigger the `install` workflow by typing: 
 
 ```bash
-cfy executions start -d nodecellar -w install
+cfy executions start -d nc-dep-1 -w install
 ```
 
 You should see the events being printed to the screen. You can also go to the deployments screen in the UI and see the events there. 
 
 ```
 ...
-2015-06-15T13:09:40 CFY <nodecellar> [nodecellar_ec86f] Starting node
-2015-06-15T13:09:40 CFY <nodecellar> [nodecellar_ec86f.start] Sending task 'script_runner.tasks.run'
-2015-06-15T13:09:43 CFY <nodecellar> [nodecellar_ec86f.start] Task started 'script_runner.tasks.run'
-2015-06-15T13:09:59 CFY <nodecellar> [nodecellar_ec86f.start] Task succeeded 'script_runner.tasks.run'
-2015-06-15T13:10:00 CFY <nodecellar> 'install' workflow execution succeeded
-Finished executing workflow 'install' on deployment 'nodecellar'
-* Run 'cfy events list --include-logs --execution-id edf07e1f-3826-41a9-84eb-a4ebe83ff7d9' to retrieve the execution's events/logs
+2016-01-28T06:24:54 CFY <nc-dep-1> [nodecellar_08f06] Starting node
+2016-01-28T06:24:54 CFY <nc-dep-1> [nodecellar_08f06.start] Sending task 'script_runner.tasks.run'
+2016-01-28T06:24:54 CFY <nc-dep-1> [nodecellar_08f06.start] Task started 'script_runner.tasks.run'
+Finished executing workflow 'install' on deployment 'nc-dep-1'
+* Run 'cfy events list --include-logs --execution-id 71b4a788-9923-4773-8b9d-cebe2734976d' to retrieve the execution's events/logs
 ```
 
-## Step 6: Access the application
+## Step 7: Access the application
 
 Point your browser to your manager's public IP, port 8080. You should now see the Nodecellar application. click the "Start browsing nodecellar" button and see the list of wines that is retrieved from the mongo database.
 
 ![Nodecellar](../../../raw/master/lab4/nodecellar.png "Nodecellar")
 
-## Step 7: View executions
+## Step 8: View executions
 
 ```bash
-cfy executions list -d nodecellar
+cfy executions list -d nc-dep-1
 ```
 
-That will view all workflow executions that have been started on the `nodecellar` deployment. 
+That will view all workflow executions that have been started on the `nc-dep-1` deployment.
 
-## Step 8: View outputs
+## Step 9: View outputs
 
 ```bash
-cfy deployments outputs -d nodecellar 
+cfy deployments outputs -d nc-dep-1
 ```

@@ -1,16 +1,17 @@
-tosca_definitions_version: cloudify_dsl_1_1
+tosca_definitions_version: cloudify_dsl_1_2
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.2.1/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.3.1/types.yaml
 
 node_templates:
   main_host:
     type: cloudify.nodes.Compute
     properties:
-      install_agent: false
+      agent_config:
+        install_method: none
 
   test_application_server:
-    type: cloudify.nodes.ApplicationServer
+    type: cloudify.nodes.Root
     interfaces:
       cloudify.interfaces.lifecycle:
         start: scripts/hello.sh
