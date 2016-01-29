@@ -84,8 +84,7 @@ PID=$!
 
 
 wait_for_server $tomcatPort 'tomcat'
-# This runtime property is used by the stop-tomcat script for killing this tomcat instance.
-# Make sure you use the same property name here and there.
+# This runtime porperty is used by the stop-tomcat script for killing this tomcat instance.
 ctx instance runtime_properties pid ${PID}
 
 

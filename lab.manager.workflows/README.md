@@ -3,7 +3,7 @@
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
 ```bash
-export LAB_ROOT=~/cloudify-training-labs/lab8/exercise
+export LAB_ROOT=~/cloudify-training-labs/lab6/exercise
 ```
 
 ## Part I: `execute_operation`
@@ -34,13 +34,6 @@ The execution should pass a message as a parameter (rather than the message bein
 
 _Tip_: Use the `execute_operation` workflow documentation.
 
-### Step 3: Upload to manager and run in non-local mode
-
-Use commands learned in previous labs to upload, deploy and install `hello-tomcat` on your Cloudify Manager.
-For the purpose of this exercise, it will be assumed that the deployment's name is `hellotomcat`.
-
-Use the `cfy executions start` command to start an execution of the `execute_operation` workflow, along with the required parameters to print a message similarly to how it was done in local mode.
-
 ## Part II: `heal`
 
 In this part, we will demonstrate the `heal` workflow.
@@ -50,7 +43,7 @@ First, we need to find the instance ID of the node we would like to heal. Rememb
 To find the node instance, execute the following command (from the CLI VM):
 
 ```bash
-cfy node-instances list -d <deployment_id>
+cfy local instances
 ```
 
 Then, execute the `heal` workflow. For example:

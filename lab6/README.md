@@ -1,6 +1,4 @@
-# Lab 6: Using Scripts in Lifecycle Events
-
-The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify Manager.
+# Lab 8: Workflows
 
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
@@ -8,68 +6,30 @@ It is assumed that the `LAB_ROOT` environment variable points to the exercise's 
 export LAB_ROOT=~/cloudify-training-labs/lab6/exercise
 ```
 
+## Part I: `execute_operation`
+
 ### Step 1: Replace placeholders
 
-You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT` (you can use `grep` to look for these occurrences), with the suitable values and to add missing parts as well. 
+In `$LAB_ROOT`, you’ll find a folder which contains the `hello-tomcat` blueprint, where an additional interface has been added to the `web_server` type, and an additional simple script `my-logging-operation.sh` now appears.
+
+Replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT` (you can use `grep` to look for these occurrences), with suitable values. At the end, the `tomcat_server` node will have an operation mapping for the new interface, and so that the mapping's implementation will be the new `my-logging-operation.sh` script. Note that the latter uses a `message` parameter.
 
 ### Step 2: Run in local mode
 
-Once you're done, you can run the application in local mode:
+Run the `execute_operation` workflow in local mode (you should be able to complete the commands by yourself):
 
 ```bash
-cd ~/work
-cfy local init -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -i $LAB_ROOT/hello-tomcat/tomcat-local.yaml
-cfy local execute -w install
+cd $LAB_ROOT
+cfy local init -p ... -i ...
+cfy local execute -w execute_operation -p <execution-parameters.yaml> ...
 ```
 
-Now browse to `http://127.0.0.1:8081/helloworld` (from the CLI machine, or `http://<cli-machine-public-ip>:8081/helloworld` from elsewhere) and then run the following CLI command:
+The `<execution-parameters.yaml>` file should be a YAML file that you create, containing parameters to pass to the `execute_operation` workflow, such as:
 
-```bash
-cfy local outputs
-```
+* `operation`
+* `node_ids`
+* etc.
 
-To clean up:
+The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node instance*.
 
-```bash
-cfy local execute -w uninstall
-```
-
-### Step 3: Existing manager
-
-Upload the blueprint to the existing Cloudify manager, created in previous labs:
-
-```bash
-cd ~/work
-cfy blueprints upload -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -b hellotomcat
-cfy deployments create -b hellotomcat -d hellotomcat -i $LAB_ROOT/hello-tomcat/tomcat.yaml
-cfy executions start -d hellotomcat -w install
-```
-
-Notes:
-
-1. For the `deployments create` command, we used a different YAML file for inputs, than we used for running locally.
-2. The blueprint is uploaded under the name `hellotomcat`. The deployment created is also named `hellotomcat`. That is *not* a requirement; the deployment's name may be different from its associated blueprint's name.
-
-To test, navigate to port 8081 of the public IP associated with the VM on which the installation was made:
-
-```
-http://<manager-machine-public-ip>:8081/helloworld
-```
-
-You should be presented with the demo "hello world" application:
-
-![Hello World](../../../raw/master/lab6/helloworld.png "Hello World")
-
-### Step 4: Cleanup
-
-In order to clean up:
-
-1. Uninstall the application.
-2. Remove the `hellotomcat` deployment.
-3. Remove the `hellotomcat` blueprint.
-
-```bash
-cfy executions start -d hellotomcat -w uninstall
-cfy deployments delete -d hellotomcat
-cfy blueprints delete -b hellotomcat
-```
+_Tip_: Use the `execute_operation` workflow documentation.

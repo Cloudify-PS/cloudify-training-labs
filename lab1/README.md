@@ -7,7 +7,8 @@ You should receive the following from the instructor:
 * Public and private IP's of the virtual machine on which the CLI is going to be installed
 * Private key to use in order to access that virtual machine
 
-**NOTE**: if you are accessing the CLI machine from Linux, make sure that the private key file has restrictive enough permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
+**NOTE**: if you are accessing the CLI machine from Linux, make sure that the private key file has restrictive enough
+permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
 
 ```bash
 chmod 0400 <pem_file>
@@ -19,7 +20,8 @@ chmod 0400 <pem_file>
 
 `sudo yum install -y unzip git wget`
 
-The command above installs all tools that we'll need on the CLI machine for the duration of the training program. Note that these are *not* dependencies for the CLI itself.
+The command above installs all tools that we'll need on the CLI machine for the duration of the training program. Note
+that these are *not* dependencies for the CLI itself.
 
 ```
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
@@ -28,7 +30,8 @@ sudo python get-pip.py
 
 The above commands download the `pip` installer and run it.
 
-**NOTE**: For CentOS/RHEL machines, EPEL indeed contains `pip`; however, it is of an older version that is not supported by Cloudify.
+**NOTE**: For CentOS/RHEL machines, EPEL indeed contains `pip`; however, it is of an older version that is not supported
+by Cloudify.
 
 ```
 curl -J -O http://repository.cloudifysource.org/org/cloudify3/3.3.1/sp-RELEASE/cloudify-centos-Core-cli-3.3.1-sp_b310.x86_64.rpm
@@ -51,9 +54,11 @@ git clone -b 3.3.1 https://github.com/cloudify-cosmo/cloudify-training-labs
 source /opt/cfy/env/bin/activate
 ```
 
-The command above activates the Cloudify CLI *virtual environment*. The virtual environment remains in effect until you either deactivate it (using the `deactivate` command), or log out.
+The command above activates the Cloudify CLI *virtual environment*. The virtual environment remains in effect until you
+either deactivate it (using the `deactivate` command), or log out.
 
-For simplicity, execute the following command to ensure that the virtual environment is activated automatically upon logging in:
+For simplicity, execute the following command to ensure that the virtual environment is activated automatically upon
+logging in:
 
 ```bash
 echo "source /opt/cfy/env/bin/activate" >> ~/.bash_profile

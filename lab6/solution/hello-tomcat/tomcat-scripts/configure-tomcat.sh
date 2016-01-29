@@ -84,3 +84,7 @@ sed -i -e "s/port=\"8080\"/port=\"$newPort\"/g" $serverXml
 
 ctx logger info "${currHostName}:${currFilename} End of $0"
 echo "End of $0"
+
+
+
+
