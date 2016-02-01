@@ -7,12 +7,6 @@ The lab is designed so the developed plugin is embedded with the blueprint; howe
 **NOTE**: Although you can run this lab on any VM (as it does not require communicating with the Cloudify Manager), it is recommended that you run it on the
 CLI VM, in order to keep all your work on the same machine. Also, your CLI VM already contains the Cloudify virtualenv, which is required for the completion of this lab. 
 
-**NOTE**: Make sure that you had activated your Cloudify virtualenv before proceeding:
-
-```bash
-source ~/cfyenv/bin/activate
-```
-
 ## Step 1: Download the plugin template
 
 ```bash

@@ -9,7 +9,7 @@ mkdir ~/cfylocal && cd ~/cfylocal
 Next, initialize a Cloudify environment, using the basic blueprint:
 
 ```bash
-cfy local init -p ~/cloudify-training-labs/blueprints/basic/basic.yaml
+cfy local init -p ~/cloudify-training-labs/lab2/blueprint/basic.yaml
 ```
 
 ## Invoke the `install` workflow
@@ -25,14 +25,13 @@ The output should be similar to the following:
 2016-01-25 07:05:28 CFY <local> [main_host_c76c6] Creating node
 2016-01-25 07:05:28 CFY <local> [main_host_c76c6] Configuring node
 2016-01-25 07:05:28 CFY <local> [main_host_c76c6] Starting node
-2016-01-25 07:05:29 CFY <local> [test_application_server_f330f] Creating node
-2016-01-25 07:05:30 CFY <local> [test_application_server_f330f] Configuring node
-2016-01-25 07:05:30 CFY <local> [test_application_server_f330f] Starting node
+...
+...
 2016-01-25 07:05:30 CFY <local> [test_application_server_f330f.start] Sending task 'script_runner.tasks.run'
 2016-01-25 07:05:30 CFY <local> [test_application_server_f330f.start] Task started 'script_runner.tasks.run'
-2016-01-25 07:05:30 LOG <local> [test_application_server_f330f.start] INFO: Executing: /tmp/tmptAF4ya-hello.sh
-2016-01-25 07:05:30 LOG <local> [test_application_server_f330f.start] INFO: Hello!
-2016-01-25 07:05:30 LOG <local> [test_application_server_f330f.start] INFO: Execution done (return_code=0): /tmp/tmptAF4ya-hello.sh
+2016-01-25 07:05:30 LOG <local> [test_application_server_f330f.start] INFO: Executing: /tmp/tmptAF4ya-starting.sh
+2016-01-25 07:05:30 LOG <local> [test_application_server_f330f.start] INFO: Starting!
+2016-01-25 07:05:30 LOG <local> [test_application_server_f330f.start] INFO: Execution done (return_code=0): /tmp/tmptAF4ya-starting.sh
 2016-01-25 07:05:30 CFY <local> [test_application_server_f330f.start] Task succeeded 'script_runner.tasks.run'
 2016-01-25 07:05:31 CFY <local> 'install' workflow execution succeeded
 ```
@@ -50,11 +49,12 @@ The output should be similar to the following:
 2016-01-25 07:05:50 CFY <local> [test_application_server_f330f] Stopping node
 2016-01-25 07:05:50 CFY <local> [test_application_server_f330f.stop] Sending task 'script_runner.tasks.run'
 2016-01-25 07:05:50 CFY <local> [test_application_server_f330f.stop] Task started 'script_runner.tasks.run'
-2016-01-25 07:05:50 LOG <local> [test_application_server_f330f.stop] INFO: Executing: /tmp/tmpmlFCf0-goodbye.sh
-2016-01-25 07:05:51 LOG <local> [test_application_server_f330f.stop] INFO: Goodbye!
-2016-01-25 07:05:51 LOG <local> [test_application_server_f330f.stop] INFO: Execution done (return_code=0): /tmp/tmpmlFCf0-goodbye.sh
+2016-01-25 07:05:50 LOG <local> [test_application_server_f330f.stop] INFO: Executing: /tmp/tmpmlFCf0-stopping.sh
+2016-01-25 07:05:51 LOG <local> [test_application_server_f330f.stop] INFO: Stopping!
+2016-01-25 07:05:51 LOG <local> [test_application_server_f330f.stop] INFO: Execution done (return_code=0): /tmp/tmpmlFCf0-stopping.sh
 2016-01-25 07:05:51 CFY <local> [test_application_server_f330f.stop] Task succeeded 'script_runner.tasks.run'
-2016-01-25 07:05:51 CFY <local> [test_application_server_f330f] Deleting node
+...
+...
 2016-01-25 07:05:51 CFY <local> [main_host_c76c6] Stopping node
 2016-01-25 07:05:52 CFY <local> [main_host_c76c6] Deleting node
 2016-01-25 07:05:52 CFY <local> 'uninstall' workflow execution succeeded

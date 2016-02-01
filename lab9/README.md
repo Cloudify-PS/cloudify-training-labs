@@ -13,15 +13,15 @@ deploying the updated Tomcat application in this lab.
 
 ### Step 1: Replace the placeholders
 
-You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in `tomcat.yaml` and in `tomcat-blueprint.yaml` to add monitoring to the blueprint.
+You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in `inputs/managed.yaml` and in `blueprint/blueprint.yaml` to add monitoring to the blueprint.
 
 You can use the Diamond collectors' reference for information how to configure collectors: https://github.com/python-diamond/Diamond/wiki/Collectors
  
 ### Step 2: Upload and install the blueprint
 
 ```bash
-cfy blueprints upload -p $LAB_ROOT/hello-tomcat/tomcat-blueprint.yaml -b hellotomcat-mon
-cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/hello-tomcat/tomcat.yaml
+cfy blueprints upload -p $LAB_ROOT/blueprint/blueprint.yaml -b hellotomcat-mon
+cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/inputs/managed.yaml
 cfy executions start -d hellotomcat-mon -w install
 ```
 
