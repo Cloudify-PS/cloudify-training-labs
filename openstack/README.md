@@ -1,4 +1,4 @@
-# Lab 11: OpenStack Bootstrapping and Deployment
+# Lab: OpenStack Bootstrapping and Deployment
 
 ### Step 1: Download Manager Blueprints and Nodecellar-Docker
 

@@ -1,11 +1,11 @@
-# Lab 9: Deploying Collectors and Using the Grafana Dashboard
+# Lab: Deploying Collectors and Using the Grafana Dashboard
 
 The purpose of this lab is to add monitoring to the Tomcat blueprint used in lab 4.
 
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
 ```bash
-export LAB_ROOT=~/cloudify-training-labs/lab9/exercise
+export LAB_ROOT=~/cloudify-training-labs/monitoring/exercise
 ```
 
 **NOTE**: ensure that no existing Tomcat process is running on the manager's VM (from previous labs), otherwise you will run into problems

@@ -1,4 +1,4 @@
-# Lab 1: Installing the CLI
+# Lab: Installing the CLI
 
 ## Prerequisites
 
@@ -17,14 +17,21 @@ permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
 chmod 0400 <pem_file>
 ```
 
+### Creating your own CLI VM
+
+If you don't have a CLI VM provided to you, or you would like to use your own image:
+
+* Use a CentOS 7.0 image
+* Install the following packages (using `yum`):
+  * `unzip`
+  * `git`
+  * `wget`
+
+  **NOTE**: These packages are not needed for the Cloudify CLI; they are needed for the completion of the labs.
+
 ## Preparing your CLI VM
 
 `ssh` into your CLI VM, and run the following commands:
-
-`sudo yum install -y unzip git wget`
-
-The command above installs all tools that we'll need on the CLI machine for the duration of the training program. Note
-that these are *not* dependencies of the CLI itself.
 
 ```
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py

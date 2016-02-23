@@ -21,6 +21,9 @@ node_templates:
 
   main_host:
     type: cloudify.nodes.Compute
+
+    # We must define "install_method" as "none" when working in local mode.
+
     properties:
       agent_config:
         install_method: none

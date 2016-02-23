@@ -1,9 +1,9 @@
-# Lab 8: Workflows
+# Lab: Workflows
 
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
 ```bash
-export LAB_ROOT=~/cloudify-training-labs/lab6/exercise
+export LAB_ROOT=~/cloudify-training-labs/workflows/exercise
 ```
 
 ## Part I: `execute_operation`

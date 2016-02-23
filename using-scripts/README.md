@@ -5,7 +5,7 @@ The purpose of this lab is to fix a broken blueprint, install it locally and als
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
 ```bash
-export LAB_ROOT=~/cloudify-training-labs/lab4/exercise
+export LAB_ROOT=~/cloudify-training-labs/using-scripts/exercise
 ```
 
 ### Step 1: Replace placeholders
@@ -29,10 +29,6 @@ cfy local init -p $LAB_ROOT/blueprint/blueprint.yaml -i $LAB_ROOT/inputs/local.y
 cfy local execute -w install
 ```
 
-Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application should show up:
-
-![HelloWorld app](../../../raw/master/lab4/helloworld.png "HelloWorld app")
-
 Then, run the following CLI command:
 
 ```bash
@@ -40,6 +36,10 @@ cfy local outputs
 ```
 
 This command will display the deployment's outputs, as defined in the application's blueprint.
+
+Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application should show up:
+
+![HelloWorld app](../../../raw/master/using-scripts/helloworld.png "HelloWorld app")
 
 To clean up:
 

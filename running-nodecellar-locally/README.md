@@ -1,4 +1,4 @@
-# Lab 3: Running NodeCellar Locally
+# Lab: Running NodeCellar Locally
 
 *NodeCellar* is a sample application, created by Christophe Coenraets, which demonstrates the usage of various technologies
 (Backbone.js, Node.js, MongoDB).

@@ -1,4 +1,4 @@
-# Lab 5: Developing a Simple Plugin
+# Lab: Developing a Simple Plugin
 
 In this lab, we will develop a very simple plugin and use it within a blueprint.
 
