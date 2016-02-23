@@ -101,7 +101,7 @@ Finished executing workflow 'install' on deployment 'nc-dep-1'
 
 Point your browser to your manager's public IP, port 8080. You should now see the Nodecellar application. click the "Start browsing nodecellar" button and see the list of wines that is retrieved from the mongo database.
 
-![Nodecellar](../../../raw/master/running-nodecellar-on-manager/nodecellar.png "Nodecellar")
+![Nodecellar](../../../raw/3.3.1/running-nodecellar-on-manager/nodecellar.png "Nodecellar")
 
 ## Step 8: View executions
 

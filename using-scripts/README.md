@@ -39,7 +39,7 @@ This command will display the deployment's outputs, as defined in the applicatio
 
 Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application should show up:
 
-![HelloWorld app](../../../raw/master/using-scripts/helloworld.png "HelloWorld app")
+![HelloWorld app](../../../raw/3.3.1/using-scripts/helloworld.png "HelloWorld app")
 
 To clean up:
 
