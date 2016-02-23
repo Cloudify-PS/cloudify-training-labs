@@ -1,4 +1,4 @@
-# Lab 3: Manager Bootstrapping Using the Simple Manager Blueprint
+# Lab: Manager Bootstrapping Using the Simple Manager Blueprint
 
 The purpose of this lab is to bootstrap a Cloudify manager on a fresh instance using the simple manager blueprint.
 

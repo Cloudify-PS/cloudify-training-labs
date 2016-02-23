@@ -4,7 +4,7 @@ In this lab, we will run a very basic blueprint using Cloudify.
 
 **NOTE**: The basic blueprint demonstrated in the slides is a fully-working blueprint. However, in order to run the blueprint
 in so-called "local mode" (without a manager installed), a few extra lines have to be added (specifying
-`install_method` == `none`).
+`install_method` as `none`).
 
 From within the VM containing the Cloudify CLI, create a directory to be used for Cloudify's local run:
 
