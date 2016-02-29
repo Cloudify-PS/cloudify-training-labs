@@ -31,6 +31,9 @@ If you don't have a CLI VM provided to you, or you would like to use your own im
   * `wget`
 
   **NOTE**: These packages are not needed for the Cloudify CLI; they are needed for the completion of the labs.
+* Make sure that `iptables` is disabled altogether. This is not a requirement of the CLI per-se, but rather
+a requirement of the training labs; the labs involve using Cloudify in "local mode" to install applications locally, and
+in order to verify proper installation, these applications have to be accessible through their designated ports.
 
 ## Preparing your CLI VM
 
