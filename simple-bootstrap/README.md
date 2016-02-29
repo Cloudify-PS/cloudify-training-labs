@@ -1,13 +1,29 @@
-# Lab: Manager Bootstrapping Using the Simple Manager Blueprint
+# Lab: Manager Bootstrapping
 
-The purpose of this lab is to bootstrap a Cloudify manager on a fresh instance using the simple manager blueprint.
+The purpose of this lab is to bootstrap a Cloudify manager on a fresh VM using the `simple`` manager blueprint.
 
 ## Prerequisites
 
-Before starting, make sure you have the following details from the instructor:
+### Working on a GigaSpaces-provided VM
 
-* The private and public IP's of the server you are going to bootstrap the manager on.
-* The keypair of the server.
+If you are working on this lab as part of the Cloudify official training course, you will be receiving
+the following from the instructor:
+
+* Public and private IP's of the VM on which the CLI is going to be installed
+
+**NOTE**: the private key, used to access the VM on which the Cloudify Manager is to be installed, is identical
+to the private key used to access the CLI VM. *This is not a Cloudify requirement*, but instead a design
+of the training labs, in favour of simplicity.
+
+### Creating your own Cloudify Manager VM
+
+If you don't have a Manager VM provided to you, or you would like to use your own image:
+
+* Use a CentOS 7.0 image
+* Make sure that `iptables` is disabled. Similarly to the CLI VM's case, this is not a Cloudify requirement but a training
+material requirement.
+* Make sure that the VM is connected to a security group that is very permissive (same reasoning as for
+`iptables`).
 
 ## Process
 
@@ -50,7 +66,7 @@ cp cloudify-manager-blueprints-3.3.1/simple-manager-blueprint-inputs.yaml ./mana
 vi manager-inputs.yaml
 ```
 
-Fill in the public and private IP's, SSH user (`centos`), as well as the path of the keyfile you were provided by the instructor:
+Fill in the public and private IP's, SSH user (`centos` for CentOS 7.0), as well as the path to the private key used to SSH to the Manager's VM:
 
 ```yaml
 public_ip: MANAGER_INSTANCE_PUBLIC_IP
@@ -67,13 +83,13 @@ resources_prefix: ''
 Activate the `virtualenv` in which you installed the Cloudify CLI (if it isn't already activated), and type the following:
 
 ```bash
-cfy init
+cfy init -r
 cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.3.1/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 The first command initializes a Cloudify CLI working directory inside the current working directory.
 
-The second command triggers the bootstrap process. It should take around 15 minutes to complete, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the manager printed out, e.g.:
+The second command triggers the bootstrap process. It should take around 15 minutes to complete, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the Manager printed out, e.g.:
 
 ```
 bootstrapping complete
@@ -112,8 +128,8 @@ Services:
 
 ### Step 7: Access the web UI
 
-Using your browser, navigate to your Cloudify Manager's public IP address. For example: `http://15.125.87.108`
+Using your browser, navigate to your Cloudify Manager's public IP address. For example: http://15.125.87.108
 
-You should get the web UI:
+You should get the Cloudify Manager's Web UI:
 
 ![Cloudify 3.3.1 Web UI](../../../raw/3.3.1/simple-bootstrap/cfy-3.3.1-ui.png "Cloudify 3.3.1 Web UI")

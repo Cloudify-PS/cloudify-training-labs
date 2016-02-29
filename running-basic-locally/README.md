@@ -1,4 +1,4 @@
-# Lab: Running Basic Blueprint Locally
+# Lab: Running a Basic Blueprint Locally
 
 In this lab, we will run a very basic blueprint using Cloudify.
 
