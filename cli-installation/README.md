@@ -2,13 +2,16 @@
 
 ## Prerequisites
 
-You should receive the following from the instructor:
+### Working on a GigaSpaces-provided VM
 
-* Public and private IP's of the virtual machine on which the CLI is going to be installed
-* Private key to use in order to access that virtual machine
+If you are working on this lab as part of the Cloudify official training course, you will be receiving
+the following from the instructor:
+
+* Public and private IP's of the VM on which the CLI is going to be installed
+* Private key to use in order to access that VM
 
 Copy the private key, provided by the instructor, to the file system on the machine you're going to use
-to connect to the various VM's (most likely, that would be your laptop).
+to connect to the various VM's (most likely, that would be your own machine).
 
 **NOTE**: if you are accessing the VM's from Linux, make sure that the private key file has restrictive enough
 permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
