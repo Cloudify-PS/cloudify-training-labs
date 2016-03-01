@@ -25,6 +25,7 @@ chmod 0400 <pem_file>
 If you don't have a CLI VM provided to you, or you would like to use your own image:
 
 * Use a CentOS 7.0 image
+* Allow at least 1GB of RAM and 5GB of storage
 * Install the following packages (using `yum`):
   * `unzip`
   * `git`
