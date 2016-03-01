@@ -20,10 +20,14 @@ of the training labs, in favour of simplicity.
 If you don't have a Manager VM provided to you, or you would like to use your own image:
 
 * Use a CentOS 7.0 image
+* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.getcloudify.org/3.3.1/manager/prerequisites/),
+with the following exceptions:
+  * The minimum amount of RAM should be 3GB.
+  * The security group to which this VM is connected should have more permissive rules than the ones stated,
+  because other labs (that depend on this one) install topologies on the very same VM as the Manager's.
+  It is recommended to allow incoming traffic on all ports.
 * Make sure that `iptables` is disabled. Similarly to the CLI VM's case, this is not a Cloudify requirement but a training
 material requirement.
-* Make sure that the VM is connected to a security group that is very permissive (same reasoning as for
-`iptables`).
 
 ## Process
 
