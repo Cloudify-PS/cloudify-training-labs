@@ -4,9 +4,10 @@ The purpose of this lab is to upload a sample blueprint to the Manager you had b
 
 Before starting, make sure you have the IP address of the Manager.
 
-The blueprint we are going to work with, will install a sample application called *Nodecellar*. This is
-the same NodeCellar application used for a previous lab ("Running NodeCellar Locally"); the only difference
-is that we are going to use a different blueprint for installing this application.
+The blueprint we are going to work with, will install a sample application called *NodeCellar* (if you are
+currently going through the full training schedule, this is the same application introduced in a previous lab:
+"Running NodeCellar Locally". The only difference is that we are going to use a different blueprint for
+installing this application).
  
 ## Step 1: Download the NodeCellar blueprint
 
@@ -27,6 +28,8 @@ Cloudify, therefore, needs access to the private key used to log into that exist
 is actually the manager's VM. As all VM's in the training use the same private key, you can copy the private key from
 the CLI VM to the Manager's VM:
 
+(Run this from the CLI machine)
+
 ```bash
 scp -i cfy-training.pem cfy-training.pem centos@<manager-public-ip>:~/
 ```
@@ -44,7 +47,7 @@ Fill in the manager host's private IP, agent user (`centos`), as well as the pat
 
 ```bash
 host_ip: YOUR_MANAGER_INSTANCE'S_PRIVATE_IP
-agent_user: ubuntu
+agent_user: centos
 agent_private_key_path: /home/centos/cfy-training.pem
 ```
 

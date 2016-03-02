@@ -26,21 +26,31 @@ If you don't have a CLI VM provided to you, or you would like to use your own im
 
 * Use a CentOS 7.0 image
 * Allow at least 1GB of RAM and 5GB of storage
-* Install the following packages (using `yum`):
-  * `unzip`
-  * `git`
-  * `wget`
-
-  **NOTE**: These packages are not needed for the Cloudify CLI; they are needed for the completion of the labs.
 * Make sure that `iptables` is disabled. This is not a requirement of the CLI per-se, but rather
 a requirement of the training labs; the labs involve using Cloudify in "local mode" to install applications locally, and
 in order to verify proper installation, these applications have to be accessible through their designated ports.
+  * If you are using `firewalld`, stop it and mask it:
+    ```bash
+    sudo systemctl stop firewalld
+    sudo systemctl mask firewalld
+    ```
+  * If you are using `iptables-services`, stop it and mask it:
+
+    ```bash
+    sudo systemctl stop iptables
+    sudo systemctl mask iptables
+    ```
 * Make sure that the VM is connected to a security group that is very permissive (same reasoning as for
 `iptables`).
 
 ## Preparing your CLI VM
 
 `ssh` into your CLI VM, and run the following commands:
+
+`sudo yum install unzip git wget`
+
+The above command installs packages that are required for the labs.
+**NOTE**: These packages are *not* prerequisites for the Cloudify CLI.
 
 ```
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
