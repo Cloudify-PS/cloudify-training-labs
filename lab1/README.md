@@ -5,13 +5,6 @@
 You should receive the following from the instructor:
 
 * Public and private IP's of the virtual machine on which the CLI is going to be installed
-* Private key to use in order to access that virtual machine
-
-**NOTE**: on Linux, make sure that the private key file has restrictive enough permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
-
-```bash
-chmod 0400 <pem_file>
-```
 
 ## Preparing Your CLI VM
 
@@ -41,6 +34,14 @@ git clone https://github.com/cloudify-cosmo/cloudify-training-labs -b 3.2.1
 
 ```bash
 source cfyenv/bin/activate
+```
+
+The command above activates the Cloudify CLI *virtual environment*. The virtual environment remains in effect until you either deactivate it (using the deactivate command), or log out.
+
+For simplicity, execute the following command to ensure that the virtual environment is activated automatically upon logging in:
+
+```
+echo "source ~/cfyenv/bin/activate" >> ~/.profile
 ```
 
 ### Check Cloudify's version

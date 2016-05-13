@@ -9,48 +9,6 @@ Before starting, make sure you have the following details from the instructor:
 * The private and public IP's of the server you are going to bootstrap the manager on.
 * The keypair of the server.
 
-### Ensure that Docker is installed on the intended manager VM
-
-`docker --version`
-
-If Docker is installed, you will get its version, such as:
-
-```
-Docker version 1.7.1, build 786b29d
-```
-
-If Docker is not installed:
-
-* If you are using Ubuntu 14.04, follow the instructions below to install it
-* Otherwise, refer to the Docker documentation for information how to install Docker on your machine: https://docs.docker.com/docker/installation/
-
-#### Installing Docker on Ubuntu 14.04
-
-```bash
-curl -o install.sh -sSL https://get.docker.com/
-sudo sh install.sh
-```
-
-Then, ensure that the user, installing the Cloudify Manager, belongs to the `docker` group:
-
-```bash
-groups ubuntu
-```
-
-You will get a list of all groups that the user `ubuntu` is a member of. Example:
-
-```
-ubuntu@ip-10-0-0-83:~$ groups ubuntu
-ubuntu : ubuntu adm dialout cdrom floppy sudo audio dip video plugdev netdev docker
-```
-
-If `docker` is not in the groups list, add it:
-
-```bash
-sudo gpasswd -a ubuntu docker
-sudo service docker restart
-```
-
 ## Process
 
 *Note*: These steps should be executed on your CLI VM, *not* on the intended Manager VM.
