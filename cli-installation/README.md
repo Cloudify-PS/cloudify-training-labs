@@ -35,7 +35,6 @@ in order to verify proper installation, these applications have to be accessible
     sudo systemctl mask firewalld
     ```
   * If you are using `iptables-services`, stop it and mask it:
-
     ```bash
     sudo systemctl stop iptables
     sudo systemctl mask iptables
