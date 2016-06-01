@@ -66,8 +66,8 @@ The above commands download the `pip` installer and run it.
 by Cloudify.
 
 ```
-curl -J -O http://repository.cloudifysource.org/org/cloudify3/3.4.0/m4-RELEASE/cloudify-3.4.0~m4-393.el6.x86_64.rpm
-sudo yum install -y cloudify-3.4.0-m4-393.el6.x86_64
+curl -J -O http://repository.cloudifysource.org/org/cloudify3/3.4.0/m5-RELEASE/cloudify-3.4.0~m5-394.el6.x86_64.rpm
+sudo yum install -y cloudify-3.4.0~m5-394.el6.x86_64.rpm
 ```
 
 The above commands download the CLI RPM package, and install it.
