@@ -10,23 +10,24 @@ In this lab, we will use the Cloudify CLI to deploy NodeCellar locally, using a 
 ### Step 1: Download and extract the NodeCellar blueprints
 
 ```bash
-cd ~
-wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip
+cd ~/work
+wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
 unzip nodecellar.zip
+mv cloudify-nodecellar-example-3.4m5/ cloudify-nodecellar-example-local
 ```
 
 ### Step 2: Initialize your working directory
 
 ```bash
-cd ~/cfylocal
-cfy local init -p ../cloudify-nodecellar-example-3.3.1/local-blueprint.yaml
+cd ~/work/cfylocal
+cfy local init -p ../cloudify-nodecellar-example-local/local-blueprint.yaml
 ```
 
 That will initialize the current directory with the blueprint data:
 
 ```
-Initiated ../cloudify-nodecellar-example-3.3.1/local-blueprint.yaml
-If you make changes to the blueprint, run 'cfy local init -p ../cloudify-nodecellar-example-3.3.1/local-blueprint.yaml' again to apply them
+Initiated ../cloudify-nodecellar-example-local/local-blueprint.yaml
+If you make changes to the blueprint, run 'cfy local init -p ../cloudify-nodecellar-example-local/local-blueprint.yaml' again to apply them
 ```
 
 ### Step 3: Run the `install` workflow

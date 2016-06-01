@@ -88,7 +88,7 @@ Activate the `virtualenv` in which you installed the Cloudify CLI (if it isn't a
 
 ```bash
 cfy init -r
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.3.1/simple-manager-blueprint.yaml -i manager-inputs.yaml
+cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.4m5/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 The first command initializes a Cloudify CLI working directory inside the current working directory.

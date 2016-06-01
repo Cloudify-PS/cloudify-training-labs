@@ -15,11 +15,12 @@ Obtain the NodeCellar application from GitHub (this lab assumes that `~/work` is
 
 ```bash
 cd ~/work
-wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip
+wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
 unzip nodecellar.zip
+mv cloudify-nodecellar-example-3.4m5/ cloudify-nodecellar-example
 ```
 
-That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.3.1`.
+That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example`.
 
 ## Step 2: Copy private key to the Manager's VM
 
@@ -39,7 +40,7 @@ scp -i cfy-training.pem cfy-training.pem centos@<manager-public-ip>:~/
 The NodeCellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
-cp cloudify-nodecellar-example-3.3.1/inputs/singlehost.yaml.template ./nc-singlehost.yaml
+cp cloudify-nodecellar-example/inputs/singlehost.yaml.template ./nc-singlehost.yaml
 vi nc-singlehost.yaml
 ```
 
@@ -56,15 +57,15 @@ agent_private_key_path: /home/centos/cfy-training.pem
 ## Step 4: Upload the blueprint
 
 ```bash
-cfy blueprints upload -p cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml -b nodecellar
+cfy blueprints upload -p cloudify-nodecellar-example/simple-blueprint.yaml -b nodecellar
 ```
 
 You should see the following output:
 
 ```
-Validating cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml
+Validating cloudify-nodecellar-example/simple-blueprint.yaml
 Blueprint validated successfully
-Uploading blueprint cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml to management server <public-ip>
+Uploading blueprint cloudify-nodecellar-example/simple-blueprint.yaml to management server <public-ip>
 Uploaded blueprint, blueprint's id is: nodecellar
 ```
 
