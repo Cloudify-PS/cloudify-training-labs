@@ -11,10 +11,10 @@ CLI VM, in order to keep all your work on the same machine. Also, your CLI VM al
 
 ```bash
 mkdir ~/work/plugin-lab && cd ~/work/plugin-lab
-wget -O template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.3.1.zip
+wget -O template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.4m5.zip
 unzip template.zip
 rm template.zip
-mv cloudify-plugin-template-3.3.1 test-plugin
+mv cloudify-plugin-template-3.4m5 test-plugin
 ```
 
 That will download `cloudify-plugin-template`, extract it and rename the resulting directory.

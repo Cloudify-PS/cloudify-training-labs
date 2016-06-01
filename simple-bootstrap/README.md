@@ -20,7 +20,7 @@ of the training labs, in favour of simplicity.
 If you don't have a Manager VM provided to you, or you would like to use your own image:
 
 * Use a CentOS 7.0 image
-* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.getcloudify.org/3.3.1/manager/prerequisites/),
+* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.getcloudify.org/3.4.0/manager/prerequisites/),
 with the following exceptions:
   * The minimum amount of RAM should be 3GB.
   * The security group to which this VM is connected should have more permissive rules than the ones stated,
@@ -53,11 +53,11 @@ For documentation purposes, it is assumed that the key file is available at `~/w
 Execute the following command:
 
 ```bash
-wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.3.1.zip
+wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
 unzip blueprints.zip
 ```
 
-That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.3.1`.
+That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.4m5`.
 
 ### Step 4: Configure the inputs file
 
@@ -66,7 +66,7 @@ The provided manager blueprints ship with templates for manager inputs. These te
 (Back at `~/work`)
 
 ```bash
-cp cloudify-manager-blueprints-3.3.1/simple-manager-blueprint-inputs.yaml ./manager-inputs.yaml
+cp cloudify-manager-blueprints-3.4m5/simple-manager-blueprint-inputs.yaml ./manager-inputs.yaml
 vi manager-inputs.yaml
 ```
 
@@ -111,7 +111,7 @@ cfy status
 You should see output similar to the following. Make sure all components are running:
 
 ```bash
-Getting management services status... [ip=<manager's-public-ip>]
+Getting management services status... [ip=<manager\'s-public-ip>]
 
 Services:
 +--------------------------------+---------+

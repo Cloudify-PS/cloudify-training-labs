@@ -30,15 +30,19 @@ If you don't have a CLI VM provided to you, or you would like to use your own im
 a requirement of the training labs; the labs involve using Cloudify in "local mode" to install applications locally, and
 in order to verify proper installation, these applications have to be accessible through their designated ports.
   * If you are using `firewalld`, stop it and mask it:
+
     ```bash
     sudo systemctl stop firewalld
     sudo systemctl mask firewalld
     ```
+
   * If you are using `iptables-services`, stop it and mask it:
+
     ```bash
     sudo systemctl stop iptables
     sudo systemctl mask iptables
     ```
+
 * Make sure that the VM is connected to a security group that is very permissive (same reasoning as for
 `iptables`).
 
@@ -71,7 +75,7 @@ The above commands download the CLI RPM package, and install it.
 ### Clone the training labs
 
 ```bash
-git clone -b 3.3.1 https://github.com/cloudify-cosmo/cloudify-training-labs
+git clone -b 3.4.0 https://github.com/cloudify-cosmo/cloudify-training-labs
 ```
 
 **NOTE**: an alternative clone URL may be provided by the instructor.
@@ -101,5 +105,5 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 3.3.1
+Cloudify CLI 3.4.0
 ```
