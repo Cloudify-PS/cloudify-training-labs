@@ -80,9 +80,18 @@ public_ip: MANAGER_INSTANCE_PUBLIC_IP
 private_ip: MANAGER_INSTANCE_PRIVATE_IP
 ssh_user: centos
 ssh_key_filename: ~/work/cfy-training.pem
-
 agents_user: centos
-resources_prefix: ''
+```
+
+If deploying on a system with 4GB or less of memory, it may be necessary to limit the amount of memory
+ElasticSearch allocates (for development / testing purposes).  This can be accomplished using
+the following inputs.
+
+```yaml
+# Minimize the ElasticSearch footprint on dev managers
+elasticsearch_heap_size: 1g
+# Update the minimum amount of memory that's required to pass validation
+minimum_required_total_physical_memory_in_mb: 3192
 ```
 
 ### Step 5: Trigger the bootstrap process
@@ -114,7 +123,7 @@ cfy status
 You should see output similar to the following. Make sure all components are running:
 
 ```bash
-Getting management services status... [ip=<manager\'s-public-ip>]
+Getting management services status... [ip=<manager-public-ip>]
 
 Services:
 +--------------------------------+---------+
@@ -139,4 +148,4 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the Cloudify Manager's Web UI:
 
-![Cloudify 3.3.1 Web UI](../../../raw/3.3.1/simple-bootstrap/cfy-3.3.1-ui.png "Cloudify 3.3.1 Web UI")
+![Cloudify 3.4.0 Web UI](cfy-3.4.0-ui.png "Cloudify 3.4.0 Web UI")
