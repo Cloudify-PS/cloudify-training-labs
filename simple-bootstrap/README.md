@@ -96,8 +96,6 @@ minimum_required_total_physical_memory_in_mb: 3192
 
 ### Step 5: Trigger the bootstrap process
 
-Activate the `virtualenv` in which you installed the Cloudify CLI (if it isn't already activated), and type the following:
-
 ```bash
 cfy init -r
 cfy bootstrap --install-plugins -p cloudify-manager-blueprints/simple-manager-blueprint.yaml -i manager-inputs.yaml
