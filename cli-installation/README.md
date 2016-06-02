@@ -80,21 +80,6 @@ git clone -b 3.4.0 https://github.com/cloudify-cosmo/cloudify-training-labs
 
 **NOTE**: an alternative clone URL may be provided by the instructor.
 
-### Activate the `cfy` virtual environment
-
-```bash
-source /opt/cfy/env/bin/activate
-```
-
-The command above activates the Cloudify CLI *virtual environment*. The virtual environment remains in effect until you
-either deactivate it (using the `deactivate` command), or log out.
-
-For simplicity, execute the following command to ensure that the virtual environment is activated automatically upon
-logging in:
-
-```bash
-echo "source /opt/cfy/env/bin/activate" >> ~/.bash_profile
-```
 
 ### Check Cloudify's version
 
@@ -105,5 +90,5 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 3.4.0
+Cloudify CLI 3.4.0-m5
 ```
