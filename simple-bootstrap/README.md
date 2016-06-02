@@ -1,6 +1,6 @@
 # Lab: Manager Bootstrapping
 
-The purpose of this lab is to bootstrap a Cloudify manager on a fresh VM using the `simple`` manager blueprint.
+The purpose of this lab is to bootstrap a Cloudify manager on a fresh VM using the `simple` manager blueprint.
 
 ## Prerequisites
 
@@ -19,13 +19,15 @@ of the training labs, in favour of simplicity.
 
 If you don't have a Manager VM provided to you, or you would like to use your own image:
 
-* Use a CentOS 7.0 image
+* Use a CentOS 7.x or RHEL 7.x image
 * Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.getcloudify.org/3.4.0/manager/prerequisites/),
 with the following exceptions:
-  * The minimum amount of RAM should be 3GB.
+  * Minimum 4GB memory, 8GB recommended.
+  * Minimum 2 vCPUs, 4 vCPUs recommended.
+  * Minimum 5GB storage.
   * The security group to which this VM is connected should have more permissive rules than the ones stated,
   because other labs (that depend on this one) install topologies on the very same VM as the Manager's.
-  It is recommended to allow incoming traffic on all ports.
+  It is recommended to allow incoming traffic on all ports for the labs.
 * Make sure that `iptables` is disabled. Similarly to the CLI VM's case, this is not a Cloudify requirement but a training
 material requirement.
 
@@ -45,7 +47,7 @@ mkdir ~/work && cd ~/work
 
 ### Step 2: Have your Manager VM's private key available
 
-The private key, required to connect to your manager VM, needs to be accessible to the Cloudify CLI. Copy the private key file to your CLI machine (either by either `scp` [linux], `pscp`/`winscp` [Windows] or by pasting the key's contents into an editor).
+The private key, required to connect to your manager VM, needs to be accessible to the Cloudify CLI. Copy the private key file to your CLI machine (either by either `scp` [Linux], `pscp`/`winscp` [Windows] or by pasting the key's contents into an editor).
 For documentation purposes, it is assumed that the key file is available at `~/work/cfy-training.pem`.
 
 ### Step 3: Download the manager blueprint
@@ -55,9 +57,10 @@ Execute the following command:
 ```bash
 wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
 unzip blueprints.zip
+mv cloudify-manager-blueprints-3.4m5/ cloudify-manager-blueprints
 ```
 
-That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.4m5`.
+That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints`.
 
 ### Step 4: Configure the inputs file
 
@@ -66,7 +69,7 @@ The provided manager blueprints ship with templates for manager inputs. These te
 (Back at `~/work`)
 
 ```bash
-cp cloudify-manager-blueprints-3.4m5/simple-manager-blueprint-inputs.yaml ./manager-inputs.yaml
+cp cloudify-manager-blueprints/simple-manager-blueprint-inputs.yaml ./manager-inputs.yaml
 vi manager-inputs.yaml
 ```
 
@@ -88,7 +91,7 @@ Activate the `virtualenv` in which you installed the Cloudify CLI (if it isn't a
 
 ```bash
 cfy init -r
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.4m5/simple-manager-blueprint.yaml -i manager-inputs.yaml
+cfy bootstrap --install-plugins -p cloudify-manager-blueprints/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 The first command initializes a Cloudify CLI working directory inside the current working directory.
