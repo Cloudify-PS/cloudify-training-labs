@@ -33,9 +33,12 @@ Edit the `setup.py` file for your needs. In particular, note the `install_requir
 vi test-plugin/plugin/tasks.py
 ```
 
-Modify the `my_task` method (you may rename it as well). Our goal is to write a plugin that receives two arguments, `str1` and `str2`, and stores a concat of these two strings under a runtime property called `result` on the same node that the plugin operates on.
+Modify the `my_task` method (you may rename it as well). Our goal is to write an operation that:
 
-Also, the plugin should log the received arguments before processing, and the result after processing.
+* Receives two arguments, `str1` and `str2`
+* Prints the arguments
+* Stores a concat of these two strings under a runtime property called `result` on the same node instance that the plugin operates on
+* Prints the result
 
 ## Step 4: Edit `test_plugin.yaml`
 
@@ -45,7 +48,7 @@ vi test-plugin/plugin/tests/blueprint/test_plugin.yaml
 
 This YAML file is intended to function as a `plugin.yaml` file for the plugin, when run through integration tests. Edit it as follows:
 
-* `plugin_name` should be replaced with any name you desire. That would be the plugin's name.
+* `plugin_name` should be replaced with any name you desire. That would be the plugin's name as it is referred-to in blueprints.
 
 ## Step 5: Edit `blueprint.yaml`
 

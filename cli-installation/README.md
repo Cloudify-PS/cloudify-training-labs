@@ -46,7 +46,7 @@ in order to verify proper installation, these applications have to be accessible
 
 `ssh` into your CLI VM, and run the following commands:
 
-`sudo yum install unzip git wget`
+`sudo yum -y install unzip git wget`
 
 The above command installs packages that are required for the labs.
 **NOTE**: These packages are *not* prerequisites for the Cloudify CLI.

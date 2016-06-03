@@ -1,0 +1,39 @@
+# DSL version, should appear in the main blueprint.yaml
+# and may appear in other imports. In such case, the versions must match
+tosca_definitions_version: cloudify_dsl_1_2
+
+imports:
+    # importing cloudify related types, plugins, workflow, etc...
+    # to speed things up, it is possible downloading this file,
+    # including it in the blueprint directory and importing it
+    # instead.
+    - http://www.getcloudify.org/spec/cloudify/3.3.1/types.yaml
+    # relative import of plugin.yaml that resides in the blueprint directory
+    - test_plugin.yaml
+
+inputs:
+    str_1:
+        type: string
+    str_2:
+        type: string
+
+node_templates:
+    # defining a single node template that will serve as our test node
+    test_node_template:
+        # using base cloudify type
+        type: cloudify.nodes.Root
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                start:
+                    # here we map the single plugin task to the start operation
+                    # of the cloudify.interfaces.lifecycle interface
+                    implementation: test_plugin.plugin.tasks.my_task
+                    inputs:
+                        str1: { get_input: str_1 }
+                        str2: { get_input: str_2 }
+
+outputs:
+    # example output the could be used to simplify assertions by test
+    test_output:
+        description: an output for the test
+        value: { get_attribute: [test_node_template, result] }
