@@ -15,23 +15,24 @@ Obtain the NodeCellar application from GitHub (this lab assumes that `~/work` is
 
 ```bash
 cd ~/work
-wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip
+wget -O nodecellar.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-nodecellar-example/archive/3.3.1-maint.zip
 unzip nodecellar.zip
 ```
+
+(**NOTE**: The URL above points to a fork of the official NodeCellar repository, as certain additions have been made since
+the official 3.3.1 release. The original URL was: https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip)
 
 That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.3.1`.
 
 ## Step 2: Copy private key to the Manager's VM
 
-The blueprint that we are going to install, instructs Cloudify to install the example application on an existing VM.
-Cloudify, therefore, needs access to the private key used to log into that existing VM. In this lab, that "existing VM"
-is actually the manager's VM. As all VM's in the training use the same private key, you can copy the private key from
-the CLI VM to the Manager's VM:
+The blueprint that we are going to install, instructs Cloudify to install the example application on existing VMs.
+Cloudify, therefore, needs access to the private key used to log into these VMs.
 
 (Run this from the CLI machine)
 
 ```bash
-scp -i cfy-training.pem cfy-training.pem centos@<manager-public-ip>:~/
+scp -i cfy-training.pem cfy-training.pem centos@<manager-ip>:~/
 ```
 
 ## Step 3: Configure the inputs file

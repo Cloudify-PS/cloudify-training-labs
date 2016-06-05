@@ -52,8 +52,7 @@ The above command installs packages that are required for the labs.
 **NOTE**: These packages are *not* prerequisites for the Cloudify CLI.
 
 ```
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-sudo python get-pip.py
+curl https://bootstrap.pypa.io/get-pip.py | sudo python
 ```
 
 The above commands download the `pip` installer and run it.

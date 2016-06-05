@@ -9,7 +9,7 @@ The purpose of this lab is to bootstrap a Cloudify manager on a fresh VM using t
 If you are working on this lab as part of the Cloudify official training course, you will be receiving
 the following from the instructor:
 
-* Public and private IP's of the VM on which the CLI is going to be installed
+* Private IP's of the VM on which the CLI is going to be installed
 
 **NOTE**: the private key, used to access the VM on which the Cloudify Manager is to be installed, is identical
 to the private key used to access the CLI VM. *This is not a Cloudify requirement*, but instead a design
@@ -53,9 +53,12 @@ For documentation purposes, it is assumed that the key file is available at `~/w
 Execute the following command:
 
 ```bash
-wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.3.1.zip
+wget -O blueprints.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-manager-blueprints/archive/3.3.1-maint.zip
 unzip blueprints.zip
+mv cloudify-manager-blueprints-3.3.1-maint cloudify-manager-blueprints-3.3.1
 ```
+
+(**NOTE**: The GitHub URL above refers to a post-3.3.1 release of Cloudify. The original URL: https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.3.1.zip)
 
 That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.3.1`.
 
@@ -73,13 +76,10 @@ vi manager-inputs.yaml
 Fill in the public and private IP's, SSH user (`centos` for CentOS 7.0), as well as the path to the private key used to SSH to the Manager's VM:
 
 ```yaml
-public_ip: MANAGER_INSTANCE_PUBLIC_IP
-private_ip: MANAGER_INSTANCE_PRIVATE_IP
+public_ip: MANAGER_INSTANCE_IP
+private_ip: MANAGER_INSTANCE_IP
 ssh_user: centos
 ssh_key_filename: ~/work/cfy-training.pem
-
-agents_user: centos
-resources_prefix: ''
 ```
 
 ### Step 5: Trigger the bootstrap process
