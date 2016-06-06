@@ -2,8 +2,6 @@
 
 ## Prerequisites
 
-### Working on a GigaSpaces-provided VM
-
 If you are working on this lab as part of the Cloudify official training course, you will be receiving
 the following from the instructor:
 
@@ -20,31 +18,9 @@ permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
 chmod 0400 <pem_file>
 ```
 
-### Creating your own CLI VM
-
-If you don't have a CLI VM provided to you, or you would like to use your own image:
-
-* Use a CentOS 7.0 image
-* Allow at least 1GB of RAM and 5GB of storage
-* Make sure that `iptables` is disabled. This is not a requirement of the CLI per-se, but rather
-a requirement of the training labs; the labs involve using Cloudify in "local mode" to install applications locally, and
-in order to verify proper installation, these applications have to be accessible through their designated ports.
-  * If you are using `firewalld`, stop it and mask it:
-    ```bash
-    sudo systemctl stop firewalld
-    sudo systemctl mask firewalld
-    ```
-  * If you are using `iptables-services`, stop it and mask it:
-    ```bash
-    sudo systemctl stop iptables
-    sudo systemctl mask iptables
-    ```
-* Make sure that the VM is connected to a security group that is very permissive (same reasoning as for
-`iptables`).
-
 ## Preparing your CLI VM
 
-`ssh` into your CLI VM, and run the following commands:
+`ssh` into your CLI VM, and run the following command:
 
 `sudo yum -y install unzip git wget`
 

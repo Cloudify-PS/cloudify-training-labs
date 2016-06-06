@@ -4,30 +4,14 @@ The purpose of this lab is to bootstrap a Cloudify manager on a fresh VM using t
 
 ## Prerequisites
 
-### Working on a GigaSpaces-provided VM
-
 If you are working on this lab as part of the Cloudify official training course, you will be receiving
 the following from the instructor:
 
-* Private IP's of the VM on which the CLI is going to be installed
+* Private IP of the VM on which the manager is going to be installed
 
 **NOTE**: the private key, used to access the VM on which the Cloudify Manager is to be installed, is identical
 to the private key used to access the CLI VM. *This is not a Cloudify requirement*, but instead a design
 of the training labs, in favour of simplicity.
-
-### Creating your own Cloudify Manager VM
-
-If you don't have a Manager VM provided to you, or you would like to use your own image:
-
-* Use a CentOS 7.0 image
-* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.getcloudify.org/3.3.1/manager/prerequisites/),
-with the following exceptions:
-  * The minimum amount of RAM should be 3GB.
-  * The security group to which this VM is connected should have more permissive rules than the ones stated,
-  because other labs (that depend on this one) install topologies on the very same VM as the Manager's.
-  It is recommended to allow incoming traffic on all ports.
-* Make sure that `iptables` is disabled. Similarly to the CLI VM's case, this is not a Cloudify requirement but a training
-material requirement.
 
 ## Process
 
