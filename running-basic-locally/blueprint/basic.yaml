@@ -19,7 +19,7 @@ node_templates:
   # script is run on the Cloudify Manager side. However, that would present complications that are unnecessary at
   # this stage of the training program.
 
-  main_host:
+  my_host:
     type: cloudify.nodes.Compute
 
     # We must define "install_method" as "none" when working in local mode.
@@ -28,7 +28,7 @@ node_templates:
       agent_config:
         install_method: none
 
-  test_application_server:
+  my_application:
     type: cloudify.nodes.Root
     interfaces:
       cloudify.interfaces.lifecycle:
@@ -43,4 +43,4 @@ node_templates:
       # of it must be contained within a node of type "cloudify.nodes.Compute" (or a subtype thereof).
 
       - type: cloudify.relationships.contained_in
-        target: main_host
+        target: my_host
