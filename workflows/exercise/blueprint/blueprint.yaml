@@ -1,7 +1,7 @@
-tosca_definitions_version: cloudify_dsl_1_2
+tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.3.1/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.4m5/types.yaml
 
 inputs:
   vm_ip_address:
@@ -80,12 +80,6 @@ node_templates:
         stop: tomcat-scripts/stop-tomcat.sh
         uninstall: tomcat-scripts/uninstall-tomcat.sh
       REPLACE_WITH_AN_OPERATION_MAPPING_FOR_THE_NEW_SCRIPT_ACCORDING_TO_THE_NEW_INTERFACE_DECLARED_ON_THE_TYPE_OF_THIS_NODE
-    relationships:
-      - type: cloudify.relationships.contained_in
-        target: tomcat_vm
-
-  scale_node:
-    type: cloudify.nodes.Root
     relationships:
       - type: cloudify.relationships.contained_in
         target: tomcat_vm

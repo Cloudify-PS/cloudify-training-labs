@@ -2,6 +2,18 @@
 
 This project contains the labs material for the official Cloudify training course.
 
+## Security Groups
+
+The following security groups have to be created:
+
+* Security group for Cloudify Manager VM's
+
+  Follow the instructions in the Cloudify Manager prerequisites page, to define the required ingress ports.
+
+* Security group for CLI VM's
+
+  Allow the following incoming ports: 22, 8000
+
 ## Virtual Machines
 
 ### Creating your own CLI VM

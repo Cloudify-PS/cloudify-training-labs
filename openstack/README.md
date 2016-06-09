@@ -6,15 +6,17 @@ The blueprints may have already been downloaded during previous labs. If not:
 
 ```bash
 cd ~/work
-wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.3.1.zip
+wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
 unzip blueprints.zip
+mv cloudify-manager-blueprints-3.4m5/ cloudify-manager-blueprints
 ```
 
 To download the Nodecellar-Docker example:
 
 ```bash
-wget -O nodecellar-docker.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-docker-example/archive/3.3.1.zip
+wget -O nodecellar-docker.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-docker-example/archive/3.4m5.zip
 unzip nodecellar-docker.zip
+mv cloudify-nodecellar-docker-example-3.4m5/ cloudify-nodecellar-docker-example
 ```
 
 ### Step 2: Prepare `openstack_config.json`
@@ -41,7 +43,7 @@ Notes:
 ### Step 3: Prepare `inputs.yaml`
 
 ```bash
-cp cloudify-manager-blueprints-3.3.1/openstack-manager-blueprint-inputs.yaml inputs-os.yaml
+cp cloudify-manager-blueprints/openstack-manager-blueprint-inputs.yaml inputs-os.yaml
 ```
 
 Then, edit `~/work/inputs-os.yaml` for your values.
@@ -52,13 +54,13 @@ Alternatively, you can copy `openstack-manager-blueprint.yaml` aside and edit it
 ### Step 4: Bootstrap the manager
 
 ```bash
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints-3.3.1/openstack-manager-blueprint.yaml -i inputs-os.yaml
+cfy bootstrap --install-plugins -p cloudify-manager-blueprints/openstack-manager-blueprint.yaml -i inputs-os.yaml
 ```
 
 ### Step 5: Prepare nodecellar's blueprint
 
 ```bash
-cp cloudify-nodecellar-docker-example-3.3.1/blueprint/cfy-openstack-inputs.json .
+cp cloudify-nodecellar-docker-example/blueprint/cfy-openstack-inputs.json .
 ```
 
 Then edit `cfy-openstack-inputs.json` to add the image ID and the flavor ID of the image on which you want Node Cellar to be installed.
@@ -66,7 +68,7 @@ Then edit `cfy-openstack-inputs.json` to add the image ID and the flavor ID of t
 ### Step 6: Upload the blueprint, create a deployment, run install
 
 ```bash
-cfy blueprints upload -p cloudify-nodecellar-docker-example-3.2.1/blueprint/openstack.yaml -b nc-docker-os
+cfy blueprints upload -p cloudify-nodecellar-docker-example/blueprint/openstack.yaml -b nc-docker-os
 cfy deployments create -d nc-docker-os -b nc-docker-os -i cfy-openstack-inputs.json
 cfy executions start -d nc-docker-os -w install
 ```

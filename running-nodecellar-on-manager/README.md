@@ -15,6 +15,7 @@ Obtain the NodeCellar application from GitHub (this lab assumes that `~/work` is
 
 ```bash
 cd ~/work
+<<<<<<< HEAD
 wget -O nodecellar.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-nodecellar-example/archive/3.3.1-maint.zip
 unzip nodecellar.zip
 mv cloudify-nodecellar-example-3.3.1-maint cloudify-nodecellar-example-3.3.1
@@ -24,6 +25,14 @@ mv cloudify-nodecellar-example-3.3.1-maint cloudify-nodecellar-example-3.3.1
 the official 3.3.1 release. The original URL was: https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip)
 
 That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.3.1`.
+=======
+wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
+unzip nodecellar.zip
+mv cloudify-nodecellar-example-3.4m5/ cloudify-nodecellar-example
+```
+
+That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example`.
+>>>>>>> josh/master
 
 ## Step 2: Copy private key to the Manager's VM
 
@@ -42,8 +51,13 @@ ssh -i cfy-training.pem centos@<manager-ip> 'sudo mv cfy-training.pem /root'
 The NodeCellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
+<<<<<<< HEAD
 cp cloudify-nodecellar-example-3.3.1/inputs/simple.yaml.template ./nc-simple.yaml
 vi nc-simple.yaml
+=======
+cp cloudify-nodecellar-example/inputs/singlehost.yaml.template ./nc-singlehost.yaml
+vi nc-singlehost.yaml
+>>>>>>> josh/master
 ```
 
 Fill in the manager host's private IP, agent user (`centos`), as well as the path of the private key file on the manager as written below:
@@ -60,15 +74,15 @@ agent_private_key_path: /root/cfy-training.pem
 ## Step 4: Upload the blueprint
 
 ```bash
-cfy blueprints upload -p cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml -b nodecellar
+cfy blueprints upload -p cloudify-nodecellar-example/simple-blueprint.yaml -b nodecellar
 ```
 
 You should see the following output:
 
 ```
-Validating cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml
+Validating cloudify-nodecellar-example/simple-blueprint.yaml
 Blueprint validated successfully
-Uploading blueprint cloudify-nodecellar-example-3.3.1/simple-blueprint.yaml to management server <public-ip>
+Uploading blueprint cloudify-nodecellar-example/simple-blueprint.yaml to management server <public-ip>
 Uploaded blueprint, blueprint's id is: nodecellar
 ```
 

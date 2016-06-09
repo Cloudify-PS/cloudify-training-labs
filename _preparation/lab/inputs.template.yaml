@@ -1,0 +1,12 @@
+cli_image_id: ''
+cli_instance_type: ''
+manager_image_id: ''
+manager_instance_type: ''
+aws_access_key_id: ''
+aws_secret_access_key: ''
+ec2_region_name: ''
+vpc_id: ''
+subnet_id: ''
+keypair_name: ''
+key_filename: ''
+

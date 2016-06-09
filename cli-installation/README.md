@@ -2,8 +2,7 @@
 
 ## Prerequisites
 
-If you are working on this lab as part of the Cloudify official training course, you will be receiving
-the following from the instructor:
+You will be receiving the following from the instructor:
 
 * Public and private IP's of the VM on which the CLI is going to be installed
 * Private key to use in order to access that VM
@@ -22,11 +21,6 @@ chmod 0400 <pem_file>
 
 `ssh` into your CLI VM, and run the following command:
 
-`sudo yum -y install unzip git wget`
-
-The above command installs packages that are required for the labs.
-**NOTE**: These packages are *not* prerequisites for the Cloudify CLI.
-
 ```
 curl https://bootstrap.pypa.io/get-pip.py | sudo python
 ```
@@ -37,35 +31,11 @@ The above commands download the `pip` installer and run it.
 by Cloudify.
 
 ```
-curl -J -O http://repository.cloudifysource.org/org/cloudify3/3.3.1/sp-RELEASE/cloudify-centos-Core-cli-3.3.1-sp_b310.x86_64.rpm
-sudo yum install -y cloudify-centos-Core-cli-3.3.1-sp_b310.x86_64.rpm
+curl -J -O http://repository.cloudifysource.org/org/cloudify3/3.4.0/m5-RELEASE/cloudify-3.4.0~m5-394.el6.x86_64.rpm
+sudo yum install -y cloudify-3.4.0~m5-394.el6.x86_64.rpm
 ```
 
 The above commands download the CLI RPM package, and install it.
-
-### Clone the training labs
-
-```bash
-git clone -b 3.3.1 https://github.com/cloudify-cosmo/cloudify-training-labs
-```
-
-**NOTE**: an alternative clone URL may be provided by the instructor.
-
-### Activate the `cfy` virtual environment
-
-```bash
-source /opt/cfy/env/bin/activate
-```
-
-The command above activates the Cloudify CLI *virtual environment*. The virtual environment remains in effect until you
-either deactivate it (using the `deactivate` command), or log out.
-
-For simplicity, execute the following command to ensure that the virtual environment is activated automatically upon
-logging in:
-
-```bash
-echo "source /opt/cfy/env/bin/activate" >> ~/.bash_profile
-```
 
 ### Check Cloudify's version
 
@@ -76,5 +46,5 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 3.3.1
+Cloudify CLI 3.4.0-m5
 ```
