@@ -105,6 +105,10 @@ node_templates:
           from_port: 8000
           to_port: 8000
           cidr_ip: 0.0.0.0/0
+        - ip_protocol: TCP
+          from_port: 8081
+          to_port: 8081
+          cidr_ip: 0.0.0.0/0
     relationships:
       - type: cloudify.aws.relationships.security_group_contained_in_vpc
         target: vpc
