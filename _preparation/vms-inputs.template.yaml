@@ -1,0 +1,15 @@
+aws_access_key_id: ''
+aws_secret_access_key: ''
+ec2_region_name: ''
+vpc_id: ''
+existing_subnet_id: ''
+keypair_name: ''
+private_key_path: ''
+cli_image_id: ''
+cli_instance_type: ''
+cli_security_group_id: ''
+cli_ssh_user: centos
+manager_image_id: ''
+manager_instance_type: ''
+manager_security_group_id: ''
+manager_ssh_user: centos
