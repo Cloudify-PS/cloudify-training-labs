@@ -15,7 +15,7 @@ Obtain the NodeCellar application from GitHub (this lab assumes that `~/work` is
 
 ```bash
 cd ~/work
-wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
+curl -L -o nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
 unzip nodecellar.zip
 mv cloudify-nodecellar-example-3.4m5/ cloudify-nodecellar-example
 ```
@@ -24,15 +24,14 @@ That will download the latest NodeCellar application and its blueprints, and ext
 
 ## Step 2: Copy private key to the Manager's VM
 
-The blueprint that we are going to install, instructs Cloudify to install the example application on an existing VM.
-Cloudify, therefore, needs access to the private key used to log into that existing VM. In this lab, that "existing VM"
-is actually the manager's VM. As all VM's in the training use the same private key, you can copy the private key from
-the CLI VM to the Manager's VM:
+The blueprint that we are going to install, instructs Cloudify to install the example application on existing VMs.
+Cloudify, therefore, needs access to the private key used to log into these VMs.
 
 (Run this from the CLI machine)
 
 ```bash
-scp -i cfy-training.pem cfy-training.pem centos@<manager-public-ip>:~/
+scp -i cfy-training.pem cfy-training.pem centos@<manager-ip>:~/
+ssh -i cfy-training.pem centos@<manager-ip> 'sudo mv cfy-training.pem /root'
 ```
 
 ## Step 3: Configure the inputs file
@@ -47,9 +46,10 @@ vi nc-singlehost.yaml
 Fill in the manager host's private IP, agent user (`centos`), as well as the path of the private key file on the manager as written below:
 
 ```bash
-host_ip: YOUR_MANAGER_INSTANCE'S_PRIVATE_IP
+nodejs_host_ip: YOUR_NODEJS_VM_IP
+mongod_host_ip: YOUR MONGOD_VM_IP
 agent_user: centos
-agent_private_key_path: /home/centos/cfy-training.pem
+agent_private_key_path: /root/cfy-training.pem
 ```
 
 **NOTE**: `agent_private_key_path` should be the path to the key file *as it is known to the Cloudify Manager*.
@@ -76,7 +76,7 @@ Go to the Web UI and make sure you see a blueprint named 'NodeCellar' in the blu
 Once NodeCellar's blueprint is uploaded, we need to create a deployment for it, using the inputs file we customized in step 3.
 
 ```bash
-cfy deployments create -b nodecellar -i nc-singlehost.yaml -d nc-dep-1
+cfy deployments create -b nodecellar -i nc-simple.yaml -d nc-dep-1
 ```
 
 You should see the output similar to the following:
@@ -91,7 +91,7 @@ Deployment created, deployment's id is: nc-dep-1
 Once the deployment has been created, we can install the NodeCellar application. Trigger the `install` workflow by typing:
 
 ```bash
-cfy executions start -d nc-dep-1 -w install
+cfy executions start -d nc-dep-1 -w install -l
 ```
 
 You should see the events being printed to the screen. You can also go to the deployments screen in the UI and see the events there. 
@@ -107,9 +107,9 @@ Finished executing workflow 'install' on deployment 'nc-dep-1'
 
 ## Step 7: Access the application
 
-Point your browser to your Manager's public IP, port 8080. You should now see the NodeCellar application. click the "Start Browsing Node Cellar" button and see the list of wines that is retrieved from the installed Mongo database.
+Point your browser to your NodeJS's public IP, port 8080. You should now see the NodeCellar application. click the "Start Browsing Node Cellar" button and see the list of wines that is retrieved from the installed Mongo database.
 
-![Nodecellar](../../../raw/3.3.1/running-nodecellar-on-manager/nodecellar.png "NodeCellar")
+![Nodecellar](../../../raw/3.4.0/running-nodecellar-on-manager/nodecellar.png "NodeCellar")
 
 ## Step 8: View executions
 
@@ -132,7 +132,7 @@ cfy deployments outputs -d nc-dep-1
 To uninstall the application, trigger the `uninstall` workflow:
 
 ```bash
-cfy executions start -d nc-dep-1 -w uninstall
+cfy executions start -d nc-dep-1 -w uninstall -l
 ```
 
 The NodeCellar application will be uninstalled, and will no longer be available for browsing.

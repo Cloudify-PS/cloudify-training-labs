@@ -24,7 +24,7 @@ grep -r "REPLACE_WITH" $LAB_ROOT
 Once you're done, you can run the application in local mode:
 
 ```bash
-cd ~/work
+cd ~/cfylocal
 cfy local init -p $LAB_ROOT/blueprint/blueprint.yaml -i $LAB_ROOT/inputs/local.yaml
 cfy local execute -w install
 ```

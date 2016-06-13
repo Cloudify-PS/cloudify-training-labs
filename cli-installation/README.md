@@ -2,8 +2,6 @@
 
 ## Prerequisites
 
-### Working on a GigaSpaces-provided VM
-
 If you are working on this lab as part of the Cloudify official training course, you will be receiving
 the following from the instructor:
 
@@ -20,66 +18,16 @@ permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
 chmod 0400 <pem_file>
 ```
 
-### Creating your own CLI VM
+## Process
 
-If you don't have a CLI VM provided to you, or you would like to use your own image:
+### Install the CLI RPM package
 
-* Use a CentOS 7.0 image
-* Allow at least 1GB of RAM and 5GB of storage
-* Make sure that `iptables` is disabled. This is not a requirement of the CLI per-se, but rather
-a requirement of the training labs; the labs involve using Cloudify in "local mode" to install applications locally, and
-in order to verify proper installation, these applications have to be accessible through their designated ports.
-  * If you are using `firewalld`, stop it and mask it:
-
-    ```bash
-    sudo systemctl stop firewalld
-    sudo systemctl mask firewalld
-    ```
-
-  * If you are using `iptables-services`, stop it and mask it:
-
-    ```bash
-    sudo systemctl stop iptables
-    sudo systemctl mask iptables
-    ```
-
-* Make sure that the VM is connected to a security group that is very permissive (same reasoning as for
-`iptables`).
-
-## Preparing your CLI VM
-
-`ssh` into your CLI VM, and run the following commands:
-
-`sudo yum install unzip git wget`
-
-The above command installs packages that are required for the labs.
-**NOTE**: These packages are *not* prerequisites for the Cloudify CLI.
-
-```
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-sudo python get-pip.py
-```
-
-The above commands download the `pip` installer and run it.
-
-**NOTE**: For CentOS/RHEL machines, EPEL contains `pip`; however, it is of an older version that is not supported
-by Cloudify.
+Run the following commands to download the CLI RPM package and install it:
 
 ```
 curl -J -O http://repository.cloudifysource.org/org/cloudify3/3.4.0/m5-RELEASE/cloudify-3.4.0~m5-394.el6.x86_64.rpm
 sudo yum install -y cloudify-3.4.0~m5-394.el6.x86_64.rpm
 ```
-
-The above commands download the CLI RPM package, and install it.
-
-### Clone the training labs
-
-```bash
-git clone -b 3.4.0 https://github.com/cloudify-cosmo/cloudify-training-labs
-```
-
-**NOTE**: an alternative clone URL may be provided by the instructor.
-
 
 ### Check Cloudify's version
 
