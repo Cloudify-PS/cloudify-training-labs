@@ -30,23 +30,49 @@ inputs:
     type: string
   cli_instance_type:
     type: string
-  # CLI security group
-  cli_security_group_id:
-    type: string
   cli_ssh_user:
     type: string
     default: centos
+  labs_repo_url:
+    type: string
+    default: https://github.com/cloudify-cosmo/cloudify-training-labs.git
+  labs_branch:
+    type: string
+    default: 3.3.1
+  # CLI security group
+  cli_security_group_id:
+    type: string
   # Manager
   manager_image_id:
     type: string
   manager_instance_type:
     type: string
-  # Manager security group
-  manager_security_group_id:
-    type: string
   manager_ssh_user:
     type: string
     default: centos
+  # Manager security group
+  manager_security_group_id:
+    type: string
+  # NodeJS
+  nodejs_image_id:
+    type: string
+  nodejs_instance_type:
+    type: string
+  nodejs_ssh_user:
+    type: string
+    default: centos
+  nodejs_security_group_id:
+    type: string
+  # MongoDB
+  mongodb_image_id:
+    type: string
+  mongodb_instance_type:
+    type: string
+  mongodb_ssh_user:
+    type: string
+    default: centos
+  mongodb_security_group_id:
+    type: string
 
 dsl_definitions:
   aws_config: &aws_config
@@ -103,6 +129,26 @@ node_templates:
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
+  nodejs_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      use_external_resource: true
+      resource_id: { get_input: nodejs_security_group_id }
+      description: ''
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
+  mongodb_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      use_external_resource: true
+      resource_id: { get_input: mongodb_security_group_id }
+      description: ''
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
   cli_ip:
     type: cloudify.aws.nodes.ElasticIP
     properties:
@@ -130,12 +176,21 @@ node_templates:
     type: cloudify.nodes.Root
     interfaces:
       cloudify.interfaces.lifecycle:
-        configure:
+        create:
           implementation: fabric.fabric_plugin.tasks.run_commands
           inputs:
-            fabric_env: *cli_fabric_env
             commands:
               - sudo yum -y install unzip git
+            fabric_env: *cli_fabric_env
+        configure:
+          implementation: scripts/configure.sh
+          executor: central_deployment_agent
+          inputs:
+            host: { get_attribute: [ cli_vm, public_ip_address ]}
+            user: { get_input: cli_ssh_user }
+            key_filename: { get_property: [ keypair, private_key_path ] }
+            labs_repo_url: { get_input: labs_repo_url }
+            labs_branch: { get_input: labs_branch }
     relationships:
       - target: cli_vm
         type: cloudify.relationships.contained_in
@@ -155,3 +210,54 @@ node_templates:
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_contained_in_subnet
+  nodejs_ip:
+    type: cloudify.aws.nodes.ElasticIP
+    properties:
+      aws_config: *aws_config
+      domain: vpc
+  nodejs_vm:
+    type: cloudify.aws.nodes.Instance
+    properties:
+      aws_config: *aws_config
+      agent_config:
+        install_method: none
+      image_id: { get_input: nodejs_image_id }
+      instance_type: { get_input: nodejs_instance_type }
+      name: nodejs
+    relationships:
+      - target: keypair
+        type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: nodejs_ip
+        type: cloudify.aws.relationships.instance_connected_to_elastic_ip
+      - target: nodejs_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: subnet
+        type: cloudify.aws.relationships.instance_contained_in_subnet
+  mongodb_vm:
+    type: cloudify.aws.nodes.Instance
+    properties:
+      aws_config: *aws_config
+      agent_config:
+        install_method: none
+      image_id: { get_input: mongodb_image_id }
+      instance_type: { get_input: mongodb_instance_type }
+      name: mongodb
+    relationships:
+      - target: keypair
+        type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: mongodb_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: subnet
+        type: cloudify.aws.relationships.instance_contained_in_subnet
+
+outputs:
+  ip_addresses:
+    value:
+      cli:
+        public: { get_attribute: [ cli_vm, public_ip_address ] }
+        private: { get_attribute: [ cli_vm, ip ] }
+      manager: { get_attribute: [ manager_vm, ip ] }
+      nodejs:
+        public: { get_attribute: [ nodejs_vm, public_ip_address ] }
+        private: { get_attribute: [ nodejs_vm, ip ] }
+      mongodb: { get_attribute: [ mongodb_vm, ip ] }

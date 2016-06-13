@@ -29,6 +29,14 @@ inputs:
   manager_security_group_id:
     type: string
     default: cfy-training-3.3.1-manager
+  # NodeJS security group
+  nodejs_security_group_id:
+    type: string
+    default: cfy-training-3.3.1-nodejs
+  # MongoDB security group
+  mongodb_security_group_id:
+    type: string
+    default: cfy-training-3.3.1-mongodb
 
 dsl_definitions:
   aws_config: &aws_config
@@ -51,7 +59,6 @@ node_templates:
       use_external_resource: false
       resource_id: { get_input: cli_security_group_id }
       description: Cloudify Training (CLI)
-
       rules:
         - ip_protocol: tcp
           from_port: 22
@@ -99,6 +106,44 @@ node_templates:
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
+  nodejs_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      use_external_resource: false
+      resource_id: { get_input: nodejs_security_group_id }
+      description: Cloudify Training (NodeJS)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8080
+          to_port: 8080
+          cidr_ip: 0.0.0.0/0
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
+  mongodb_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      use_external_resource: false
+      resource_id: { get_input: mongodb_security_group_id }
+      description: Cloudify Training (MongoDB)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 27017
+          to_port: 27017
+          cidr_ip: { get_input: cidr_block }
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
 
 outputs:
   vpc:
@@ -108,3 +153,5 @@ outputs:
     value:
       cli: { get_attribute: [ cli_security_group, aws_resource_id ] }
       manager: { get_attribute: [ manager_security_group, aws_resource_id ] }
+      nodejs: { get_attribute: [ nodejs_security_group, aws_resource_id ] }
+      mongodb: { get_attribute: [ mongodb_security_group, aws_resource_id ] }
