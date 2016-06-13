@@ -28,6 +28,12 @@ in order to verify proper installation, these applications have to be accessible
 * Make sure that the VM is connected to a security group that is very permissive (same reasoning as for
 `iptables`).
 
+* Install `unzip` and `git` (needed for the labs; not Cloudify prerequisites)
+
+  ```
+  sudo yum -y install unzip git
+  ```
+
 ### Creating your own Cloudify Manager VM
 
 If you don't have a Manager VM provided to you, or you would like to use your own image:

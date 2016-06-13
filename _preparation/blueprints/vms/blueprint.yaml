@@ -181,6 +181,7 @@ node_templates:
           inputs:
             commands:
               - sudo yum -y install unzip git
+              - curl https://bootstrap.pypa.io/get-pip.py | sudo python
             fabric_env: *cli_fabric_env
         configure:
           implementation: scripts/configure.sh

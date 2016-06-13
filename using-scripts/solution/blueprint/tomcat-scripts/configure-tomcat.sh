@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 currHostName=`hostname`
 currFilename=$(basename "$0")
@@ -47,7 +47,7 @@ function download {
 		O_FLAG="-O" 
 		LINK_FLAG=""
 	elif [ "$DOWNLOADER" == "curl" ];then
-		Q_FLAG="--silent"
+		Q_FLAG="--silent -k"
 		O_FLAG="-o"
 		LINK_FLAG="-O"
 	fi

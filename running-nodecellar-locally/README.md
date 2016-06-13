@@ -3,7 +3,7 @@
 *NodeCellar* is a sample application, created by Christophe Coenraets, which demonstrates the usage of various technologies
 (Backbone.js, Node.js, MongoDB).
 
-In this lab, we will use the Cloudify CLI to deploy NodeCellar locally, using a blueprint.
+In this lab, we will use the Cloudify CLI to deploy NodeCellar on the same CLI machine, using a blueprint.
 
 ## Process
 
@@ -11,7 +11,7 @@ In this lab, we will use the Cloudify CLI to deploy NodeCellar locally, using a 
 
 ```bash
 cd ~
-wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip
+curl -L -o nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip
 unzip nodecellar.zip
 ```
 

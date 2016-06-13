@@ -18,38 +18,16 @@ permissions on it, to avoid being rejected by SSH (`0400` or `0600` would do):
 chmod 0400 <pem_file>
 ```
 
-## Preparing your CLI VM
+## Process
 
-`ssh` into your CLI VM, and run the following command:
+### Install the CLI RPM package
 
-`sudo yum -y install unzip git wget`
-
-The above command installs packages that are required for the labs.
-**NOTE**: These packages are *not* prerequisites for the Cloudify CLI.
-
-```
-curl https://bootstrap.pypa.io/get-pip.py | sudo python
-```
-
-The above commands download the `pip` installer and run it.
-
-**NOTE**: For CentOS/RHEL machines, EPEL contains `pip`; however, it is of an older version that is not supported
-by Cloudify.
+Run the following commands to download the CLI RPM package and install it:
 
 ```
 curl -J -O http://repository.cloudifysource.org/org/cloudify3/3.3.1/sp-RELEASE/cloudify-centos-Core-cli-3.3.1-sp_b310.x86_64.rpm
 sudo yum install -y cloudify-centos-Core-cli-3.3.1-sp_b310.x86_64.rpm
 ```
-
-The above commands download the CLI RPM package, and install it.
-
-### Clone the training labs
-
-```bash
-git clone -b 3.3.1 https://github.com/cloudify-cosmo/cloudify-training-labs
-```
-
-**NOTE**: an alternative clone URL may be provided by the instructor.
 
 ### Activate the `cfy` virtual environment
 
