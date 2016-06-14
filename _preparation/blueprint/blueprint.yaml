@@ -1,9 +1,9 @@
-tosca_definitions_version: cloudify_dsl_1_2
+tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.3.1/types.yaml
-  - http://www.getcloudify.org/spec/fabric-plugin/1.3.1/plugin.yaml
-  - http://www.getcloudify.org/spec/aws-plugin/1.4/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.4rc1/types.yaml
+  - http://www.getcloudify.org/spec/fabric-plugin/1.4/plugin.yaml
+  - https://raw.githubusercontent.com/GigaSpaces-ProfessionalServices/cloudify-aws-plugin/1.4.1-maint/plugin.yaml
 
 inputs:
   # General
@@ -13,11 +13,20 @@ inputs:
     type: string
   ec2_region_name:
     type: string
+  students_count:
+    type: integer
+    default: 1
   # VPC
+  use_existing_vpc:
+    type: boolean
   vpc_id:
     type: string
     default: ''
+  cidr_block:
+    type: string
   # Subnet
+  use_existing_subnet:
+    type: boolean
   existing_subnet_id:
     type: string
   # Keypair
@@ -38,10 +47,11 @@ inputs:
     default: https://github.com/cloudify-cosmo/cloudify-training-labs.git
   labs_branch:
     type: string
-    default: 3.3.1
+    default: 3.4.0
   # CLI security group
   cli_security_group_id:
     type: string
+    default: cfy-training-3.4.0-cli
   # Manager
   manager_image_id:
     type: string
@@ -50,9 +60,9 @@ inputs:
   manager_ssh_user:
     type: string
     default: centos
-  # Manager security group
   manager_security_group_id:
     type: string
+    default: cfy-training-3.4.0-manager
   # NodeJS
   nodejs_image_id:
     type: string
@@ -62,7 +72,7 @@ inputs:
     type: string
     default: centos
   nodejs_security_group_id:
-    type: string
+    default: cfy-training-3.4.0-nodejs
   # MongoDB
   mongodb_image_id:
     type: string
@@ -72,7 +82,7 @@ inputs:
     type: string
     default: centos
   mongodb_security_group_id:
-    type: string
+    default: cfy-training-3.4.0-mongodb
 
 dsl_definitions:
   aws_config: &aws_config
@@ -92,30 +102,52 @@ node_templates:
       use_external_resource: true
       resource_id: { get_input: keypair_name }
       private_key_path: { get_input: private_key_path }
+
   vpc:
     type: cloudify.aws.nodes.VPC
     properties:
       aws_config: *aws_config
-      use_external_resource: true
+      use_external_resource: { get_input: use_existing_vpc }
       resource_id: { get_input: vpc_id }
-      cidr_block: ''
+      cidr_block: { get_input: cidr_block }
+
   subnet:
     type: cloudify.aws.nodes.Subnet
     properties:
       aws_config: *aws_config
-      use_external_resource: true
+      use_external_resource: { get_input: use_existing_subnet }
       resource_id: { get_input: existing_subnet_id }
       cidr_block: ''
     relationships:
       - type: cloudify.aws.relationships.subnet_contained_in_vpc
         target: vpc
+
   cli_security_group:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: true
+      use_external_resource: false
       resource_id: { get_input: cli_security_group_id }
-      description: ''
+      description: Cloudify Training (CLI)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+        # Required for the "Running NodeCellar Locally" lab
+        - ip_protocol: tcp
+          from_port: 8080
+          to_port: 8080
+          cidr_ip: 0.0.0.0/0
+        # Required for the "Using Scripts" lab
+        - ip_protocol: tcp
+          from_port: 8081
+          to_port: 8081
+          cidr_ip: 0.0.0.0/0
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
@@ -123,9 +155,34 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: true
+      use_external_resource: false
       resource_id: { get_input: manager_security_group_id }
-      description: ''
+      description: Cloudify Training (manager)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 443
+          to_port: 443
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 53229
+          to_port: 53229
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 5672
+          to_port: 5672
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8101
+          to_port: 8101
+          cidr_ip: { get_input: cidr_block }
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
@@ -133,9 +190,18 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: true
+      use_external_resource: false
       resource_id: { get_input: nodejs_security_group_id }
-      description: ''
+      description: Cloudify Training (NodeJS)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8080
+          to_port: 8080
+          cidr_ip: 0.0.0.0/0
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
@@ -143,9 +209,18 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: true
+      use_external_resource: false
       resource_id: { get_input: mongodb_security_group_id }
-      description: ''
+      description: Cloudify Training (MongoDB)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 27017
+          to_port: 27017
+          cidr_ip: { get_input: cidr_block }
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
@@ -171,7 +246,7 @@ node_templates:
       - target: cli_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
-        type: cloudify.aws.relationships.instance_contained_in_subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
   cli_configuration:
     type: cloudify.nodes.Root
     interfaces:
@@ -210,7 +285,7 @@ node_templates:
       - target: manager_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
-        type: cloudify.aws.relationships.instance_contained_in_subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
   nodejs_ip:
     type: cloudify.aws.nodes.ElasticIP
     properties:
@@ -233,7 +308,7 @@ node_templates:
       - target: nodejs_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
-        type: cloudify.aws.relationships.instance_contained_in_subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
   mongodb_vm:
     type: cloudify.aws.nodes.Instance
     properties:
@@ -249,16 +324,15 @@ node_templates:
       - target: mongodb_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
-        type: cloudify.aws.relationships.instance_contained_in_subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
 
-outputs:
-  ip_addresses:
-    value:
-      cli:
-        public: { get_attribute: [ cli_vm, public_ip_address ] }
-        private: { get_attribute: [ cli_vm, ip ] }
-      manager: { get_attribute: [ manager_vm, ip ] }
-      nodejs:
-        public: { get_attribute: [ nodejs_vm, public_ip_address ] }
-        private: { get_attribute: [ nodejs_vm, ip ] }
-      mongodb: { get_attribute: [ mongodb_vm, ip ] }
+groups:
+  trainee:
+    members: [cli_vm, cli_ip, nodejs_vm, nodejs_ip, manager_vm, mongodb_vm]
+
+policies:
+  trainee_policy:
+    type: cloudify.policies.scaling
+    properties:
+      default_instances: { get_input: students_count }
+    targets: [trainee]

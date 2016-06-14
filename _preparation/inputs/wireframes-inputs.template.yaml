@@ -1,8 +1,0 @@
-aws_access_key_id: ''
-aws_secret_access_key: ''
-ec2_region_name: ''
-use_existing_vpc: ''
-vpc_id: ''
-cidr_block: ''
-cli_security_group_id: ''
-manager_security_group_id: ''
