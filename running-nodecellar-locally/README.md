@@ -11,29 +11,16 @@ In this lab, we will use the Cloudify CLI to deploy NodeCellar on the same CLI m
 
 ```bash
 cd ~
-curl -L -o nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
+curl -L -o nodecellar.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-nodecellar-example/archive/3.4rc1-maint.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4m5/ cloudify-nodecellar-example-local
+mv cloudify-nodecellar-example-3.4rc1-maint/ cloudify-nodecellar-example
 ```
 
-### Step 2: Initialize your working directory
+### Step 2: Install the blueprint
 
 ```bash
 cd ~/cfylocal
-cfy local init -p ../cloudify-nodecellar-example-local/local-blueprint.yaml
-```
-
-That will initialize the current directory with the blueprint data:
-
-```
-Initiated ../cloudify-nodecellar-example-local/local-blueprint.yaml
-If you make changes to the blueprint, run 'cfy local init -p ../cloudify-nodecellar-example-local/local-blueprint.yaml' again to apply them
-```
-
-### Step 3: Run the `install` workflow
-
-```bash
-cfy local execute -w install
+cfy local install -p ../cloudify-nodecellar-example/local-blueprint.yaml
 ```
 
 You should now see the CLI in action - iterating through the blueprint's nodes, creating them, starting them and
@@ -41,13 +28,22 @@ instantiating relationships.
 
 ```
 ...
-2016-01-29 04:40:18 LOG <local> [nodecellar_2dc99.start] INFO: Sucessfully started Nodecellar (2960)
-2016-01-29 04:40:18 LOG <local> [nodecellar_2dc99.start] INFO: Execution done (return_code=0): /tmp/tmpxkdjeq-start-nodecellar-app.sh
-2016-01-29 04:40:18 CFY <local> [nodecellar_2dc99.start] Task succeeded 'script_runner.tasks.run'
-2016-01-29 04:40:19 CFY <local> 'install' workflow execution succeeded
+2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb] Starting node
+2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb.start] Sending task 'script_runner.tasks.run'
+2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb.start] Task started 'script_runner.tasks.run'
+2016-06-15 17:28:02 LOG <local> [nodecellar_7f2bb.start] INFO: Executing: /tmp/tmpQXZZRp-start-nodecellar-app.sh
+2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: MongoDB is located at localhost:27017
+2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: Starting nodecellar application on port 8080
+2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: /tmp/ee4c9789-8292-413a-83c0-9f3fee4cda36/nodejs/nodejs-binaries/bin/node /tmp/ee4c9789-8292-413a-83c0-9f3fee4cda36/nodecellar/nodecellar-source/server.js
+2016-06-15 17:28:05 LOG <local> [nodecellar_7f2bb.start] INFO: Running Nodecellar liveness detection on port 8080
+2016-06-15 17:28:05 LOG <local> [nodecellar_7f2bb.start] INFO: [GET] http://localhost:8080 200
+2016-06-15 17:28:06 LOG <local> [nodecellar_7f2bb.start] INFO: Sucessfully started Nodecellar (9881)
+2016-06-15 17:28:06 LOG <local> [nodecellar_7f2bb.start] INFO: Execution done (return_code=0): /tmp/tmpQXZZRp-start-nodecellar-app.sh
+2016-06-15 17:28:06 CFY <local> [nodecellar_7f2bb.start] Task succeeded 'script_runner.tasks.run'
+2016-06-15 17:28:07 CFY <local> 'install' workflow execution succeeded
 ```
 
-### Step 4: Test the application
+### Step 3: Test the application
 
 The application is now installed. Point your browser to `http://<cli-vm-public-ip>:8080` and you should see
 the NodeCellar application.
@@ -69,10 +65,10 @@ This command will calculate the value of the `outputs` structure in the blueprin
 }
 ```
 
-### Step 5: Run the `uninstall` workflow
+### Step 4: Uninstall the application
 
 ```bash
-cfy local execute -w uninstall
+cfy local uninstall
 ```
 
 That will run the `uninstall` built-in workflow, which calls the `stop` and `delete` operations on all nodes, while

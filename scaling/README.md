@@ -5,9 +5,9 @@ The purpose of this lab is to deploy and scale an example web application.
 ## Step 1: Download example application
 
 ```bash
-wget -O helloworld.zip https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/3.4m5.zip
+wget -O helloworld.zip https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/3.4rc1.zip
 unzip helloworld.zip
-mv cloudify-hello-world-example-3.4m5/ cloudify-hello-world
+mv cloudify-hello-world-example-3.4rc1/ cloudify-hello-world
 ```
 
 This will download the latest Hello World example application and extract it to `./cloudify-hello-world`.

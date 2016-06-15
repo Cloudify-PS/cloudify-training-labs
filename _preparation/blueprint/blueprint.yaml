@@ -255,7 +255,7 @@ node_templates:
           implementation: fabric.fabric_plugin.tasks.run_commands
           inputs:
             commands:
-              - sudo yum -y install unzip git
+              - sudo yum -y install unzip git nano
               - curl https://bootstrap.pypa.io/get-pip.py | sudo python
             fabric_env: *cli_fabric_env
         configure:
@@ -336,3 +336,15 @@ policies:
     properties:
       default_instances: { get_input: students_count }
     targets: [trainee]
+
+outputs:
+  ip_addresses:
+    value:
+      cli:
+        private: { get_attribute: [cli_vm, ip] }
+        public: { get_attribute: [cli_vm, public_ip_address]}
+      manager: { get_attribute: [manager_vm, ip] }
+      nodejs:
+        private: { get_attribute: [nodejs_vm, ip] }
+        public: { get_attribute: [nodejs_vm, public_ip_address]}
+      mongodb: { get_attribute: [mongodb_vm, ip] }

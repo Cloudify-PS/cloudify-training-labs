@@ -79,3 +79,14 @@ The output should be similar to the following:
 2016-06-13 09:39:42 CFY <local> [my_host_841a8] Deleting node
 2016-06-13 09:39:42 CFY <local> 'uninstall' workflow execution succeeded
 ```
+
+## Invoke it all at once
+
+Since the sequence of initializing a blueprint and running the `install` workflow is very common,
+there is a command that performs both at the same time:
+
+```bash
+cfy local install -p ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml
+```
+
+Conversely, the `cfy local uninstall` command runs the `uninstall` workflow.

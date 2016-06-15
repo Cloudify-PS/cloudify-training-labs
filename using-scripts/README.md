@@ -25,8 +25,7 @@ Once you're done, you can run the application in local mode:
 
 ```bash
 cd ~/cfylocal
-cfy local init -p $LAB_ROOT/blueprint/blueprint.yaml -i $LAB_ROOT/inputs/local.yaml
-cfy local execute -w install
+cfy local install -p $LAB_ROOT/blueprint/blueprint.yaml -i $LAB_ROOT/inputs/local.yaml
 ```
 
 Then, run the following CLI command:
@@ -39,10 +38,10 @@ This command will display the deployment's outputs, as defined in the applicatio
 
 Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application should show up:
 
-![HelloWorld app](../../../raw/3.3.1/using-scripts/helloworld.png "HelloWorld app")
+![HelloWorld app](../../../raw/3.4.0/using-scripts/helloworld.png "HelloWorld app")
 
 To clean up:
 
 ```bash
-cfy local execute -w uninstall
+cfy local uninstall
 ```
