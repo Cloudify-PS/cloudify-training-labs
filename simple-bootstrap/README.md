@@ -30,7 +30,7 @@ mkdir ~/work && cd ~/work
 ### Step 2: Have your Manager VM's private key available
 
 The private key, required to connect to your manager VM, needs to be accessible to the Cloudify CLI. Copy the private key file to your CLI machine (either by either `scp` [linux], `pscp`/`winscp` [Windows] or by pasting the key's contents into an editor).
-For documentation purposes, it is assumed that the key file is available at `~/work/cfy-training.pem`.
+For documentation purposes, it is assumed that the key file is available at `~/cfy-training.pem`.
 
 ### Step 3: Download the manager blueprint
 
@@ -39,7 +39,7 @@ Execute the following command:
 ```bash
 curl -L -o blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4rc1.zip
 unzip blueprints.zip
-mv cloudify-manager-blueprints-3.4rc1/ cloudify-manager-blueprints
+mv cloudify-manager-blueprints-3.4rc1 cloudify-manager-blueprints
 ```
 
 That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints`.
@@ -61,8 +61,7 @@ Fill in the public and private IP's, SSH user (`centos` for CentOS 7.0), as well
 public_ip: MANAGER_INSTANCE_IP
 private_ip: MANAGER_INSTANCE_IP
 ssh_user: centos
-ssh_key_filename: ~/work/cfy-training.pem
-agents_user: centos
+ssh_key_filename: ~/cfy-training.pem
 ```
 
 If deploying on a system with 4GB or less of memory, it may be necessary to limit the amount of memory
@@ -70,9 +69,6 @@ ElasticSearch allocates (for development / testing purposes).  This can be accom
 the following inputs.
 
 ```yaml
-# Minimize the ElasticSearch footprint on dev managers
-elasticsearch_heap_size: 1g
-# Update the minimum amount of memory that's required to pass validation
 minimum_required_total_physical_memory_in_mb: 3192
 ```
 
@@ -80,7 +76,7 @@ minimum_required_total_physical_memory_in_mb: 3192
 
 ```bash
 cfy init -r
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints/simple-manager-blueprint.yaml -i manager-inputs.yaml
+cfy bootstrap -p cloudify-manager-blueprints/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 The first command initializes a Cloudify CLI working directory inside the current working directory.

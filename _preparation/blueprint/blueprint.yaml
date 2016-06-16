@@ -94,6 +94,21 @@ dsl_definitions:
     user: { get_input: cli_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
 
+node_types:
+  lab_vm:
+    derived_from: cloudify.aws.nodes.Instance
+    properties:
+      aws_config:
+        default: *aws_config
+      agent_config:
+        default:
+          install_method: none
+#      parameters:
+#        default:
+#          blockDeviceMapping:
+#            - device_name: /dev/sda1
+#              delete_on_termination: true
+
 node_templates:
   keypair:
     type: cloudify.aws.nodes.KeyPair
@@ -230,11 +245,8 @@ node_templates:
       aws_config: *aws_config
       domain: vpc
   cli_vm:
-    type: cloudify.aws.nodes.Instance
+    type: lab_vm
     properties:
-      aws_config: *aws_config
-      agent_config:
-        install_method: none
       image_id: { get_input: cli_image_id }
       instance_type: { get_input: cli_instance_type }
       name: cli
@@ -256,8 +268,9 @@ node_templates:
           inputs:
             commands:
               - sudo yum -y install unzip git nano
+              # pip and virtualenv are not needed by Cloudify as of 3.4, but needed by the
+              # developing-simple-plugin lab
               - curl https://bootstrap.pypa.io/get-pip.py | sudo python
-              # Not needed by Cloudify as of 3.4, but needed by the developing-simple-plugin lab
               - sudo pip install virtualenv
             fabric_env: *cli_fabric_env
         configure:
@@ -273,11 +286,8 @@ node_templates:
       - target: cli_vm
         type: cloudify.relationships.contained_in
   manager_vm:
-    type: cloudify.aws.nodes.Instance
+    type: lab_vm
     properties:
-      aws_config: *aws_config
-      agent_config:
-        install_method: none
       image_id: { get_input: manager_image_id }
       instance_type: { get_input: manager_instance_type }
       name: manager
@@ -294,11 +304,8 @@ node_templates:
       aws_config: *aws_config
       domain: vpc
   nodejs_vm:
-    type: cloudify.aws.nodes.Instance
+    type: lab_vm
     properties:
-      aws_config: *aws_config
-      agent_config:
-        install_method: none
       image_id: { get_input: nodejs_image_id }
       instance_type: { get_input: nodejs_instance_type }
       name: nodejs
@@ -312,11 +319,8 @@ node_templates:
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
   mongodb_vm:
-    type: cloudify.aws.nodes.Instance
+    type: lab_vm
     properties:
-      aws_config: *aws_config
-      agent_config:
-        install_method: none
       image_id: { get_input: mongodb_image_id }
       instance_type: { get_input: mongodb_instance_type }
       name: mongodb
