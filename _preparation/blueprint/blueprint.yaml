@@ -282,6 +282,13 @@ node_templates:
             key_filename: { get_property: [ keypair, private_key_path ] }
             labs_repo_url: { get_input: labs_repo_url }
             labs_branch: { get_input: labs_branch }
+      labs:
+        pull:
+          implementation: fabric.fabric_plugin.tasks.run_commands
+          inputs:
+            commands:
+              - cd cloudify-training-labs && git pull
+            fabric_env: *cli_fabric_env
     relationships:
       - target: cli_vm
         type: cloudify.relationships.contained_in
