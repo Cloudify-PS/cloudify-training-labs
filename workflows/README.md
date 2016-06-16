@@ -54,9 +54,9 @@ cfy local instances
 Then, execute the `heal` workflow. For example:
 
 ```bash
-cfy local execute -w heal -p 'node_instance_id: host_f4c49'
+cfy local execute -w heal -p 'node_instance_id: lab_vm_a644a'
 ```
 
 ## Part III: Uninstall
 
-Use the commands learned in previous labs to uninstall the deployment you had created, delete the deployment and remove the `hello-tomcat` application.
+Use the commands learned in previous labs to uninstall the lab application.
