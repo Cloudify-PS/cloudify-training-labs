@@ -257,6 +257,8 @@ node_templates:
             commands:
               - sudo yum -y install unzip git nano
               - curl https://bootstrap.pypa.io/get-pip.py | sudo python
+              # Not needed by Cloudify as of 3.4, but needed by the developing-simple-plugin lab
+              - sudo pip install virtualenv
             fabric_env: *cli_fabric_env
         configure:
           implementation: scripts/configure.sh

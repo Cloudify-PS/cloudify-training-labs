@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cfy local execute -w execute_operation -p '{"operation": "my_custom_interface.my_logging_operation", "node_ids": ["tomcat_server"], "operation_kwargs": {"message": "SUCCESS!" } }'
+cfy local execute -w execute_operation -p '{"operation": "my_custom_interface.log", "node_ids": ["lab"], "operation_kwargs": {"message": "SUCCESS!" } }'

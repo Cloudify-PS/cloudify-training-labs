@@ -8,11 +8,16 @@ export LAB_ROOT=~/cloudify-training-labs/workflows/exercise
 
 ## Part I: `execute_operation`
 
+`$LAB_ROOT/blueprint/blueprint.yaml` is a very simple blueprint, defining a node called `lab`.
+Your task consists of:
+
+1.  Add an operation to the `lab` node
+2.  Bind the operation to the included script, `scripts/my-logging-operation.sh`
+3.  Use the `execute_operation` workflow to invoke the script
+
 ### Step 1: Replace placeholders
 
-In `$LAB_ROOT`, you’ll find a folder which contains the `hello-tomcat` blueprint, where an additional interface has been added to the `web_server` type, and an additional simple script `my-logging-operation.sh` now appears.
-
-Replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under `$LAB_ROOT` (you can use `grep` to look for these occurrences), with suitable values. At the end, the `tomcat_server` node will have an operation mapping for the new interface, and so that the mapping's implementation will be the new `my-logging-operation.sh` script. Note that the latter uses a `message` parameter.
+Grep the blueprint for `REPLACE_WITH`. Replace that string with an operation definition.
 
 ### Step 2: Run in local mode
 
@@ -20,7 +25,7 @@ Run the `execute_operation` workflow in local mode (you should be able to comple
 
 ```bash
 cd $LAB_ROOT
-cfy local init -p blueprint/blueprint.yaml -i inputs/local.yaml
+cfy local init -p blueprint/blueprint.yaml
 cfy local execute -w execute_operation -p <execution-parameters.yaml> ...
 ```
 

@@ -10,8 +10,8 @@ CLI VM, in order to keep all your work on the same machine. Also, your CLI VM al
 ## Step 1: Download the plugin template
 
 ```bash
-mkdir ~/work/plugin-lab && cd ~/work/plugin-lab
-wget -O template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.4rc1.zip
+mkdir -p ~/work/plugin-lab && cd ~/work/plugin-lab
+curl -L -o template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.4rc1.zip
 unzip template.zip
 rm template.zip
 mv cloudify-plugin-template-3.4rc1 test-plugin
@@ -74,20 +74,20 @@ vi test-plugin/plugin/tests/test_plugin.py
 
 ## Step 7: Install plugin requirements
 
-Before running the tester, you need to install its Python dependencies. You may either use your current virtualenv, or create another; for simplicity, we will use the same virtualenv
-we use elsewhere. If that virtualenv is not currently active, then activate it.
-
-Then:
+Before running the tester, you need to install its Python dependencies.
+It is a good practice to install packages into a Python virtual environment, rather than to the system-level
+libraries. Therefore, we will create a virtual environment and work from there:
 
 ```bash
+virtualenv ~/dev-env
 cd test-plugin
-pip install -r dev-requirements.txt
+~/dev-env/bin/pip install -r dev-requirements.txt
 ```
 
 ## Step 8: Run the unit test
 
 ```bash
-python -m unittest plugin.tests.test_plugin
+~/dev-env/bin/python -m unittest plugin.tests.test_plugin
 ```
 
 You will see output similar to the following:
