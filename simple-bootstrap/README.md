@@ -37,9 +37,9 @@ For documentation purposes, it is assumed that the key file is available at `~/c
 Execute the following command:
 
 ```bash
-curl -L -o blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4rc1.zip
+curl -L -o blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
 unzip blueprints.zip
-mv cloudify-manager-blueprints-3.4rc1 cloudify-manager-blueprints
+mv cloudify-manager-blueprints-3.4m5 cloudify-manager-blueprints
 ```
 
 That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints`.

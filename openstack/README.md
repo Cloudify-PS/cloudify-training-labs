@@ -6,17 +6,17 @@ The blueprints may have already been downloaded during previous labs. If not:
 
 ```bash
 cd ~/work
-wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4rc1.zip
+wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
 unzip blueprints.zip
-mv cloudify-manager-blueprints-3.4rc1/ cloudify-manager-blueprints
+mv cloudify-manager-blueprints-3.4m5/ cloudify-manager-blueprints
 ```
 
 To download the Nodecellar-Docker example:
 
 ```bash
-wget -O nodecellar-docker.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-docker-example/archive/3.4rc1.zip
+wget -O nodecellar-docker.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-docker-example/archive/3.4m5.zip
 unzip nodecellar-docker.zip
-mv cloudify-nodecellar-docker-example-3.4rc1/ cloudify-nodecellar-docker-example
+mv cloudify-nodecellar-docker-example-3.4m5/ cloudify-nodecellar-docker-example
 ```
 
 ### Step 2: Prepare `openstack_config.json`

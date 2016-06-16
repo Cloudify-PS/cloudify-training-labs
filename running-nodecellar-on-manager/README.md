@@ -15,9 +15,9 @@ Obtain the NodeCellar application from GitHub (this lab assumes that `~/work` is
 
 ```bash
 cd ~/work
-curl -L -o nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4rc1.zip
+curl -L -o nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4rc1/ cloudify-nodecellar-example
+mv cloudify-nodecellar-example-3.4m5/ cloudify-nodecellar-example
 ```
 
 That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example`.
