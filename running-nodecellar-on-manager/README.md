@@ -2,22 +2,23 @@
 
 The purpose of this lab is to upload a sample blueprint to the Manager you had bootstrapped previously, create a deployment for it and install it on the same VM as the manager.
 
-Before starting, make sure you have the IP address of the Manager.
-
 The blueprint we are going to work with, will install a sample application called *NodeCellar* (if you are
 currently going through the full training schedule, this is the same application introduced in a previous lab:
 "Running NodeCellar Locally". The only difference is that we are going to use a different blueprint for
 installing this application).
  
-## Step 1: Download the NodeCellar blueprint
+## Step 1: Download the NodeCellar blueprints
+
+**NOTE**: You may already have downloaded the blueprints in an earlier lab. If you had, then please skip
+this step.
 
 Obtain the NodeCellar application from GitHub (this lab assumes that `~/work` is the working directory used to bootstrap the manager from):
 
 ```bash
-cd ~/work
-curl -L -o nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
+cd ~
+curl -L -o nodecellar.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-nodecellar-example/archive/3.4m5-maint.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4m5/ cloudify-nodecellar-example
+mv cloudify-nodecellar-example-3.4m5-maint/ cloudify-nodecellar-example
 ```
 
 That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example`.
@@ -30,8 +31,8 @@ Cloudify, therefore, needs access to the private key used to log into these VMs.
 (Run this from the CLI machine)
 
 ```bash
-scp -i cfy-training.pem cfy-training.pem centos@<manager-ip>:~/
-ssh -i cfy-training.pem centos@<manager-ip> 'sudo mv cfy-training.pem /root'
+scp -i ~/cfy-training.pem ~/cfy-training.pem centos@<manager-ip>:~/
+ssh -i ~/cfy-training.pem centos@<manager-ip> 'sudo mv cfy-training.pem /root'
 ```
 
 ## Step 3: Configure the inputs file
@@ -39,8 +40,9 @@ ssh -i cfy-training.pem centos@<manager-ip> 'sudo mv cfy-training.pem /root'
 The NodeCellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
-cp cloudify-nodecellar-example/inputs/singlehost.yaml.template ./nc-singlehost.yaml
-vi nc-singlehost.yaml
+cd ~/work
+cp ../cloudify-nodecellar-example/inputs/simple.yaml.template ./nc-simple.yaml
+vi nc-simple.yaml
 ```
 
 Fill in the manager host's private IP, agent user (`centos`), as well as the path of the private key file on the manager as written below:
@@ -57,19 +59,24 @@ agent_private_key_path: /root/cfy-training.pem
 ## Step 4: Upload the blueprint
 
 ```bash
-cfy blueprints upload -p cloudify-nodecellar-example/simple-blueprint.yaml -b nodecellar
+cfy blueprints upload -p ../cloudify-nodecellar-example/simple-blueprint.yaml -b nodecellar
 ```
 
 You should see the following output:
 
 ```
-Validating cloudify-nodecellar-example/simple-blueprint.yaml
-Blueprint validated successfully
-Uploading blueprint cloudify-nodecellar-example/simple-blueprint.yaml to management server <public-ip>
-Uploaded blueprint, blueprint's id is: nodecellar
+Uploading blueprint ../cloudify-nodecellar-example/simple-blueprint.yaml...
+Blueprint uploaded. The blueprint's id is nodecellar
 ```
 
-Go to the Web UI and make sure you see a blueprint named 'NodeCellar' in the blueprints screen.
+To witness that the blueprint has been uploaded:
+
+*   Through the CLI:
+
+    ```bash
+    cfy blueprints list
+    ```
+*   Through the UI: Go to the Cloudify Manager's web UI and select the "Blueprints" section.
 
 ## Step 5: Create a deployment
 
@@ -82,8 +89,9 @@ cfy deployments create -b nodecellar -i nc-simple.yaml -d nc-dep-1
 You should see the output similar to the following:
 
 ```
-Creating new deployment from blueprint nodecellar at management server <public-ip>
-Deployment created, deployment's id is: nc-dep-1
+Processing inputs source: nc-simple.yaml
+Creating new deployment from blueprint nodecellar...
+Deployment created. The deployment's id is nc-dep-1
 ```
 
 ## Step 6: Execute the `install` workflow
@@ -98,11 +106,14 @@ You should see the events being printed to the screen. You can also go to the de
 
 ```
 ...
-2016-01-28T06:24:54 CFY <nc-dep-1> [nodecellar_08f06] Starting node
-2016-01-28T06:24:54 CFY <nc-dep-1> [nodecellar_08f06.start] Sending task 'script_runner.tasks.run'
-2016-01-28T06:24:54 CFY <nc-dep-1> [nodecellar_08f06.start] Task started 'script_runner.tasks.run'
-Finished executing workflow 'install' on deployment 'nc-dep-1'
-* Run 'cfy events list --include-logs --execution-id 71b4a788-9923-4773-8b9d-cebe2734976d' to retrieve the execution's events/logs
+2016-06-16T22:18:04 LOG <nc-dep-1> [nodecellar_fdb78.start] INFO: Running Nodecellar liveness detection on port 8080
+2016-06-16T22:18:05 LOG <nc-dep-1> [nodecellar_fdb78.start] INFO: [GET] http://localhost:8080 200
+2016-06-16T22:18:05 LOG <nc-dep-1> [nodecellar_fdb78.start] INFO: Sucessfully started Nodecellar (17185)
+2016-06-16T22:18:05 LOG <nc-dep-1> [nodecellar_fdb78.start] INFO: Execution done (return_code=0): /tmp/S3BL9/start-nodecellar-app.sh
+2016-06-16T22:18:05 CFY <nc-dep-1> [nodecellar_fdb78.start] Task succeeded 'script_runner.tasks.run'
+2016-06-16T22:18:06 CFY <nc-dep-1> 'install' workflow execution succeeded
+Finished executing workflow install on deployment nc-dep-1
+* Run 'cfy events list --include-logs --execution-id 51f28499-cdc8-48c6-907e-d1378a8ac37a' to retrieve the execution's events/logs
 ```
 
 ## Step 7: Access the application

@@ -292,6 +292,11 @@ node_templates:
     relationships:
       - target: cli_vm
         type: cloudify.relationships.contained_in
+  manager_ip:
+    type: cloudify.aws.nodes.ElasticIP
+    properties:
+      aws_config: *aws_config
+      domain: vpc
   manager_vm:
     type: lab_vm
     properties:
@@ -301,6 +306,8 @@ node_templates:
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: manager_ip
+        type: cloudify.aws.relationships.instance_connected_to_elastic_ip
       - target: manager_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
@@ -341,7 +348,7 @@ node_templates:
 
 groups:
   trainee:
-    members: [cli_vm, cli_ip, nodejs_vm, nodejs_ip, manager_vm, mongodb_vm]
+    members: [cli_vm, cli_ip, nodejs_vm, nodejs_ip, manager_vm, manager_ip, mongodb_vm]
 
 policies:
   trainee_policy:
@@ -356,7 +363,9 @@ outputs:
       cli:
         private: { get_attribute: [cli_vm, ip] }
         public: { get_attribute: [cli_vm, public_ip_address]}
-      manager: { get_attribute: [manager_vm, ip] }
+      manager:
+        private: { get_attribute: [manager_vm, ip] }
+        public: { get_attribute: [manager_vm, public_ip_address]}
       nodejs:
         private: { get_attribute: [nodejs_vm, ip] }
         public: { get_attribute: [nodejs_vm, public_ip_address]}

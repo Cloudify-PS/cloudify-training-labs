@@ -19,8 +19,6 @@ inputs:
     type: string
   java_url:
     type: string
-  install_agent:
-    type: boolean
   application_name:
     type: string
 
@@ -30,8 +28,6 @@ node_types:
     properties:
       ip:
         default: { get_input: vm_ip_address }
-      install_agent:
-        default: { get_input: install_agent }
     interfaces:
       cloudify.interfaces.monitoring_agent:
         install:
@@ -67,8 +63,6 @@ node_types:
 node_templates:  
   tomcat_vm:
     type: vm_host
-    instances:
-      deploy: 1
 
   tomcat_server:
     type: web_server

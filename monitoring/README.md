@@ -1,6 +1,6 @@
 # Lab: Deploying Collectors and Using the Grafana Dashboard
 
-The purpose of this lab is to add monitoring to the Tomcat blueprint used in lab 4.
+The purpose of this lab is to add monitoring to an existing blueprint.
 
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
@@ -8,12 +8,9 @@ It is assumed that the `LAB_ROOT` environment variable points to the exercise's 
 export LAB_ROOT=~/cloudify-training-labs/monitoring/exercise
 ```
 
-**NOTE**: ensure that no existing Tomcat process is running on the manager's VM (from previous labs), otherwise you will run into problems
-deploying the updated Tomcat application in this lab.
-
 ### Step 1: Replace the placeholders
 
-You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in `inputs/managed.yaml` and in `blueprint/blueprint.yaml` to add monitoring to the blueprint.
+You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in `inputs.yaml` and in `blueprint/blueprint.yaml` to add monitoring to the blueprint.
 
 You can use the Diamond collectors' reference for information how to configure collectors: https://github.com/python-diamond/Diamond/wiki/Collectors
  
@@ -21,7 +18,7 @@ You can use the Diamond collectors' reference for information how to configure c
 
 ```bash
 cfy blueprints upload -p $LAB_ROOT/blueprint/blueprint.yaml -b hellotomcat-mon
-cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/inputs/managed.yaml
+cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/inputs.yaml
 cfy executions start -d hellotomcat-mon -w install
 ```
 

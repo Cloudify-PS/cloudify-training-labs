@@ -24,7 +24,7 @@ For clarity and convenience, create a new directory that will serve as Cloudify'
 Our labs will assume that the chosen directory is `~/work`.
 
 ```bash
-mkdir ~/work && cd ~/work
+mkdir ~/work
 ```
 
 ### Step 2: Have your Manager VM's private key available
@@ -37,8 +37,9 @@ For documentation purposes, it is assumed that the key file is available at `~/c
 Execute the following command:
 
 ```bash
-curl -L -o blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
-unzip blueprints.zip
+cd ~
+curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
+unzip manager-blueprints.zip
 mv cloudify-manager-blueprints-3.4m5 cloudify-manager-blueprints
 ```
 
@@ -48,18 +49,17 @@ That will download the latest manager blueprints and extract them into `./cloudi
 
 The provided manager blueprints ship with templates for manager inputs. These templates have to be edited to reflect the environment in which the manager is to be installed.
 
-(Back at `~/work`)
-
 ```bash
-cp cloudify-manager-blueprints/simple-manager-blueprint-inputs.yaml ./manager-inputs.yaml
+cd ~/work
+cp ~/cloudify-manager-blueprints/simple-manager-blueprint-inputs.yaml ./manager-inputs.yaml
 vi manager-inputs.yaml
 ```
 
 Fill in the public and private IP's, SSH user (`centos` for CentOS 7.0), as well as the path to the private key used to SSH to the Manager's VM:
 
 ```yaml
-public_ip: MANAGER_INSTANCE_IP
-private_ip: MANAGER_INSTANCE_IP
+public_ip: MANAGER_VM_PUBLIC_IP
+private_ip: MANAGER_VM_PRIVATE_IP
 ssh_user: centos
 ssh_key_filename: ~/cfy-training.pem
 ```
@@ -76,7 +76,7 @@ minimum_required_total_physical_memory_in_mb: 3192
 
 ```bash
 cfy init -r
-cfy bootstrap -p cloudify-manager-blueprints/simple-manager-blueprint.yaml -i manager-inputs.yaml
+cfy bootstrap -p ../cloudify-manager-blueprints/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 The first command initializes a Cloudify CLI working directory inside the current working directory.
@@ -84,8 +84,8 @@ The first command initializes a Cloudify CLI working directory inside the curren
 The second command triggers the bootstrap process. It should take around 15 minutes to complete, during which you will see the output of the bootstrapping process. At the end of the process you should see the IP address of the Manager printed out, e.g.:
 
 ```
-bootstrapping complete
-management server is up at <manager's-public-ip>
+Bootstrap complete
+Manager is up at <manager's-public-ip>
 ```
 
 ### Step 6: Verify that the manager started successfully
@@ -99,7 +99,7 @@ cfy status
 You should see output similar to the following. Make sure all components are running:
 
 ```bash
-Getting management services status... [ip=<manager-public-ip>]
+Getting management services status... [ip=<manager's-public-ip>]
 
 Services:
 +--------------------------------+---------+
