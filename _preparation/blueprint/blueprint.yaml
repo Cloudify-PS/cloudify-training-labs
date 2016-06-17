@@ -93,6 +93,10 @@ dsl_definitions:
     host_string: { get_attribute: [ cli_vm, public_ip_address ]}
     user: { get_input: cli_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
+  nodejs_fabric_env: &nodejs_fabric_env
+    host_string: { get_attribute: [ nodejs_vm, public_ip_address ]}
+    user: { get_input: nodejs_ssh_user }
+    key_filename: { get_property: [ keypair, private_key_path ] }
 
 node_types:
   lab_vm:
@@ -217,6 +221,11 @@ node_templates:
           from_port: 8080
           to_port: 8080
           cidr_ip: 0.0.0.0/0
+        # Required for monitoring lab
+        - ip_protocol: tcp
+          from_port: 8082
+          to_port: 8082
+          cidr_ip: 0.0.0.0/0
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
@@ -323,6 +332,15 @@ node_templates:
       image_id: { get_input: nodejs_image_id }
       instance_type: { get_input: nodejs_instance_type }
       name: nodejs
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: fabric.fabric_plugin.tasks.run_commands
+          inputs:
+            commands:
+              # Required for monitoring lab
+              - sudo yum -y install unzip
+            fabric_env: *nodejs_fabric_env
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair

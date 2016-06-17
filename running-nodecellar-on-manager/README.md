@@ -144,6 +144,8 @@ To uninstall the application, trigger the `uninstall` workflow:
 
 ```bash
 cfy executions start -d nc-dep-1 -w uninstall -l
+cfy deployments delete -d nc-dep-1
+cfy blueprints delete -b nodecellar
 ```
 
 The NodeCellar application will be uninstalled, and will no longer be available for browsing.
