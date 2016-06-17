@@ -45,7 +45,7 @@ node_templates:
       flavor: { get_input: vm_flavor }
     relationships:
       - type: cloudify.openstack.server_connected_to_floating_ip
-        target: elastic_ip
+        target: floating_ip
       - type: cloudify.openstack.server_connected_to_security_group
         target: security_group
 
