@@ -20,7 +20,7 @@ You can use the Diamond collectors' reference for information how to configure c
 cd ~/work
 cfy blueprints upload -p $LAB_ROOT/blueprint/blueprint.yaml -b hellotomcat-mon
 cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/inputs.yaml
-cfy executions start -d hellotomcat-mon -w install
+cfy executions start -d hellotomcat-mon -w install -l
 ```
 
 ### Step 3: Review monitoring in the UI
