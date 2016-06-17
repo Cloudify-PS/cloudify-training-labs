@@ -1,0 +1,5 @@
+default_scale_count: 1
+vm_image_id: ''
+vm_flavor: ''
+webserver_port: 8080
+agent_user: centos

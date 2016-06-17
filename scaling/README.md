@@ -5,37 +5,53 @@ The purpose of this lab is to deploy and scale an example web application.
 ## Step 1: Download example application
 
 ```bash
-wget -O helloworld.zip https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/3.4m5.zip
+cd ~
+curl -L -o helloworld.zip https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/3.4m5.zip
 unzip helloworld.zip
-mv cloudify-hello-world-example-3.4m5/ cloudify-hello-world
+mv cloudify-hello-world-example-3.4m5 cloudify-hello-world
 ```
 
-This will download the latest Hello World example application and extract it to `./cloudify-hello-world`.
+This will download the latest Hello World example application and extract it to `~/cloudify-hello-world`.
 
 
 ## Step 2: Copy scaling blueprint to application root
 
 ```bash
-cp scaling-blueprint.yaml ./cloudify-hello-world/
+cp ~/cloudify-training-labs/scaling/scaling-blueprint.yaml cloudify-hello-world/
 ```
 
-This will move our scaling blueprint into the application root directory.
+This will copy our scaling blueprint into the application root directory.
 
-
-## Step 3: Deploy the application
+## Step 3: Prepare inputs file
 
 ```bash
-cfy blueprints upload -b appscale -p cloudify-hello-world/scaling-blueprint.yaml
-cfy deployments create -d appscale -b appscale
+cd ~/work
+cp ~/cloudify-training-labs/scaling/inputs.yaml.template scaling-inputs.yaml
+```
+
+Then edit the file `scaling-inputs.yaml`:
+
+```yaml
+default_scale_count: 1
+vm_image_id: <image-id>
+vm_flavor: <flavor-id>
+webserver_port: 8080
+agent_user: centos
+```
+
+## Step 4: Deploy the application
+
+```bash
+cfy blueprints upload -b appscale -p ~/cloudify-hello-world/scaling-blueprint.yaml
+cfy deployments create -d appscale -b appscale -i scaling-inputs.yaml
 cfy executions start -w install -d appscale -l
 ```
 
-This will upload the blueprint, create a deployment, and execute the deployment's "install" workflow. By default,
-this will instantiate 2 AWS EC2 instances (with public IPs) and expose port 8080/HTTP to show a Cloudify
+This will upload the blueprint, create a deployment, and execute the deployment's `install` workflow. By default,
+this will instantiate one instance (with a public IP) and expose port 8080/HTTP to show a Cloudify
 example web page.
 
-
-## Step 4: Scale the application
+## Step 5: Scale the application
 
 ```bash
 cfy executions start -w scale -p '{"delta": 2, "scalable_entity_name": "vm_and_ip"}' -d appscale
