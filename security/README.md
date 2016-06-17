@@ -2,9 +2,32 @@
 
 In this lab, we will demonstrate security configuration on the Cloudify manager. Our starting point will be a simple manager blueprint, with its security configuration incomplete; your task will be to complete the security configuration and demonstrate that it works.
 
-It is assumed that the lab's files are extracted into `$LAB_ROOT`.
+## Prerequisites
 
-The blueprint, located in `$LAB_ROOT/simple-secured.yaml`, contains placeholders for your modifications. These placeholders begin with the string `REPLACE_WITH`.
+You will need to tear down the Cloudify Manager that you have previously bootstrapped.
+To do that, execute the following from your CLI VM:
+
+```bash
+cd ~/work
+cfy teardown -f
+```
+
+## Instructions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Step 1: Logging
 
@@ -88,4 +111,4 @@ https://<manager-vm-public-ip>
 Contrary to before — when the manager was not secured — you will now be presented with a login screen. In order to log in, you must enter a username & password that are defined
 in the manager's blueprint (see step 2 above).
 
-![Secured Login](../../../raw/3.3.1/security/login.png "Secured Login")
+![Secured Login](../../../raw/3.4.0/security/login.png "Secured Login")

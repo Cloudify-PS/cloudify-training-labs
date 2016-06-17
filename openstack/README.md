@@ -1,87 +1,85 @@
 # Lab: OpenStack Bootstrapping and Deployment
 
-### Step 1: Download Manager Blueprints and Nodecellar-Docker
+### Step 1: Download Manager blueprints and NodeCellar blueprints
 
 The blueprints may have already been downloaded during previous labs. If not:
 
 ```bash
 cd ~/work
-wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
-unzip blueprints.zip
-mv cloudify-manager-blueprints-3.4m5/ cloudify-manager-blueprints
+curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
+unzip manager-blueprints.zip
+mv cloudify-manager-blueprints-3.4m5 cloudify-manager-blueprints
+
+curl -L -o nodecellar.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-nodecellar-example/archive/3.4m5-maint.zip
+unzip nodecellar.zip
+mv cloudify-nodecellar-example-3.4m5-maint/ cloudify-nodecellar-example
 ```
 
-To download the Nodecellar-Docker example:
+### Step 2: Prepare `inputs.yaml`
+
+From your CLI machine:
 
 ```bash
-wget -O nodecellar-docker.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-docker-example/archive/3.4m5.zip
-unzip nodecellar-docker.zip
-mv cloudify-nodecellar-docker-example-3.4m5/ cloudify-nodecellar-docker-example
+cd ~/work
+cp ../cloudify-manager-blueprints/openstack-manager-blueprint-inputs.yaml inputs-os.yaml
 ```
 
-### Step 2: Prepare `openstack_config.json`
+Then, edit `~/work/inputs-os.yaml` for your values. In particular:
 
-Create a file named `~/openstack_config.json` according to the following template:
+*   **`keystone_username`**: for authenticating against KeyStone
+*   **`keystone_password`**: for authenticating against KeyStone
+*   **`keystone_tenant_name`**: the OpenStack tenant name to use
+*   **`keystone_url`**: the URL to use when contacting KeyStone
+*   **`region`**: the region to use (optional, if there is only one region defined)
+*   **`skip_openstack_cert_verification`**: set to `true` if your OpenStack endpoints are accessed by HTTPS, *and* expose a certificate that is not trusted by any certificate authority installed on the machine from where the bootstrap runs.
+*   **`ssh_key_filename`**: should point to the location where the private key, used to connect to the new manager VM, should be stored.
+*   **`agent_private_key_path`**: should point to the location where the private key, used *by default* to connect to newly-created VM's, should be stored.
+*   **`manager_public_key_name`**: should be the name to assign to the new keypair created to access the Cloudify Manager VM.
+*   **`agent_public_key_name`**: should be the name to assign to the new keypair that Cloudify will use to log into VM's in order to install the Cloudify Agent.
+*   **`image_id`**: should contain the ID of the image to use for the manager's VM's creation. This must be either a CentOS 7.0 or RHEL 7.0 image.
+*   **`flavor_id`**: should contain the ID of the flavour to use for the manager's VM's creation.
+*   **`external_network_name`**: should contain the name (not the ID) of OpenStack's external network.
+*   **`ssh_user`**: should contain the username that is used to connect to the new manager's VM. For CentOS 7.0 images, this is usually `centos`.
+*   **`agents_user`**: is the username that is used, *by default*, to connect to VM's that Cloudify Manager creates, in order to install the Cloudify Agent. As we only deal with CentOS VM's during the training course, you should set this value to `centos`.
+*   **`management_subnet_dns_nameservers`** should normally stay an empty list; however, if your OpenStack environment is not configured to provide default DNS servers, then this input should contain a list of DNS nameservers to use. Otherwise, the manager won't be able to access the external network to download artifacts. (While Cloudify can also operate in a completely offline mode, this subject is not covered in the basic training curriculum)
+
+### Step 3: Bootstrap the manager
+
+```bash
+cfy bootstrap --install-plugins -p ../cloudify-manager-blueprints/openstack-manager-blueprint.yaml -i inputs-os.yaml
+```
+
+### Step 4: Prepare nodecellar's blueprint
+
+```bash
+cp ../cloudify-nodecellar-example/inputs/openstack.yaml.template ./nc-os-inputs.yaml
+```
+
+Then edit `nc-os-inputs.yaml`:
 
 ```yaml
-{
-    "username": "your-keystone-username",
-    "password": "your-keystone-password",
-    "tenant_name": "openstack-tenant-name",
-    "auth_url": "keystone-url",
-    "region": "region-code",
-    "nova_url": "nova-service-url",
-    "neutron_url": "neutron-service-url"
-}
+image: <image-id>
+flavor: <flavor-id>
+agent_user: centos
 ```
 
-Notes:
-
-* `region` is optional in environments where only one region is available
-* `nova_url` and `neutron_url` are optional, and should only be used in cases when it is required to override the Nova and/or Neutron URLs provided by Keystone.
-
-### Step 3: Prepare `inputs.yaml`
+### Step 5: Upload the blueprint, create a deployment, run install
 
 ```bash
-cp cloudify-manager-blueprints/openstack-manager-blueprint-inputs.yaml inputs-os.yaml
+cfy blueprints upload -p ../cloudify-nodecellar-example/openstack-blueprint.yaml -b nc-os
+cfy deployments create -b nc-os -d nc-os -i nc-os-inputs.yaml
+cfy executions start -d nc-os -w install -l
 ```
 
-Then, edit `~/work/inputs-os.yaml` for your values.
+### Step 6: Test the application
 
-**NOTE**: ensure that you assign unique names to the various resources (management network, router etc). While Cloudify supports using existing resources, the sample `openstack-manager-blueprint` does not provide the option to specify a value for the `use_external_resource` property on all resource types.
-Alternatively, you can copy `openstack-manager-blueprint.yaml` aside and edit it to include `use_external_resource` wherever necessary.
+Find out the floating IP attached to the Compute node running NodeCellar, and browse it: `http://<ip-address>:8080`.
 
-### Step 4: Bootstrap the manager
 
-```bash
-cfy bootstrap --install-plugins -p cloudify-manager-blueprints/openstack-manager-blueprint.yaml -i inputs-os.yaml
-```
-
-### Step 5: Prepare nodecellar's blueprint
+### Step 7: Cleanup
 
 ```bash
-cp cloudify-nodecellar-docker-example/blueprint/cfy-openstack-inputs.json .
-```
-
-Then edit `cfy-openstack-inputs.json` to add the image ID and the flavor ID of the image on which you want Node Cellar to be installed.
-
-### Step 6: Upload the blueprint, create a deployment, run install
-
-```bash
-cfy blueprints upload -p cloudify-nodecellar-docker-example/blueprint/openstack.yaml -b nc-docker-os
-cfy deployments create -d nc-docker-os -b nc-docker-os -i cfy-openstack-inputs.json
-cfy executions start -d nc-docker-os -w install
-```
-
-### Step 7: Test the application
-
-Find out the floating IP attached to the Compute node running Node Cellar, and browse it: `http://<ip-address>:8080`.
-
-
-### Step 8: Cleanup
-
-```bash
-cfy executions start -d nc-docker-os -w uninstall
-cfy deployments delete -d nc-docker-os
-cfy blueprints delete -b nc-docker-os
+cfy executions start -d nc-os -w uninstall -l
+cfy deployments delete -d nc-os
+cfy blueprints delete -b nc-dos
 ```
