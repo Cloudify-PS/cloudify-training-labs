@@ -73,13 +73,18 @@ cfy executions start -d nc-os -w install -l
 
 ### Step 6: Test the application
 
-Find out the floating IP attached to the Compute node running NodeCellar, and browse it: `http://<ip-address>:8080`.
+Get the floating IP address of the NodeJS node which was created on OpenStack, by retrieving the deployment's outputs:
 
+```bash
+cfy deployments outputs -d nc-os
+```
+
+Then browse to it (port 8080).
 
 ### Step 7: Cleanup
 
 ```bash
 cfy executions start -d nc-os -w uninstall -l
 cfy deployments delete -d nc-os
-cfy blueprints delete -b nc-dos
+cfy blueprints delete -b nc-os
 ```
