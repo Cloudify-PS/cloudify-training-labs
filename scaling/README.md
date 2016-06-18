@@ -54,11 +54,23 @@ example web page.
 ## Step 5: Scale the application
 
 ```bash
-cfy executions start -w scale -p '{"delta": 2, "scalable_entity_name": "vm_and_ip"}' -d appscale
+cfy executions start -w scale -p '{"delta":1,"scalable_entity_name":"vm_and_ip"}' -d appscale -l
 ```
 
 This will execute the deployment's "scale" workflow which will, in turn, scale the application
-to 4 instances (from 2 instances).  The `delta` parameter determines by how much to scale an application.
+to 2 instances (from 1 instance).  The `delta` parameter determines by how much to scale an application.
 This will also give each new instance its own public IP address.
 
-To scale back an application, simply use a negative number for the `delta` parameter.
+To scale back an application, simply use a negative number for the `delta` parameter:
+
+```bash
+cfy executions start -w scale -p '{"delta":-1,"scalable_entity_name":"vm_and_ip"}' -d appscale -l
+```
+
+## Step 6: Cleanup
+
+```bash
+cfy executions start -w uninstall -d appscale -l
+cfy deployments delete -d appscale
+cfy blueprints delete -b appscale
+```
