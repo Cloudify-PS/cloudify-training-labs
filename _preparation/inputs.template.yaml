@@ -21,3 +21,4 @@ mongodb_image_id: ''
 mongodb_instance_type: ''
 mongodb_ssh_user: ''
 mongodb_security_group_id: ''
+students_count: 1
