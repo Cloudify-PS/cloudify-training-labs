@@ -1,6 +1,6 @@
 # Lab: Using Scripts in Lifecycle Events
 
-The purpose of this lab is to fix a broken blueprint, install it locally and also upload it a Cloudify Manager.
+The purpose of this lab is to fix a broken blueprint and install it locally.
 
 It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
 
