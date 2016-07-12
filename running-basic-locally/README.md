@@ -5,7 +5,7 @@ In this lab, we will run a very basic blueprint using Cloudify.
 From within the VM containing the Cloudify CLI, create a directory to be used for Cloudify's local run:
 
 ```bash
-mkdir ~/cfylocal && cd ~/cfylocal
+mkdir -p ~/cfylocal && cd ~/cfylocal
 ```
 
 Next, initialize a Cloudify environment, using the basic blueprint:
