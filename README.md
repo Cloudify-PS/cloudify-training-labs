@@ -2,9 +2,20 @@
 
 This project contains the labs material for the official Cloudify training course.
 
+## Labs Order
+
+1.  [CLI Installation](cli-installation)
+2.  [Running Basic Blueprint Locally](running-basic-locally)
+3.  [Running NodeCellar Locally](running-nodecellar-locally)
+4.  [Using Scripts in Lifecycle Events](using-scripts)
+5.  [Developing a Simple Plugin](developing-simple-plugin)
+6.  [Workflows](workflows)
+7.  [Manager Bootstrapping](simple-bootstrap)
+8.  [Installing NodeCellar on Cloudify Manager](running-nodecellar-on-manager)
+
 ## Virtual Machines
 
-### Creating your own CLI VM
+### Creating Your Own CLI VM
 
 If you don't have a CLI VM provided to you, or you would like to use your own image:
 
@@ -34,7 +45,7 @@ in order to verify proper installation, these applications have to be accessible
   sudo yum -y install unzip git
   ```
 
-### Creating your own Cloudify Manager VM
+### Creating Your Own Cloudify Manager VM
 
 If you don't have a Manager VM provided to you, or you would like to use your own image:
 
@@ -47,4 +58,3 @@ with the following exceptions:
   It is recommended to allow incoming traffic on all ports.
 * Make sure that `iptables` is disabled. Similarly to the CLI VM's case, this is not a Cloudify requirement but a training
 material requirement.
-
