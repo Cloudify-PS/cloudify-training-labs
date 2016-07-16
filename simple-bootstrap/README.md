@@ -38,9 +38,9 @@ Execute the following command:
 
 ```bash
 cd ~
-curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
+curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.zip
 unzip manager-blueprints.zip
-mv cloudify-manager-blueprints-3.4m5 cloudify-manager-blueprints
+mv cloudify-manager-blueprints-3.4 cloudify-manager-blueprints
 ```
 
 That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints`.
@@ -55,7 +55,7 @@ cp ~/cloudify-manager-blueprints/simple-manager-blueprint-inputs.yaml ./manager-
 vi manager-inputs.yaml
 ```
 
-Fill in the public and private IP's, SSH user (`centos` for CentOS 7.0), as well as the path to the private key used to SSH to the Manager's VM:
+Fill in the public and private IP's, SSH user (`centos` for CentOS 7.x), as well as the path to the private key used to SSH to the Manager's VM:
 
 ```yaml
 public_ip: MANAGER_VM_PUBLIC_IP
@@ -99,7 +99,7 @@ cfy status
 You should see output similar to the following. Make sure all components are running:
 
 ```bash
-Getting management services status... [ip=<manager's-public-ip>]
+Retrieving management services status... [ip=<manager's-public-ip>]
 
 Services:
 +--------------------------------+---------+
@@ -124,4 +124,4 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the Cloudify Manager's Web UI:
 
-![Cloudify 3.4.0 Web UI](cfy-3.4.0-ui.png "Cloudify 3.4.0 Web UI")
+![Cloudify 3.4.0 Web UI](../../../raw/3.4.0/simple-bootstrap/cfy-3.4.0-ui.png "Cloudify 3.4.0 Web UI")

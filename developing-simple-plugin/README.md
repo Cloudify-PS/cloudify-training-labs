@@ -2,10 +2,8 @@
 
 In this lab, we will develop a very simple plugin and use it within a blueprint.
 
-The lab is designed so the developed plugin is embedded with the blueprint; however, if you have access to a Git repository, you are encouraged to store the plugin there instead, and modify the plugin declaration accordingly.
-
-**NOTE**: Although you can run this lab on any VM (as it does not require communicating with the Cloudify Manager), it is recommended that you run it on the
-CLI VM, in order to keep all your work on the same machine. Also, your CLI VM already contains the Cloudify virtualenv, which is required for the completion of this lab. 
+The lab is designed so the developed plugin is embedded with the blueprint; however, note that, most typically, plugins are packaged and stored on a server, so they can be reused
+by multiple blueprints.
 
 ## Step 1: Download the plugin template
 
@@ -38,7 +36,7 @@ Modify the `my_task` method (you may rename it as well). Our goal is to write an
 * Receives two arguments, `str1` and `str2`
 * Prints the arguments
 * Stores a concat of these two strings under a runtime property called `result` on the same node instance that the plugin operates on
-* Prints the result
+* Prints the result to the Cloudify log
 
 ## Step 4: Edit `test_plugin.yaml`
 

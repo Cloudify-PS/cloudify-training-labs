@@ -6,13 +6,13 @@ The blueprints may have already been downloaded during previous labs. If not:
 
 ```bash
 cd ~/work
-curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
+curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.zip
 unzip manager-blueprints.zip
-mv cloudify-manager-blueprints-3.4m5 cloudify-manager-blueprints
+mv cloudify-manager-blueprints-3.4 cloudify-manager-blueprints
 
-curl -L -o nodecellar.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-nodecellar-example/archive/3.4m5-maint.zip
+curl -L -o nodecellar.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-nodecellar-example/archive/3.4-maint.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4m5-maint/ cloudify-nodecellar-example
+mv cloudify-nodecellar-example-3.4-maint/ cloudify-nodecellar-example
 ```
 
 ### Step 2: Prepare `inputs.yaml`

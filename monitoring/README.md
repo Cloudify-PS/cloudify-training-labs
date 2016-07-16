@@ -18,9 +18,9 @@ You can use the Diamond collectors' reference for information how to configure c
 
 ```bash
 cd ~/work
-cfy blueprints upload -p $LAB_ROOT/blueprint/blueprint.yaml -b hellotomcat-mon
-cfy deployments create -b hellotomcat-mon -d hellotomcat-mon -i $LAB_ROOT/inputs.yaml
-cfy executions start -d hellotomcat-mon -w install -l
+cfy blueprints upload -p $LAB_ROOT/blueprint/blueprint.yaml -b monitoring
+cfy deployments create -b monitoring -d mon -i $LAB_ROOT/inputs.yaml
+cfy executions start -d mon -w install -l
 ```
 
 ### Step 3: Review monitoring in the UI
@@ -46,7 +46,7 @@ Now let's add a new graph to the dashboard:
 ### Step 5: Uninstall the application
 
 ```bash
-cfy executions start -d hellotomcat-mon -w uninstall -l
-cfy deployments delete -d hellotomcat-mon
-cfy blueprints delete -b hellotomcat-mon
+cfy executions start -d mon -w uninstall -l
+cfy deployments delete -d mon
+cfy blueprints delete -b monitoring
 ```
