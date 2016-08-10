@@ -8,31 +8,19 @@ The blueprint we are going to work with, will install a sample application calle
 currently going through the full training schedule, this is the same application introduced in a previous lab:
 "Running NodeCellar Locally". The only difference is that we are going to use a different blueprint for
 installing this application).
- 
+
 ## Step 1: Download the NodeCellar blueprint
 
 Obtain the NodeCellar application from GitHub (this lab assumes that `~/work` is the working directory used to bootstrap the manager from):
 
 ```bash
 cd ~/work
-<<<<<<< HEAD
-wget -O nodecellar.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-nodecellar-example/archive/3.3.1-maint.zip
-unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.3.1-maint cloudify-nodecellar-example-3.3.1
-```
-
-(**NOTE**: The URL above points to a fork of the official NodeCellar repository, as certain additions have been made since
-the official 3.3.1 release. The original URL was: https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.3.1.zip)
-
-That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example-3.3.1`.
-=======
 wget -O nodecellar.zip https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/3.4m5.zip
 unzip nodecellar.zip
 mv cloudify-nodecellar-example-3.4m5/ cloudify-nodecellar-example
 ```
 
 That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example`.
->>>>>>> josh/master
 
 ## Step 2: Copy private key to the Manager's VM
 
@@ -51,13 +39,8 @@ ssh -i cfy-training.pem centos@<manager-ip> 'sudo mv cfy-training.pem /root'
 The NodeCellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
-<<<<<<< HEAD
-cp cloudify-nodecellar-example-3.3.1/inputs/simple.yaml.template ./nc-simple.yaml
-vi nc-simple.yaml
-=======
 cp cloudify-nodecellar-example/inputs/singlehost.yaml.template ./nc-singlehost.yaml
 vi nc-singlehost.yaml
->>>>>>> josh/master
 ```
 
 Fill in the manager host's private IP, agent user (`centos`), as well as the path of the private key file on the manager as written below:

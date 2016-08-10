@@ -13,8 +13,6 @@ the following from the instructor:
 to the private key used to access the CLI VM. *This is not a Cloudify requirement*, but instead a design
 of the training labs, in favour of simplicity.
 
-<<<<<<< HEAD
-=======
 ### Creating your own Cloudify Manager VM
 
 If you don't have a Manager VM provided to you, or you would like to use your own image:
@@ -31,7 +29,6 @@ with the following exceptions:
 * Make sure that `iptables` is disabled. Similarly to the CLI VM's case, this is not a Cloudify requirement but a training
 material requirement.
 
->>>>>>> josh/master
 ## Process
 
 *Note*: These steps should be executed on your CLI VM, *not* on the intended Manager VM.
@@ -56,23 +53,12 @@ For documentation purposes, it is assumed that the key file is available at `~/w
 Execute the following command:
 
 ```bash
-<<<<<<< HEAD
-wget -O blueprints.zip https://github.com/GigaSpaces-ProfessionalServices/cloudify-manager-blueprints/archive/3.3.1-maint.zip
-unzip blueprints.zip
-mv cloudify-manager-blueprints-3.3.1-maint cloudify-manager-blueprints-3.3.1
-```
-
-(**NOTE**: The GitHub URL above refers to a post-3.3.1 release of Cloudify. The original URL: https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.3.1.zip)
-
-That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints-3.3.1`.
-=======
 wget -O blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4m5.zip
 unzip blueprints.zip
 mv cloudify-manager-blueprints-3.4m5/ cloudify-manager-blueprints
 ```
 
 That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints`.
->>>>>>> josh/master
 
 ### Step 4: Configure the inputs file
 
@@ -92,10 +78,7 @@ public_ip: MANAGER_INSTANCE_IP
 private_ip: MANAGER_INSTANCE_IP
 ssh_user: centos
 ssh_key_filename: ~/work/cfy-training.pem
-<<<<<<< HEAD
-=======
 agents_user: centos
->>>>>>> josh/master
 ```
 
 If deploying on a system with 4GB or less of memory, it may be necessary to limit the amount of memory
