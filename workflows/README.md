@@ -51,6 +51,9 @@ To find the node instance, execute the following command (from the CLI VM):
 cfy local instances
 ```
 
+The output shows all node instances in the topology. For each node instance, both the instance ID and the node ID are shown. The node ID is the name of the
+node in the blueprint; the node instance ID is the ID of the particular instance of that node.
+
 Then, execute the `heal` workflow. For example:
 
 ```bash

@@ -6,9 +6,9 @@ The purpose of this lab is to deploy and scale an example web application.
 
 ```bash
 cd ~
-curl -L -o helloworld.zip https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/3.4m5.zip
+curl -L -o helloworld.zip https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/3.4.zip
 unzip helloworld.zip
-mv cloudify-hello-world-example-3.4m5 cloudify-hello-world
+mv cloudify-hello-world-example-3.4 cloudify-hello-world
 ```
 
 This will download the latest Hello World example application and extract it to `~/cloudify-hello-world`.

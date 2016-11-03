@@ -67,7 +67,7 @@ This YAML file is a standard blueprints file, against which the plugin test runs
 vi test-plugin/plugin/tests/test_plugin.py
 ```
 
-* Edit the `inputs` (in the `setUp` method) dictionary to include `str1` and `str2`.
+* Edit the `inputs` (in the `workflow_test` decorator) dictionary to include `str1` and `str2`.
 * Add appropriate assertions in the `test_my_task` method.
 
 ## Step 7: Install plugin requirements
