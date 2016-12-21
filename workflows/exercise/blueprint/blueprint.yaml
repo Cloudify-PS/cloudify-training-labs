@@ -13,7 +13,7 @@ node_templates:
   lab:
     type: cloudify.nodes.Root
     interfaces:
-      REPLACE_THIS_WITH_AN_OPERATION_MAPPING_FOR_THE_NEW_SCRIPT
+      REPLACE_WITH_AN_OPERATION_MAPPING_FOR_THE_NEW_SCRIPT
     relationships:
       - target: lab_vm
         type: cloudify.relationships.contained_in
