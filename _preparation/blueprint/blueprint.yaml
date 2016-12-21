@@ -82,6 +82,10 @@ inputs:
     default: centos
   mongodb_security_group_id:
     default: cfy-training-3.4.0-mongodb
+  # General
+  server_names_prefix:
+    type: string
+    default: ''
 
 dsl_definitions:
   aws_config: &aws_config
@@ -257,7 +261,7 @@ node_templates:
     properties:
       image_id: { get_input: cli_image_id }
       instance_type: { get_input: cli_instance_type }
-      name: cli
+      name: { concat: [{ get_input: server_names_prefix }, 'cli']}
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -310,7 +314,7 @@ node_templates:
     properties:
       image_id: { get_input: manager_image_id }
       instance_type: { get_input: manager_instance_type }
-      name: manager
+      name: { concat: [{ get_input: server_names_prefix }, 'manager']}
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -330,7 +334,7 @@ node_templates:
     properties:
       image_id: { get_input: nodejs_image_id }
       instance_type: { get_input: nodejs_instance_type }
-      name: nodejs
+      name: { concat: [{ get_input: server_names_prefix }, 'nodejs']}
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -359,7 +363,7 @@ node_templates:
     properties:
       image_id: { get_input: mongodb_image_id }
       instance_type: { get_input: mongodb_instance_type }
-      name: mongodb
+      name: { concat: [{ get_input: server_names_prefix }, 'mongodb']}
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair

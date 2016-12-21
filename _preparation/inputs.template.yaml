@@ -24,3 +24,4 @@ mongodb_security_group_id: ''
 labs_repo_url: https://github.com/cloudify-cosmo/cloudify-training-labs.git
 labs_branch: 3.4.0
 students_count: 1
+server_names_prefix: ''

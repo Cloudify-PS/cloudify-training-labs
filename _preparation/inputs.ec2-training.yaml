@@ -17,3 +17,5 @@ nodejs_instance_type: t2.micro
 mongodb_image_id: ami-6d1c2007
 mongodb_instance_type: t2.micro
 labs_branch: 3.4.0
+students_count: 1
+server_names_prefix: ''
