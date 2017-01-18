@@ -48,6 +48,25 @@ in order to verify proper installation, these applications have to be accessible
   sudo yum -y install unzip git
   ```
 
+* Install `pip` (required for the plugin development lab):
+
+  ```bash
+  curl https://bootstrap.pypa.io/get-pip.py | sudo python
+  ```
+
+* Install `virtualenv`:
+
+  ```bash
+  sudo pip install virtualenv
+  ```
+
+* Clone the training labs (replace `<labs-branch>` with the branch corresponding to the Cloudify version you are
+  training for. For example: `3.4.0`)
+
+  ```bash
+  git clone -b <labs-branch> https://github.com/cloudify-cosmo/cloudify-training-labs.git
+  ```
+
 ### Creating Your Own Cloudify Manager VM
 
 If you don't have a Manager VM provided to you, or you would like to use your own image:
