@@ -38,9 +38,9 @@ Execute the following command:
 
 ```bash
 cd ~
-curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.zip
+curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.1.zip
 unzip manager-blueprints.zip
-mv cloudify-manager-blueprints-3.4 cloudify-manager-blueprints
+mv cloudify-manager-blueprints-3.4.1 cloudify-manager-blueprints
 ```
 
 That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints`.
@@ -69,7 +69,7 @@ ElasticSearch allocates (for development / testing purposes).  This can be accom
 the following inputs.
 
 ```yaml
-minimum_required_total_physical_memory_in_mb: 3192
+elasticsearch_heap_size: 1.5g
 ```
 
 ### Step 5: Trigger the bootstrap process
@@ -124,4 +124,4 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the Cloudify Manager's Web UI:
 
-![Cloudify 3.4.0 Web UI](../../../raw/3.4.0/simple-bootstrap/cfy-3.4.0-ui.png "Cloudify 3.4.0 Web UI")
+![Cloudify 3.4.1 Web UI](../../../raw/3.4.0/simple-bootstrap/cfy-3.4.1-ui.png "Cloudify 3.4.0 Web UI")

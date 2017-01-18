@@ -1,7 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
   - http://www.getcloudify.org/spec/fabric-plugin/1.4.2/plugin.yaml
   - http://www.getcloudify.org/spec/aws-plugin/1.4.3/plugin.yaml
 
@@ -50,7 +50,7 @@ inputs:
   # CLI security group
   cli_security_group_id:
     type: string
-    default: cfy-training-3.4.0-cli
+    default: cfy-training-3.4.1-cli
   # Manager
   manager_image_id:
     type: string
@@ -61,7 +61,7 @@ inputs:
     default: centos
   manager_security_group_id:
     type: string
-    default: cfy-training-3.4.0-manager
+    default: cfy-training-3.4.1-manager
   # NodeJS
   nodejs_image_id:
     type: string
@@ -71,7 +71,7 @@ inputs:
     type: string
     default: centos
   nodejs_security_group_id:
-    default: cfy-training-3.4.0-nodejs
+    default: cfy-training-3.4.1-nodejs
   # MongoDB
   mongodb_image_id:
     type: string
@@ -81,7 +81,7 @@ inputs:
     type: string
     default: centos
   mongodb_security_group_id:
-    default: cfy-training-3.4.0-mongodb
+    default: cfy-training-3.4.1-mongodb
   # General
   server_names_prefix:
     type: string

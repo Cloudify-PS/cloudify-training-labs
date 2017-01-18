@@ -6,9 +6,9 @@ The blueprints may have already been downloaded during previous labs. If not:
 
 ```bash
 cd ~/work
-curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.0.2.zip
+curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.1.zip
 unzip manager-blueprints.zip
-mv cloudify-manager-blueprints-3.4 cloudify-manager-blueprints
+mv cloudify-manager-blueprints-3.4.1 cloudify-manager-blueprints
 
 curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4-maint.zip
 unzip nodecellar.zip

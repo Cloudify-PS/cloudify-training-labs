@@ -9,10 +9,10 @@ by multiple blueprints.
 
 ```bash
 mkdir -p ~/work/plugin-lab && cd ~/work/plugin-lab
-curl -L -o template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.4.zip
+curl -L -o template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.4.1.zip
 unzip template.zip
 rm template.zip
-mv cloudify-plugin-template-3.4 test-plugin
+mv cloudify-plugin-template-3.4.1 test-plugin
 ```
 
 That will download `cloudify-plugin-template`, extract it and rename the resulting directory.
