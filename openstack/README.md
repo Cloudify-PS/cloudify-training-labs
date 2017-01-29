@@ -57,19 +57,19 @@ Open a browser window to `http://<manager-ip-address>`. You will see the Cloudif
 1.  Click *Create Deployment*.
 2.  Populate the fields as follows:
 
-    | Field                           | Value                                                                  |
-    |---------------------------------|------------------------------------------------------------------------|
-    | Deployment Name                 | settings                                                               |
-    | openstack_auth_url              | Default OpenStack KeyStone URL                                         |
-    | user_ssh_key                    | none                                                                   |
-    | agents_security_group           | Name of security group to automatically attach to agents               |
-    | openstack_region                | Default OpenStack region                                               |
-    | openstack_password              | Default OpenStack password                                             |
-    | agents_to_manager_inbound_ports | <leave default>                                                        |
-    | openstack_tenant_name           | Default OpenStack tenant                                               |
-    | agents_user                     | <leave default>                                                        |
-    | openstack_username              | Default OpenStack username                                             |
-    | agents_keypair_name             | Name of keypair to create, and that will be associated with new VM's   |
+    | Field                             | Value                                                                  |
+    |-----------------------------------|------------------------------------------------------------------------|
+    | Deployment Name                   | settings                                                               |
+    | `openstack_auth_url`              | Default OpenStack KeyStone URL                                         |
+    | `user_ssh_key`                    | none                                                                   |
+    | `agents_security_group`           | Name of security group to automatically attach to agents               |
+    | `openstack_region`                | Default OpenStack region                                               |
+    | `openstack_password`              | Default OpenStack password                                             |
+    | `agents_to_manager_inbound_ports` | <leave default>                                                        |
+    | `openstack_tenant_name`           | Default OpenStack tenant                                               |
+    | `agents_user`                     | <leave default>                                                        |
+    | `openstack_username`              | Default OpenStack username                                             |
+    | `agents_keypair_name`             | Name of keypair to create, and that will be associated with new VM's   |
 
 3.  Click *Create*.
 4.  Click the *Execute Workflow* button.
