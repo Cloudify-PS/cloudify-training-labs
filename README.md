@@ -61,7 +61,7 @@ in order to verify proper installation, these applications have to be accessible
   ```
   
 * Clone the training labs (replace `<labs-branch>` with the branch corresponding to the Cloudify version you are
-  training for. For example: `3.4.0`)
+  training for. For example: `3.4.1`)
 
   ```bash
   git clone -b <labs-branch> https://github.com/cloudify-cosmo/cloudify-training-labs.git
