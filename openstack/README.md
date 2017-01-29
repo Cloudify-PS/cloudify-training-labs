@@ -59,15 +59,15 @@ Open a browser window to `http://<manager-ip-address>`. You will see the Cloudif
 
     | Field                             | Value                                                                  |
     |-----------------------------------|------------------------------------------------------------------------|
-    | Deployment Name                   | settings                                                               |
+    | Deployment Name                   | `settings`                                                             |
     | `openstack_auth_url`              | Default OpenStack KeyStone URL                                         |
-    | `user_ssh_key`                    | none                                                                   |
+    | `user_ssh_key`                    | `none`                                                                 |
     | `agents_security_group`           | Name of security group to automatically attach to agents               |
     | `openstack_region`                | Default OpenStack region                                               |
     | `openstack_password`              | Default OpenStack password                                             |
-    | `agents_to_manager_inbound_ports` | <leave default>                                                        |
+    | `agents_to_manager_inbound_ports` | *leave default*                                                        |
     | `openstack_tenant_name`           | Default OpenStack tenant                                               |
-    | `agents_user`                     | <leave default>                                                        |
+    | `agents_user`                     | *leave default*                                                        |
     | `openstack_username`              | Default OpenStack username                                             |
     | `agents_keypair_name`             | Name of keypair to create, and that will be associated with new VM's   |
 
