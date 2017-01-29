@@ -13,12 +13,14 @@ inputs:
     type: string
   ec2_region_name:
     type: string
+    default: us-east-1
   students_count:
     type: integer
     default: 1
   # VPC
   use_existing_vpc:
     type: boolean
+    default: false
   vpc_id:
     type: string
     default: ''
@@ -37,8 +39,10 @@ inputs:
   # CLI
   cli_image_id:
     type: string
+    default: ami-6d1c2007
   cli_instance_type:
     type: string
+    default: t2.micro
   cli_ssh_user:
     type: string
     default: centos
@@ -54,8 +58,10 @@ inputs:
   # Manager
   manager_image_id:
     type: string
+    default: ami-6d1c2007
   manager_instance_type:
     type: string
+    default: t2.medium
   manager_ssh_user:
     type: string
     default: centos
@@ -65,8 +71,10 @@ inputs:
   # NodeJS
   nodejs_image_id:
     type: string
+    default: ami-6d1c2007
   nodejs_instance_type:
     type: string
+    default: t2.micro
   nodejs_ssh_user:
     type: string
     default: centos
@@ -75,8 +83,10 @@ inputs:
   # MongoDB
   mongodb_image_id:
     type: string
+    default: ami-6d1c2007
   mongodb_instance_type:
     type: string
+    default: t2.micro
   mongodb_ssh_user:
     type: string
     default: centos

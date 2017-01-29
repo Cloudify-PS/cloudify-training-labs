@@ -9,16 +9,16 @@ installing this application).
  
 ## Step 1: Download the NodeCellar blueprints
 
-**NOTE**: You may already have downloaded the blueprints in an earlier lab. If you had, then please skip
+**NOTE**: You may already have downloaded the blueprints in an earlier lab. If you have, then please skip
 this step.
 
-Obtain the NodeCellar application from GitHub (this lab assumes that `~/work` is the working directory used to bootstrap the manager from):
+Obtain the NodeCellar application from GitHub (this lab assumes that `~/mgr` is the working directory used to bootstrap the manager from):
 
 ```bash
 cd ~
-curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4-maint.zip
+curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4.1-maint.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4-maint cloudify-nodecellar-example
+mv cloudify-nodecellar-example-3.4.1-maint cloudify-nodecellar-example
 ```
 
 That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example`.
@@ -40,7 +40,7 @@ ssh -i ~/cfy-training.pem centos@<manager-ip> 'sudo mv cfy-training.pem /root'
 The NodeCellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
 ```bash
-cd ~/work
+cd ~/mgr
 cp ../cloudify-nodecellar-example/inputs/simple.yaml.template ./nc-simple.yaml
 vi nc-simple.yaml
 ```
@@ -106,21 +106,21 @@ You should see the events being printed to the screen. You can also go to the de
 
 ```
 ...
-2016-06-16T22:18:04 LOG <nc-dep-1> [nodecellar_fdb78.start] INFO: Running Nodecellar liveness detection on port 8080
-2016-06-16T22:18:05 LOG <nc-dep-1> [nodecellar_fdb78.start] INFO: [GET] http://localhost:8080 200
-2016-06-16T22:18:05 LOG <nc-dep-1> [nodecellar_fdb78.start] INFO: Sucessfully started Nodecellar (17185)
-2016-06-16T22:18:05 LOG <nc-dep-1> [nodecellar_fdb78.start] INFO: Execution done (return_code=0): /tmp/S3BL9/start-nodecellar-app.sh
-2016-06-16T22:18:05 CFY <nc-dep-1> [nodecellar_fdb78.start] Task succeeded 'script_runner.tasks.run'
-2016-06-16T22:18:06 CFY <nc-dep-1> 'install' workflow execution succeeded
+2017-01-29T06:22:51 LOG <nc-dep-1> [nodecellar_r2ptnh.start] INFO: Running Nodecellar liveness detection on port 8080
+2017-01-29T06:22:51 LOG <nc-dep-1> [nodecellar_r2ptnh.start] INFO: [GET] http://localhost:8080 200
+2017-01-29T06:22:52 LOG <nc-dep-1> [nodecellar_r2ptnh.start] INFO: Sucessfully started Nodecellar (17648)
+2017-01-29T06:22:52 LOG <nc-dep-1> [nodecellar_r2ptnh.start] INFO: Execution done (return_code=0): /tmp/CRYCK/start-nodecellar-app.sh
+2017-01-29T06:22:52 CFY <nc-dep-1> [nodecellar_r2ptnh.start] Task succeeded 'script_runner.tasks.run'
+2017-01-29T06:22:53 CFY <nc-dep-1> 'install' workflow execution succeeded
 Finished executing workflow install on deployment nc-dep-1
-* Run 'cfy events list --include-logs --execution-id 51f28499-cdc8-48c6-907e-d1378a8ac37a' to retrieve the execution's events/logs
+* Run 'cfy events list --include-logs --execution-id 61c86537-6ee5-4275-8e8f-330ff80b1838' to retrieve the execution's events/logs
 ```
 
 ## Step 7: Access the application
 
 Point your browser to your NodeJS's public IP, port 8080. You should now see the NodeCellar application. click the "Start Browsing Node Cellar" button and see the list of wines that is retrieved from the installed Mongo database.
 
-![Nodecellar](../../../raw/3.4.0/running-nodecellar-on-manager/nodecellar.png "NodeCellar")
+![Nodecellar](../../../raw/3.4.1/running-nodecellar-on-manager/nodecellar.png "NodeCellar")
 
 ## Step 8: View executions
 
@@ -144,8 +144,12 @@ To uninstall the application, trigger the `uninstall` workflow:
 
 ```bash
 cfy executions start -d nc-dep-1 -w uninstall -l
+```
+
+The NodeCellar application will be uninstalled, and will no longer be available for browsing. Then, delete the deployment
+and the blueprint:
+
+```bash
 cfy deployments delete -d nc-dep-1
 cfy blueprints delete -b nodecellar
 ```
-
-The NodeCellar application will be uninstalled, and will no longer be available for browsing.

@@ -13,6 +13,13 @@ the following from the instructor:
 to the private key used to access the CLI VM. *This is not a Cloudify requirement*, but instead a design
 of the training labs, in favour of simplicity.
 
+### Manager blueprints
+
+If you installed the CLI from the official CLI RPM, then the manager blueprints are available to you at `/opt/cfy/cloudify-manager-blueprints`.
+The rest of this lab assumes that that is the case. If it isn't, you'll have to download the manager blueprints from GitHub
+(http://github.com/cloudify-cosmo/cloudify-manager-blueprints; **make sure you use the correct tag**) and adjust the commands
+below accordingly.
+
 ## Process
 
 *Note*: These steps should be executed on your CLI VM, *not* on the intended Manager VM.
@@ -21,10 +28,10 @@ of the training labs, in favour of simplicity.
 
 For clarity and convenience, create a new directory that will serve as Cloudify's working directory.
 
-Our labs will assume that the chosen directory is `~/work`.
+Our labs will assume that the chosen directory is `~/mgr`.
 
 ```bash
-mkdir ~/work
+mkdir ~/mgr
 ```
 
 ### Step 2: Have your Manager VM's private key available
@@ -32,26 +39,13 @@ mkdir ~/work
 The private key, required to connect to your manager VM, needs to be accessible to the Cloudify CLI. Copy the private key file to your CLI machine (either by either `scp` [linux], `pscp`/`winscp` [Windows] or by pasting the key's contents into an editor).
 For documentation purposes, it is assumed that the key file is available at `~/cfy-training.pem`.
 
-### Step 3: Download the manager blueprint
-
-Execute the following command:
-
-```bash
-cd ~
-curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.1.zip
-unzip manager-blueprints.zip
-mv cloudify-manager-blueprints-3.4.1 cloudify-manager-blueprints
-```
-
-That will download the latest manager blueprints and extract them into `./cloudify-manager-blueprints`.
-
-### Step 4: Configure the inputs file
+### Step 3: Configure the inputs file
 
 The provided manager blueprints ship with templates for manager inputs. These templates have to be edited to reflect the environment in which the manager is to be installed.
 
 ```bash
-cd ~/work
-cp ~/cloudify-manager-blueprints/simple-manager-blueprint-inputs.yaml ./manager-inputs.yaml
+cd ~/mgr
+cp /opt/cfy/cloudify-manager-blueprints/simple-manager-blueprint-inputs.yaml ./manager-inputs.yaml
 vi manager-inputs.yaml
 ```
 
@@ -64,19 +58,28 @@ ssh_user: centos
 ssh_key_filename: ~/cfy-training.pem
 ```
 
-If deploying on a system with 4GB or less of memory, it may be necessary to limit the amount of memory
-ElasticSearch allocates (for development / testing purposes).  This can be accomplished using
-the following inputs.
+**NOTES**
 
-```yaml
-elasticsearch_heap_size: 1.5g
-```
+1. If deploying on a system with 3GB RAM or less, it may be necessary to limit the amount of memory
+   ElasticSearch allocates (for development / testing purposes). This can be accomplished using
+   the following input:
 
-### Step 5: Trigger the bootstrap process
+   ```yaml
+   elasticsearch_heap_size: 1g
+   ```
+
+2. If deploying on a system with less than 3792MB RAM, you'll have to adjust the `minimum_required_total_physical_memory_in_mb`
+   input:
+   
+   ```yaml
+   minimum_required_total_physical_memory_in_mb: 3500
+   ```
+
+### Step 4: Trigger the bootstrap process
 
 ```bash
 cfy init -r
-cfy bootstrap -p ../cloudify-manager-blueprints/simple-manager-blueprint.yaml -i manager-inputs.yaml
+cfy bootstrap -p /opt/cfy/cloudify-manager-blueprints/simple-manager-blueprint.yaml -i manager-inputs.yaml
 ```
 
 The first command initializes a Cloudify CLI working directory inside the current working directory.
@@ -88,7 +91,7 @@ Bootstrap complete
 Manager is up at <manager's-public-ip>
 ```
 
-### Step 6: Verify that the manager started successfully
+### Step 5: Verify that the manager started successfully
 
 Type the following command to verify that all manager components are up and running:
 
@@ -118,10 +121,10 @@ Services:
 +--------------------------------+---------+
 ```
 
-### Step 7: Access the web UI
+### Step 6: Access the web UI
 
 Using your browser, navigate to your Cloudify Manager's public IP address. For example: http://15.125.87.108
 
 You should get the Cloudify Manager's Web UI:
 
-![Cloudify 3.4.1 Web UI](../../../raw/3.4.0/simple-bootstrap/cfy-3.4.1-ui.png "Cloudify 3.4.0 Web UI")
+![Cloudify 3.4.1 Web UI](../../../raw/3.4.1/simple-bootstrap/cfy-3.4.1-ui.png "Cloudify 3.4.1 Web UI")

@@ -34,7 +34,7 @@ vi test-plugin/plugin/tasks.py
 Modify the `my_task` method (you may rename it as well). Our goal is to write an operation that:
 
 * Receives two arguments, `str1` and `str2`
-* Prints the arguments
+* Prints the arguments to the Cloudify log
 * Stores a concat of these two strings under a runtime property called `result` on the same node instance that the plugin operates on
 * Prints the result to the Cloudify log
 
@@ -91,12 +91,19 @@ cd test-plugin
 You will see output similar to the following:
 
 ```
-2015-07-29 13:14:08 CFY <test_my_task> Starting 'install' workflow execution
-2015-07-29 13:14:08 CFY <test_my_task> [test_node_template_eeade] Creating node
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade] Configuring node
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade] Starting node
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Sending task 'plugin.tasks.my_task'
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Task started 'plugin.tasks.my_task'
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Task succeeded 'plugin.tasks.my_task'
-2015-07-29 13:14:09 CFY <test_my_task> 'install' workflow execution succeeded
+2017-01-29 01:38:13 CFY <test_my_task> Starting 'install' workflow execution
+2017-01-29 01:38:13 CFY <test_my_task> [test_node_template_jjthv4] Creating node
+2017-01-29 01:38:13 CFY <test_my_task> [test_node_template_jjthv4] Configuring node
+2017-01-29 01:38:14 CFY <test_my_task> [test_node_template_jjthv4] Starting node
+2017-01-29 01:38:14 CFY <test_my_task> [test_node_template_jjthv4.start] Sending task 'plugin.tasks.my_task'
+2017-01-29 01:38:14 CFY <test_my_task> [test_node_template_jjthv4.start] Task started 'plugin.tasks.my_task'
+2017-01-29 01:38:14 LOG <test_my_task> [test_node_template_jjthv4.start] INFO: str1=mark, str2=knopfler
+2017-01-29 01:38:14 LOG <test_my_task> [test_node_template_jjthv4.start] INFO: result=markknopfler
+2017-01-29 01:38:14 CFY <test_my_task> [test_node_template_jjthv4.start] Task succeeded 'plugin.tasks.my_task'
+2017-01-29 01:38:14 CFY <test_my_task> 'install' workflow execution succeeded
+.
+----------------------------------------------------------------------
+Ran 1 test in 2.092s
+
+OK
 ```

@@ -11,9 +11,9 @@ In this lab, we will use the Cloudify CLI to deploy NodeCellar on the same CLI m
 
 ```bash
 cd ~
-curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4-maint.zip
+curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4.1-maint.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4-maint cloudify-nodecellar-example
+mv cloudify-nodecellar-example-3.4.1-maint cloudify-nodecellar-example
 ```
 
 ### Step 2: Install the blueprint
@@ -28,19 +28,19 @@ instantiating relationships.
 
 ```
 ...
-2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb] Starting node
-2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb.start] Sending task 'script_runner.tasks.run'
-2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb.start] Task started 'script_runner.tasks.run'
-2016-06-15 17:28:02 LOG <local> [nodecellar_7f2bb.start] INFO: Executing: /tmp/tmpQXZZRp-start-nodecellar-app.sh
-2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: MongoDB is located at localhost:27017
-2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: Starting nodecellar application on port 8080
-2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: /tmp/ee4c9789-8292-413a-83c0-9f3fee4cda36/nodejs/nodejs-binaries/bin/node /tmp/ee4c9789-8292-413a-83c0-9f3fee4cda36/nodecellar/nodecellar-source/server.js
-2016-06-15 17:28:05 LOG <local> [nodecellar_7f2bb.start] INFO: Running Nodecellar liveness detection on port 8080
-2016-06-15 17:28:05 LOG <local> [nodecellar_7f2bb.start] INFO: [GET] http://localhost:8080 200
-2016-06-15 17:28:06 LOG <local> [nodecellar_7f2bb.start] INFO: Sucessfully started Nodecellar (9881)
-2016-06-15 17:28:06 LOG <local> [nodecellar_7f2bb.start] INFO: Execution done (return_code=0): /tmp/tmpQXZZRp-start-nodecellar-app.sh
-2016-06-15 17:28:06 CFY <local> [nodecellar_7f2bb.start] Task succeeded 'script_runner.tasks.run'
-2016-06-15 17:28:07 CFY <local> 'install' workflow execution succeeded
+2017-01-29 01:22:02 CFY <local> [nodecellar_upikj8] Starting node
+2017-01-29 01:22:02 CFY <local> [nodecellar_upikj8.start] Sending task 'script_runner.tasks.run'
+2017-01-29 01:22:02 CFY <local> [nodecellar_upikj8.start] Task started 'script_runner.tasks.run'
+2017-01-29 01:22:02 LOG <local> [nodecellar_upikj8.start] INFO: Executing: /tmp/tmpt_cMld-start-nodecellar-app.sh
+2017-01-29 01:22:04 LOG <local> [nodecellar_upikj8.start] INFO: MongoDB is located at localhost:27017
+2017-01-29 01:22:05 LOG <local> [nodecellar_upikj8.start] INFO: Starting nodecellar application on port 8080
+2017-01-29 01:22:05 LOG <local> [nodecellar_upikj8.start] INFO: /tmp/19e4adc5-9939-4a45-af0d-6df517283823/nodejs/nodejs-binaries/bin/node /tmp/19e4adc5-9939-4a45-af0d-6df517283823/nodecellar/nodecellar-source/server.js
+2017-01-29 01:22:06 LOG <local> [nodecellar_upikj8.start] INFO: Running Nodecellar liveness detection on port 8080
+2017-01-29 01:22:06 LOG <local> [nodecellar_upikj8.start] INFO: [GET] http://localhost:8080 200
+2017-01-29 01:22:07 LOG <local> [nodecellar_upikj8.start] INFO: Sucessfully started Nodecellar (9761)
+2017-01-29 01:22:07 LOG <local> [nodecellar_upikj8.start] INFO: Execution done (return_code=0): /tmp/tmpt_cMld-start-nodecellar-app.sh
+2017-01-29 01:22:07 CFY <local> [nodecellar_upikj8.start] Task succeeded 'script_runner.tasks.run'
+2017-01-29 01:22:07 CFY <local> 'install' workflow execution succeeded
 ```
 
 ### Step 3: Test the application

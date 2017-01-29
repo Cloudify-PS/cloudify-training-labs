@@ -5,14 +5,19 @@
 The blueprints may have already been downloaded during previous labs. If not:
 
 ```bash
-cd ~/work
+cd ~
 curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.1.zip
 unzip manager-blueprints.zip
 mv cloudify-manager-blueprints-3.4.1 cloudify-manager-blueprints
+```
 
-curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4-maint.zip
+NodeCellar may also have been downloaded previously. If not:
+
+```bash
+cd ~
+curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4.1-maint.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4-maint/ cloudify-nodecellar-example
+mv cloudify-nodecellar-example-3.4.1-maint cloudify-nodecellar-example
 ```
 
 ### Step 2: Prepare `inputs.yaml`
@@ -20,11 +25,11 @@ mv cloudify-nodecellar-example-3.4-maint/ cloudify-nodecellar-example
 From your CLI machine:
 
 ```bash
-cd ~/work
+cd ~/mgr
 cp ../cloudify-manager-blueprints/openstack-manager-blueprint-inputs.yaml inputs-os.yaml
 ```
 
-Then, edit `~/work/inputs-os.yaml` for your values. In particular:
+Then, edit `~/mgr/inputs-os.yaml` for your values. In particular:
 
 *   **`keystone_username`**: for authenticating against KeyStone
 *   **`keystone_password`**: for authenticating against KeyStone
