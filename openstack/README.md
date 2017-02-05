@@ -76,15 +76,15 @@ Open a browser window to `http://<manager-ip-address>`. You will see the Cloudif
     
     ```json
     {
-        "openstack_auth_url": "",
+        "openstack_auth_url": "https://Openstack_MANAGEMENT_IP:5000/v3",
         "user_ssh_key": "none",
         "agents_security_group_name": "cfy-agents",
         "openstack_region": "RegionOne",
-        "openstack_password": "my_password",
+        "openstack_password": "my_openstack_password",
         "agents_to_manager_inbound_ports": "5672,8101,53229",
         "openstack_tenant_name": "my_tenant",
         "agents_user": "centos",
-        "openstack_username": "my_username",
+        "openstack_username": "my_openstack_username",
         "agents_keypair_name": "cfy-agents-key"
     }
     ```
