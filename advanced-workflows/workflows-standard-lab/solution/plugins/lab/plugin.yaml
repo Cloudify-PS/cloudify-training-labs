@@ -1,0 +1,35 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+plugins:
+  pkg:
+    executor: central_deployment_agent
+    package_name: lab-wf-standard-plugin
+    package_version: '0.1'
+    source: lab
+
+
+workflows:
+  check_wind_speed:
+    # Package.Module.File.Function
+    mapping: pkg.plugin.workflows.check_wind_speed
+    parameters:
+      city_name:
+        required: true
+        description: |
+          Name of the city to get wind speed data from
+          (format=city, state abbr.)
+        type: string
+        default: Boston, MA
+      scalable_entity_name:
+        required: true
+        description: |
+          Name of a scalable Cloudify type (group or node).
+        type: string
+        default: balloons
+      max_wind_speed:
+        required: true
+        description: |
+          Maximum amount of wind (MPH) to allow before
+          scaling back deployed instances.
+        type: integer
+        default: 8
