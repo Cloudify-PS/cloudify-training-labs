@@ -38,15 +38,14 @@ def get_wind_speed(ctx, city_name):
             'Unexpected response from weather service')
 
 
-def check_wind_speed(ctx, city_name="Boston, MA", **_):
+def check_wind_speed(ctx, city_name, **_):
     '''
         Checks the wind speed of a city and logs the results.
 
     :param `CloudifyWorkflowContext` ctx: Cloudify workflow context. This
         is auto-injected into the function when called as a workflow.
     :param str city_name: Name of a city to check wind speed
-        for. Format is "<City>, <State Abbr.>". By the time you complete
-        the lab tasks, this should *not* have a default value.
+        for. Format is "<City>, <State Abbr.>".
     '''
     # Validate city name
     if re.compile(*CITY_NAME_REGEX).match(city_name) is None:

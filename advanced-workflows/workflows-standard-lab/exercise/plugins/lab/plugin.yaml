@@ -12,17 +12,3 @@ workflows:
   check_wind_speed:
     # Package.Module.File.Function
     mapping: pkg.plugin.workflows.check_wind_speed
-    parameters:
-      city_name:
-        required: true
-        description: |
-          Name of the city to get wind speed data from
-          (format=city, state abbr.)
-        type: string
-        default: Boston, MA
-      scalable_entity_name:
-        required: true
-        description: |
-          Name of a scalable Cloudify type (group or node).
-        type: string
-        default: balloons

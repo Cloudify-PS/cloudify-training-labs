@@ -1,10 +1,8 @@
 # Standard Workflow lab
 
-In this lab, we will be automating the launching of hot air balloons for a Boston-based hot air balloon ride company. Hot air balloon experts warn of a maximum safe wind speed of 8-10 MPH and we must keep people safe!
+In this lab we will be getting the weather for a US city. This lab solely focuses on custom workflow development and has no functional node_templates defined.
 
-You’ve been provided a `ha_balloon` node that is scalable up to 5 (the amount of balloons the company has) with a minimum of 0 instances. If a node has been installed, that means it’s been cleared for use. If it’s uninstalled, that means that it has been told to land.
-
-There’s a custom workflow called `check_wind_speed` that should check the wind speed from an external service (see code comments), make a scaling decision based on the reported wind speed, and execute a scaling operation (logging before and after as well as catching exceptions of the built-in `scale` workflow). How you scale based on wind speed is up to you.
+There’s a custom workflow called `check_wind_speed` that should check the wind speed from an external weather service (API) and log the results.
 
 
 ## Usage
@@ -28,21 +26,19 @@ cfy executions start -d lab-std-wf-01 -w check_wind_speed -l
 
 ### Task \#1
 
-Run the custom workflow (see the `Usage` section above). Note, you'll need to complete Task \#2 before scaling will actually work.
+Run the custom workflow (see the `Usage` section above) and make sure it's working.
 
 ### Task \#2
 
-In the `check_wind_speed` workflow code, add the logic to calculate the scaling delta (amount and direction of scaling operation). See in-code comments about the task.
+Add a new workflow parameter called `city_name` to override the workflow's city name (which is currently statically set to "Boston, MA"). Remove the the default value for `city_name` from
+the workflow method arguments (read the comments!).
 
 ### Task \#3
 
-Using only `cfy` (not modifying code), change the city where the wind speed data will come from and run the custom workflow.
+Using only `cfy` (not modifying code), change the city where the wind speed data will come from and run the custom workflow. You must complete task #\2 to complete this task.
 
 ### Task \#4
 
-Add a new workflow parameter called `max_wind_speed` to override the max wind speed threshold. Then, use this custom parameter next time you execute the custom workflow to see a max wind speed to 100.
+Rename the folder at `<labroot>/exercise/plugins/lab` to `<labroot>/exercise/plugins/custom` and fix any newly broken references. *hint: check plugin.yaml*
 
-### Task \#5
-
-Add 2 logging statements, 1 before scaling and 1 after that log the current number of scaling
-group instances. *hint: look at the scaling group properties*
+Delete your existing deployment & blueprint and re-run everything to make sure it works.

@@ -2,26 +2,11 @@ tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
   - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
-  - plugins/lab/plugin.yaml
-
+  - plugins/custom/plugin.yaml
 
 node_templates:
-  ha_balloon:
+  # This is needed to be a valid blueprint, but
+  # we will not be using any node / instances in
+  # this lab.
+  dummy:
     type: cloudify.nodes.Root
-
-      
-groups:
-  balloons:
-    members:
-    - ha_balloon
-    
-
-policies:
-  scale_policy1:
-    type: cloudify.policies.scaling
-    targets:
-    - balloons
-    properties:
-      default_instances: 0
-      min_instances: 0
-      max_instances: 5
