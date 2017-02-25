@@ -18,7 +18,7 @@ for node in nodes:
     nodes_map[node.id] = node
 
 for node in nodes:
-    if 'cloudify.nodes.Compute' in node.type_hierarchy:
+    if 'lab_vm' in node.type_hierarchy:
         compute_nodes.append(node.id)
         for rel in node.relationships:
             target_node = nodes_map[rel['target_id']]

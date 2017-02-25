@@ -7,6 +7,9 @@ imports:
 
 inputs:
   # General
+  students_count:
+    type: integer
+    default: 0
   aws_access_key_id:
     type: string
   aws_secret_access_key:
@@ -14,9 +17,30 @@ inputs:
   ec2_region_name:
     type: string
     default: us-east-1
-  students_count:
-    type: integer
-    default: 1
+  agents_security_group_id:
+    type: string
+  server_names_prefix:
+    type: string
+    default: ''
+  use_existing_lab_vms_security_group:
+    type: boolean
+    default: false
+  lab_vms_security_group_id:
+    type: string
+    default: cfy-3.4.1-lab-vm
+  training_private_key:
+    type: string
+    default: /root/cfy-training.pem
+  # Keypair
+  keypair_name:
+    type: string
+  private_key_path:
+    type: string
+  # Subnet
+  use_existing_subnet:
+    type: boolean
+  subnet_id:
+    type: string
   # VPC
   use_existing_vpc:
     type: boolean
@@ -25,16 +49,6 @@ inputs:
     type: string
     default: ''
   cidr_block:
-    type: string
-  # Subnet
-  use_existing_subnet:
-    type: boolean
-  existing_subnet_id:
-    type: string
-  # Keypair
-  keypair_name:
-    type: string
-  private_key_path:
     type: string
   # CLI
   cli_image_id:
@@ -52,6 +66,9 @@ inputs:
   labs_branch:
     type: string
   # CLI security group
+  use_existing_cli_security_group:
+    type: boolean
+    default: false
   cli_security_group_id:
     type: string
     default: cfy-training-3.4.1-cli
@@ -65,6 +82,9 @@ inputs:
   manager_ssh_user:
     type: string
     default: centos
+  use_existing_manager_security_group:
+    type: boolean
+    default: false
   manager_security_group_id:
     type: string
     default: cfy-training-3.4.1-manager
@@ -78,6 +98,9 @@ inputs:
   nodejs_ssh_user:
     type: string
     default: centos
+  use_existing_nodejs_security_group:
+    type: boolean
+    default: false
   nodejs_security_group_id:
     default: cfy-training-3.4.1-nodejs
   # MongoDB
@@ -90,12 +113,33 @@ inputs:
   mongodb_ssh_user:
     type: string
     default: centos
+  use_existing_mongodb_security_group:
+    type: boolean
+    default: false
   mongodb_security_group_id:
     default: cfy-training-3.4.1-mongodb
-  # General
-  server_names_prefix:
+  # Resources
+  use_existing_resources_vm:
+    type: boolean
+    default: false
+  resources_vm_name:
     type: string
     default: ''
+  use_existing_resources_security_group:
+    type: boolean
+    default: false
+  resources_security_group_id:
+    type: string
+    default: cfy-3.4.1-resources
+  resources_image_id:
+    type: string
+    default: ami-6d1c2007
+  resources_instance_type:
+    type: string
+    default: t2.micro
+  resources_ssh_user:
+    type: string
+    default: centos
 
 dsl_definitions:
   aws_config: &aws_config
@@ -110,6 +154,10 @@ dsl_definitions:
     host_string: { get_attribute: [ nodejs_vm, public_ip_address ]}
     user: { get_input: nodejs_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
+  resources_fabric_env: &resources_fabric_env
+    host_string: { get_attribute: [ resources_vm, ip ]}
+    user: { get_input: resources_ssh_user }
+    key_filename: { get_property: [ keypair, private_key_path ] }
 
 node_types:
   lab_vm:
@@ -120,11 +168,19 @@ node_types:
       agent_config:
         default:
           install_method: none
-#      parameters:
-#        default:
-#          blockDeviceMapping:
-#            - device_name: /dev/sda1
-#              delete_on_termination: true
+#          user: centos
+#          key: { get_input: training_private_key }
+
+  resources_vm:
+    derived_from: cloudify.aws.nodes.Instance
+    properties:
+      aws_config:
+        default: *aws_config
+      agent_config:
+        default:
+          install_method: remote
+          user: centos
+          key: { get_input: training_private_key }
 
 node_templates:
   keypair:
@@ -148,7 +204,7 @@ node_templates:
     properties:
       aws_config: *aws_config
       use_external_resource: { get_input: use_existing_subnet }
-      resource_id: { get_input: existing_subnet_id }
+      resource_id: { get_input: subnet_id }
       cidr_block: ''
     relationships:
       - type: cloudify.aws.relationships.subnet_contained_in_vpc
@@ -158,7 +214,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: false
+      use_external_resource: { get_input: use_existing_cli_security_group }
       resource_id: { get_input: cli_security_group_id }
       description: Cloudify Training (CLI)
       rules:
@@ -187,7 +243,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: false
+      use_external_resource: { get_input: use_existing_manager_security_group }
       resource_id: { get_input: manager_security_group_id }
       description: Cloudify Training (manager)
       rules:
@@ -222,7 +278,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: false
+      use_external_resource: { get_input: use_existing_nodejs_security_group }
       resource_id: { get_input: nodejs_security_group_id }
       description: Cloudify Training (NodeJS)
       rules:
@@ -246,7 +302,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: false
+      use_external_resource: { get_input: use_existing_mongodb_security_group }
       resource_id: { get_input: mongodb_security_group_id }
       description: Cloudify Training (MongoDB)
       rules:
@@ -277,7 +333,11 @@ node_templates:
         type: cloudify.aws.relationships.instance_connected_to_keypair
       - target: cli_ip
         type: cloudify.aws.relationships.instance_connected_to_elastic_ip
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: cli_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
@@ -330,7 +390,11 @@ node_templates:
         type: cloudify.aws.relationships.instance_connected_to_keypair
       - target: manager_ip
         type: cloudify.aws.relationships.instance_connected_to_elastic_ip
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: manager_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
@@ -351,6 +415,10 @@ node_templates:
       - target: nodejs_ip
         type: cloudify.aws.relationships.instance_connected_to_elastic_ip
       - target: nodejs_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: agents_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
@@ -379,8 +447,97 @@ node_templates:
         type: cloudify.aws.relationships.instance_connected_to_keypair
       - target: mongodb_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
+
+  resources_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      use_external_resource: { get_input: use_existing_resources_security_group }
+      resource_id: { get_input: resources_security_group_id }
+      description: For Cloudify 3.4.1 training resources
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 8080
+          to_port: 8080
+          cidr_ip: 0.0.0.0/0
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
+
+  lab_vm_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      use_external_resource: { get_input: use_existing_lab_vms_security_group }
+      resource_id: { get_input: lab_vms_security_group_id }
+      description: For all lab VMs
+    # No rules. This is for future use.
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
+
+  agents_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      use_external_resource: true
+      resource_id: { get_input: agents_security_group_id }
+      description: ''
+
+  resources_vm:
+    type: resources_vm
+    properties:
+      use_external_resource: { get_input: use_existing_resources_vm }
+      resource_id: { get_input: resources_vm_name }
+      resource_id: { get_input: resources_security_group_id }
+      image_id: { get_input: resources_image_id }
+      instance_type: { get_input: resources_instance_type }
+      name: resources
+    relationships:
+      - target: keypair
+        type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: resources_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
+
+  resources_configuration:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/download-resources.py
+          inputs:
+            resources:
+              - url: http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
+                location: ~/yaml/spec/cloudify/3.4.1/types.yaml
+              - url: http://www.getcloudify.org/spec/fabric-plugin/1.4.1/plugin.yaml
+                location: ~/yaml/spec/fabric-plugin/1.4.1/plugin.yaml
+              - url: http://repository.cloudifysource.org/org/cloudify3/wagons/cloudify-fabric-plugin/1.4.1/cloudify_fabric_plugin-1.4.1-py27-none-linux_x86_64-centos-Core.wgn
+                location: ~/
+              - url: http://repository.cloudifysource.org/org/cloudify3/3.4.1/sp-RELEASE/cloudify-manager-resources_3.4.1-sp-b410.tar.gz
+                location: ~/
+        start:
+          # For some reason, running this:
+          # nohup python -m SimpleHTTPServer 8080 > ~/http.out 2> ~/http.err &
+          # - through Fabric using commands runner mode, doesn't seem to start SimpleHTTPServer. Will look into it
+          # later.
+          implementation: scripts/start-http.sh
+    relationships:
+      - target: resources_vm
+        type: cloudify.relationships.contained_in
 
 groups:
   trainee:

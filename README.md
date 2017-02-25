@@ -15,6 +15,8 @@ This project contains the labs material for the official Cloudify training cours
 9.  [Monitoring](monitoring)
 10. [Security](security)
 11. [Working with OpenStack](openstack)
+12. [Bootstrapping Offline](offline-bootstrap)
+13. [Troubleshooting](troubleshooting)
 
 ## Virtual Machines
 
