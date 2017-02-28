@@ -15,7 +15,7 @@ cd ~/my_bp
 Create a new file to contain the blueprint:
 
 ```bash
-bi blueprint.yaml
+vi blueprint.yaml
 ```
 
 ### TOSCA definitions version
