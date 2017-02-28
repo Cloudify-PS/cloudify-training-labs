@@ -1,9 +1,6 @@
-# Lab: Blueprints
+# Lab: Creating a Simple Blueprint
 
-**NOTE**: This is a guided, interactive lab; it is intended to be completed throughout the delivery of the Blueprints section
-of the training
-
-### Preparations
+## Preparations
 
 Create a new directory:
 
@@ -18,6 +15,8 @@ Create a new file to contain the blueprint:
 vi blueprint.yaml
 ```
 
+## Create the blueprint
+ 
 ### TOSCA definitions version
 
 Add the TOSCA definitions version directive at the top of the file:
@@ -76,3 +75,18 @@ The relationship type will map the `establish` operation in the `cloudify.interf
 
 1.  Add an input for the Apache listening port. The input name should be `apache_listening_port`, the type should be `integer`, with no default.
 2.  Change the `apache` node so the value of the `listener_port` property is taken from the `apache_listening_port` input.
+
+## Run the blueprint
+
+Now that the blueprint is ready, try running it:
+
+```bash
+cd ~/cfylocal
+cfy local install -p ~/my_bp/blueprint.yaml -i 'apache_listening_port=8080'
+```
+
+Once done, invoke the `uninstall` workflow to clean up:
+
+```bash
+cfy local uninstall
+```
