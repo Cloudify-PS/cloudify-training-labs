@@ -76,6 +76,14 @@ The relationship type will map the `establish` operation in the `cloudify.interf
 1.  Add an input for the Apache listening port. The input name should be `apache_listening_port`, the type should be `integer`, with no default.
 2.  Change the `apache` node so the value of the `listener_port` property is taken from the `apache_listening_port` input.
 
+### Add supporting scripts
+
+Copy the contents of the `solution/scripts` directory into your blueprint's directory:
+
+```bash
+cp -R ~/cloudify-training-labs/blueprints/solution/scripts ~/my_bp
+```
+
 ## Run the blueprint
 
 Now that the blueprint is ready, try running it:
