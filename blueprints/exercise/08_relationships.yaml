@@ -1,0 +1,43 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
+
+relationships:
+  # Add a relationship type called "apache_connected_to_mysql".
+  # The relationship type should be derived from the built-in "cloudify.relationships.connected_to" relationship
+  # type.
+  # The relationship type will map the "establish" operation in the "cloudify.interfaces.relationship_lifecycle"
+  # **source** interface, to "scripts/apache-to-mysql.sh".
+
+node_types:
+  apache:
+    derived_from: cloudify.nodes.Root
+    properties:
+      listener_port:
+        type: integer
+        default: 80
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/apache-install.sh
+        delete:
+          implementation: scripts/apache-uninstall.sh
+
+  # Add a node type called "mysql", derived from "cloudify.nodes.Root".
+  # The node type should have no properties.
+  # The node type should implement the "cloudify.interfaces.lifecycle" interface, and provide the following two
+  # operations:
+
+  # "create": mapped to "scripts/mysql-install.sh"
+  # "delete": mapped to "scripts/mysql-uninstall.sh"
+
+node_templates:
+  web_server:
+    type: apache
+    properties:
+      listener_port: 8080
+
+  # Add a node template called "database", of type "mysql".
+  # Then, change the "web_server" node to add a relationship to the "database" node, using the relationship type
+  # you had created previously.

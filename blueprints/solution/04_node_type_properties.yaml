@@ -6,3 +6,7 @@ imports:
 node_types:
   apache:
     derived_from: cloudify.nodes.Root
+    properties:
+      listener_port:
+        type: integer
+        default: 80

@@ -1,0 +1,24 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
+
+node_types:
+  apache:
+    derived_from: cloudify.nodes.Root
+    properties:
+      listener_port:
+        type: integer
+        default: 80
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/apache-install.sh
+        delete:
+          implementation: scripts/apache-uninstall.sh
+
+node_templates:
+  web_server:
+    type: apache
+    properties:
+      listener_port: 8080
