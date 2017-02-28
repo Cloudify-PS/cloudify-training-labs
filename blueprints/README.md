@@ -47,10 +47,13 @@ Add Cloudify's global `types.yaml` file using an `import` statement. The file's 
 
 ### Add node templates
 
-1.  Add a node template called `web_server`, of type `apache`.
+1.  Add a node template called `host`, of type `cloudify.nodes.Compute`.
+    *   Add a property called `agent_config`, with the value being a dictionary containing the following:
+    
+        `install_method: none`
+2.  Add a node template called `web_server`, of type `apache`.
     *   Provide an override to the `listener_port` property. The default is `80`, but we want port `8080` here.
-2.  Add a node template called `database`, of type `mysql`.
-
+3.  Add a node template called `database`, of type `mysql`.
 
 ### Add relationship type
 
@@ -61,10 +64,13 @@ The relationship type should be derived from the built-in `cloudify.relationship
 The relationship type will map the `establish` operation in the `cloudify.interfaces.relationship_lifecycle`
 **source** interface, to `scripts/apache-to-mysql.sh`.
 
-### Add relationship instance
+### Add relationship instances
 
-To the `apache` node, add a relationship when the target is the `database` node, and the type is the relationship
-type you had created before.
+*   To the `apache` node:
+    * Add a relationship where the target is the `database` node, and the type is the relationship type you had created before.
+    * Add a relationship where the target is the `host` node, and the type is the standard containment type.
+*   To the `database` node:
+    * Add a relationship where the target is the `host` node, and the type is the standard containment type.
 
 ### Add inputs
 
