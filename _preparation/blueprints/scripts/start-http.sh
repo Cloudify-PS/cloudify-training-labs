@@ -1,3 +1,3 @@
 #!/bin/bash -e
-cd /home/centos
+cd ~
 nohup python -m SimpleHTTPServer 8080 > ~/http.out 2> ~/http.err &

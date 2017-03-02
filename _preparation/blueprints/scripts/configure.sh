@@ -1,3 +1,7 @@
 #!/bin/bash -e
-ssh -i ${key_filename} -o "StrictHostKeyChecking no" ${user}@${host} "git clone -b ${labs_branch} ${labs_repo_url}"
-scp -i ${key_filename} -o "StrictHostKeyChecking no" ${key_filename} ${user}@${host}:~/
+# We download the file and then push it, rather than downloading the file directly from the CLI machine.
+# Otherwise, credentials may be stored in the bash history on the CLI machine.
+SSH_PARMS=(-i ${key_filename} -o "StrictHostKeyChecking no")
+ctx logger info "Copying key file (${key_filename}) to remote machine..."
+scp "${SSH_PARMS[@]}" ${key_filename} ${user}@${host}:~/
+ctx logger info "Done."

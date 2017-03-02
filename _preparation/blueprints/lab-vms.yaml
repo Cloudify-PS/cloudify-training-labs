@@ -60,10 +60,12 @@ inputs:
   cli_ssh_user:
     type: string
     default: centos
-  labs_repo_url:
+  labs_archive:
     type: string
-    default: https://github.com/cloudify-cosmo/cloudify-training-labs.git
-  labs_branch:
+    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/3.4.1.tar.gz
+  github_user:
+    type: string
+  github_api_key:
     type: string
   # CLI security group
   use_existing_cli_security_group:
@@ -362,8 +364,6 @@ node_templates:
             host: { get_attribute: [ cli_vm, public_ip_address ]}
             user: { get_input: cli_ssh_user }
             key_filename: { get_property: [ keypair, private_key_path ] }
-            labs_repo_url: { get_input: labs_repo_url }
-            labs_branch: { get_input: labs_branch }
       labs:
         pull:
           implementation: fabric.fabric_plugin.tasks.run_commands
@@ -374,6 +374,28 @@ node_templates:
     relationships:
       - target: cli_vm
         type: cloudify.relationships.contained_in
+
+  cli_labs:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        # "create" can also be used to refresh the labs.
+        # It'd be nicer to implement "delete" and use the "heal" workflow...
+        # but "heal" (at least currently) kills entire VM's...
+        create:
+          implementation: scripts/refresh-labs.sh
+          executor: central_deployment_agent
+          inputs:
+            host: { get_attribute: [ cli_vm, public_ip_address ]}
+            user: { get_input: cli_ssh_user }
+            key_filename: { get_property: [ keypair, private_key_path ] }
+            labs_archive: { get_input: labs_archive }
+            github_user: { get_input: github_user }
+            github_api_key: { get_input: github_api_key }
+    relationships:
+      - target: cli_vm
+        type: cloudify.relationships.contained_in
+
   manager_ip:
     type: cloudify.aws.nodes.ElasticIP
     properties:

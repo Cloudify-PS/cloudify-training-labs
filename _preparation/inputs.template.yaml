@@ -17,8 +17,9 @@ cidr_block: 172.31.0.0/16
 cli_image_id: ami-6d1c2007
 cli_instance_type: t2.micro
 cli_ssh_user: centos
-labs_repo_url: https://github.com/cloudify-cosmo/cloudify-training-labs.git
-labs_branch: 3.4.1
+labs_archive: https://github.com/Cloudify-PS/cloudify-training-labs/archive/3.4.1.tar.gz
+github_user: ''
+github_api_key: ''
 use_existing_cli_security_group: false
 cli_security_group_id: cfy-training-3.4.1-cli
 manager_image_id: ami-6d1c2007

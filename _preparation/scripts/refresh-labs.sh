@@ -5,4 +5,4 @@
 #!/bin/bash -e
 
 DEPLOYMENT_ID=$1
-cfy executions start -d $DEPLOYMENT_ID -w execute_operation -p '{"operation": "labs.pull", "node_ids": ["cli_configuration"]}' -l
+cfy executions start -d $DEPLOYMENT_ID -w execute_operation -p '{"operation": "cloudify.interfaces.lifecycle.create", "node_ids": ["cli_labs"]}' -l
