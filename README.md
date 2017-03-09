@@ -67,7 +67,7 @@ in order to verify proper installation, these applications have to be accessible
   training for. For example: `3.4.1`)
 
   ```bash
-  git clone -b <labs-branch> https://github.com/cloudify-cosmo/cloudify-training-labs.git
+  git clone -b <labs-branch> https://github.com/Cloudify-PS/cloudify-training-labs.git
   ```
 
 ### Creating Your Own Cloudify Manager VM
@@ -79,7 +79,7 @@ If you don't have a Manager VM provided to you, or you would like to use your ow
 with the following exceptions:
   * The minimum amount of RAM should be 4GB.
   * The security group to which this VM is connected should have more permissive rules than the ones stated,
-  because other labs (that depend on this one) install topologies on the very same VM as the Manager's.
+  because certain labs install topologies on the very same VM as the Manager's.
   It is recommended to allow incoming traffic on all ports.
 * Make sure that `iptables` is disabled. Similarly to the CLI VM's case, this is not a Cloudify requirement but a training
 material requirement.

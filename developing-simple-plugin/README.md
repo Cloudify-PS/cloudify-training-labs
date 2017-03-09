@@ -5,6 +5,30 @@ In this lab, we will develop a very simple plugin and use it within a blueprint.
 The lab is designed so the developed plugin is embedded with the blueprint; however, note that, most typically, plugins are packaged and stored on a server, so they can be reused
 by multiple blueprints.
 
+## Prerequisites
+
+**NOTE**: If you are doing this lab using VM's prepared for you as part of an official course, all prerequisites are
+already met, so you can skip this sction.
+
+To develop a plugin, you will need to install the following:
+
+*   `pip`: Most Linux distributions already contain this. Otherwise:
+    
+    ```bash
+    curl https://bootstrap.pypa.io/get-pip.py | sudo python
+    ```
+
+*   `virtualenv`: Can be installed via:
+    
+    ```bash
+    sudo pip install virtualenv
+    ```
+
+*   Cloudify's libraries:
+    1.  Create a new virtual environment (for example: `virtualenv /tmp/my-env`)
+    2.  Activate it (`source /tmp/my-env/bin/python`)
+    3.  Install Cloudify (`pip install cloudify==3.4.1`)
+
 ## Step 1: Download the plugin template
 
 ```bash
