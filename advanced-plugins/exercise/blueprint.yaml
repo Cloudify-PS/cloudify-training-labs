@@ -1,0 +1,101 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
+  - plugins/lab/plugin.yaml
+
+inputs:
+  aws_access_key_id:
+    type: string
+    description: |
+      AWS API access key ID (must have API Gateway rights)
+
+  aws_secret_access_key:
+    type: string
+    description: |
+      AWS API secret access key (must have API Gateway rights)
+
+  aws_region_name:
+    type: string
+    default: us-east-1
+    description: |
+      AWS API Gateway region name
+
+  api_version:
+    type: string
+    default: "1.0a"
+    description: |
+      API version identified
+
+  api_name:
+    type: string
+    default: CloudifyAPILab
+    description: |
+      API name / title
+
+  api_description:
+    type: string
+    default: |
+      An example API deployed with Cloudify
+    description: |
+      API description
+
+
+dsl_definitions:
+  aws_config: &aws_config
+    aws_access_key_id: { get_input: aws_access_key_id }
+    aws_secret_access_key: { get_input: aws_secret_access_key }
+    api_gateway_region_name: { get_input: aws_region_name }
+
+
+node_templates:
+  API:
+    type: cloudify.nodes.aws.apigateway.API
+    properties:
+      name: { get_input: api_name }
+      description: { get_input: api_description }
+      version: { get_input: api_version }
+      import:
+        swagger: "2.0"
+        info:
+          title: { get_property: [SELF, name] }
+          description: { get_property: [SELF, description] }
+          version: { get_property: [SELF, version] }
+        schemes:
+        - https
+        paths:
+          /:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                200:
+                  description: 200 response
+              x-amazon-apigateway-integration:
+                responses:
+                  200:
+                    statusCode: "200"
+                    responseTemplates:
+                      application/json: "{\"status\": \"OK\", \"version\": \"1.0.0\"}"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: when_no_match
+                type: mock
+      aws_config: *aws_config
+
+  API_deployment:
+    type: cloudify.nodes.aws.apigateway.Deployment
+    properties:
+      name: staging
+      aws_config: *aws_config
+    relationships:
+    - type: cloudify.relationships.contained_in
+      target: API
+
+
+outputs:
+  endpoint:
+    description: Public API deployment stage endpoint
+    value: { get_attribute: [API_deployment, invoke_url] }
