@@ -516,6 +516,26 @@ node_templates:
       resource_id: { get_input: agents_security_group_id }
       description: ''
 
+  cli_resources:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/create-resources-archive.sh
+          executor: central_deployment_agent
+    relationships:
+      - target: cli_vm
+        type: cloudify.relationships.depends_on
+        source_interfaces:
+          cloudify.interfaces.relationship_lifecycle:
+            establish:
+              implementation: scripts/copy-training-resources.sh
+              executor: central_deployment_agent
+              inputs:
+                host: { get_attribute: [ TARGET, public_ip_address ]}
+                user: { get_input: cli_ssh_user }
+                key_filename: { get_property: [ keypair, private_key_path ] }
+
   resources_vm:
     type: resources_vm
     properties:

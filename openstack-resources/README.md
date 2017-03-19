@@ -49,23 +49,32 @@ Don't forget to provide the new network's name through the `resource_id` propert
 
 ## Step 4: Add a subnet
 
-Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-network
+Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-subnet
 
 *   The subnet needs to be contained within the network that you had created. To achieve that, create a
     `cloudify.relationships.contained_in` relationship between the subnet and the network.
 
 *   The subnet needs to have a "leg" in the router. To achieve that: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-subnet-connected-to-router
 
+*   Parameters for the subnet should be passed as entries in a dictionary property called `subnet`, as follows:
+
+    ```yaml
+    properties:
+      subnet:
+        cidr: a.b.c.d/e
+    ```
+    
+    You may come up with any CIDR you'd like.
+
 ##  Step 5: Add a security group
 
 Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-securitygroup
 
-We want only one rule: allow ingress traffic on port 22, from everywhere.
+We need only one rule: allow ingress traffic on port 22, from anywhere.
 
 ## Step 6: Add a virtual machine
 
 Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-server
-
 
 Notes:
 

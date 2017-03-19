@@ -31,5 +31,22 @@ node_templates:
     type: cloudify.openstack.nodes.Network
     properties:
       resource_id: { get_input: network_name }
+
+  subnet:
+    type: cloudify.openstack.nodes.Subnet
+    properties:
+      subnet:
+        cidr: 172.16.0.0./24
+
+  sg:
+    type: cloudify.openstack.nodes.SecurityGroup
+    properties:
+      rules:
+        - port
   server:
     type: cloudify.openstack.nodes.Server
+    properties:
+      image: 12345
+      flavor: 12345
+    relationships:
+      - target: security
