@@ -11,9 +11,9 @@ In this lab, we will use the Cloudify CLI to deploy NodeCellar on the same CLI m
 
 ```bash
 cd ~
-curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4.1-maint.zip
+curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4.2-maint.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4.1-maint cloudify-nodecellar-example
+mv cloudify-nodecellar-example-3.4.2-maint cloudify-nodecellar-example
 ```
 
 ### Step 2: Install the blueprint

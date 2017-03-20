@@ -10,7 +10,7 @@ In this lab, we will write a blueprint that creates resources on OpenStack. We w
 
 Also, we will connect all resources together.
 
-For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.getcloudify.org/3.4.1/plugins/openstack/
+For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.getcloudify.org/3.4.2/plugins/openstack/
 
 ## Step 1: Create blueprint's skeleton
 
@@ -18,7 +18,7 @@ For the preparation of this lab, you will have to use the official OpenStack plu
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.4.2/types.yaml
   - http://www.getcloudify.org/spec/openstack-plugin/2.0/plugin.yaml
 ```
 
@@ -26,7 +26,7 @@ This will import the standard Cloudify types, as well as the OpenStack plugin.
 
 ## Step 2: Add the external network
 
-Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-network
+Documentation: http://docs.getcloudify.org/3.4.2/plugins/openstack/#cloudify-openstack-nodes-network
 
 Notes:
 
@@ -36,25 +36,25 @@ Notes:
 
 ## Step 2: Add a router
 
-Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-router
+Documentation: http://docs.getcloudify.org/3.4.2/plugins/openstack/#cloudify-openstack-nodes-router
 
 The router needs to be connected to the external network. To achieve that, establish a `cloudify.relationships.connected_to`
 relationship between the router and the external network node.
 
 ## Step 3: Add a network
 
-Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-network
+Documentation: http://docs.getcloudify.org/3.4.2/plugins/openstack/#cloudify-openstack-nodes-network
 
 Don't forget to provide the new network's name through the `resource_id` property.
 
 ## Step 4: Add a subnet
 
-Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-subnet
+Documentation: http://docs.getcloudify.org/3.4.2/plugins/openstack/#cloudify-openstack-nodes-subnet
 
 *   The subnet needs to be contained within the network that you had created. To achieve that, create a
     `cloudify.relationships.contained_in` relationship between the subnet and the network.
 
-*   The subnet needs to have a "leg" in the router. To achieve that: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-subnet-connected-to-router
+*   The subnet needs to have a "leg" in the router. To achieve that: http://docs.getcloudify.org/3.4.2/plugins/openstack/#cloudify-openstack-subnet-connected-to-router
 
 *   Parameters for the subnet should be passed as entries in a dictionary property called `subnet`, as follows:
 
@@ -68,13 +68,13 @@ Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-ope
 
 ##  Step 5: Add a security group
 
-Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-securitygroup
+Documentation: http://docs.getcloudify.org/3.4.2/plugins/openstack/#cloudify-openstack-nodes-securitygroup
 
 We need only one rule: allow ingress traffic on port 22, from anywhere.
 
 ## Step 6: Add a virtual machine
 
-Documentation: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-nodes-server
+Documentation: http://docs.getcloudify.org/3.4.2/plugins/openstack/#cloudify-openstack-nodes-server
 
 Notes:
 
@@ -104,4 +104,4 @@ Notes:
     nova flavor-list
     ```
 
-*   The server needs to be connected to the security group. To achieve that: http://docs.getcloudify.org/3.4.1/plugins/openstack/#cloudify-openstack-server-connected-to-security-group
+*   The server needs to be connected to the security group. To achieve that: http://docs.getcloudify.org/3.4.2/plugins/openstack/#cloudify-openstack-server-connected-to-security-group

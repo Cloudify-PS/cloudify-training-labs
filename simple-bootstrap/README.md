@@ -127,4 +127,4 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the Cloudify Manager's Web UI:
 
-![Cloudify 3.4.1 Web UI](../../../raw/3.4.1/simple-bootstrap/cfy-3.4.1-ui.png "Cloudify 3.4.1 Web UI")
+![Cloudify 3.4.2 Web UI](../../../raw/3.4.2/simple-bootstrap/cfy-3.4.2-ui.png "Cloudify 3.4.2 Web UI")

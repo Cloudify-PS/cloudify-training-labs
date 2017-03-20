@@ -1,9 +1,9 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.4.2/types.yaml
   - http://www.getcloudify.org/spec/fabric-plugin/1.4.2/plugin.yaml
-  - http://www.getcloudify.org/spec/aws-plugin/1.4.3/plugin.yaml
+  - http://www.getcloudify.org/spec/aws-plugin/1.4.4/plugin.yaml
 
 inputs:
   # General
@@ -27,10 +27,7 @@ inputs:
     default: false
   lab_vms_security_group_id:
     type: string
-    default: cfy-3.4.1-lab-vm
-  training_private_key:
-    type: string
-    default: /root/cfy-training.pem
+    default: cfy-3.4.2-lab-vm
   # Keypair
   keypair_name:
     type: string
@@ -62,7 +59,7 @@ inputs:
     default: centos
   labs_archive:
     type: string
-    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/3.4.1.tar.gz
+    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/3.4.2.tar.gz
   github_user:
     type: string
   github_api_key:
@@ -73,7 +70,7 @@ inputs:
     default: false
   cli_security_group_id:
     type: string
-    default: cfy-training-3.4.1-cli
+    default: cfy-training-3.4.2-cli
   # Manager
   manager_image_id:
     type: string
@@ -89,7 +86,7 @@ inputs:
     default: false
   manager_security_group_id:
     type: string
-    default: cfy-training-3.4.1-manager
+    default: cfy-training-3.4.2-manager
   # NodeJS
   nodejs_image_id:
     type: string
@@ -104,7 +101,7 @@ inputs:
     type: boolean
     default: false
   nodejs_security_group_id:
-    default: cfy-training-3.4.1-nodejs
+    default: cfy-training-3.4.2-nodejs
   # MongoDB
   mongodb_image_id:
     type: string
@@ -119,7 +116,7 @@ inputs:
     type: boolean
     default: false
   mongodb_security_group_id:
-    default: cfy-training-3.4.1-mongodb
+    default: cfy-training-3.4.2-mongodb
   # Resources
   use_existing_resources_vm:
     type: boolean
@@ -132,7 +129,7 @@ inputs:
     default: false
   resources_security_group_id:
     type: string
-    default: cfy-3.4.1-resources
+    default: cfy-3.4.2-resources
   resources_image_id:
     type: string
     default: ami-6d1c2007
@@ -171,7 +168,7 @@ node_types:
         default:
           install_method: none
 #          user: centos
-#          key: { get_input: training_private_key }
+#          key: { get_input: private_key_path }
 
   resources_vm:
     derived_from: cloudify.aws.nodes.Instance
@@ -182,7 +179,7 @@ node_types:
         default:
           install_method: remote
           user: centos
-          key: { get_input: training_private_key }
+          key: { get_input: private_key_path }
 
 node_templates:
   keypair:
@@ -482,7 +479,7 @@ node_templates:
       aws_config: *aws_config
       use_external_resource: { get_input: use_existing_resources_security_group }
       resource_id: { get_input: resources_security_group_id }
-      description: For Cloudify 3.4.1 training resources
+      description: For Cloudify 3.4.2 training resources
       rules:
         - ip_protocol: tcp
           from_port: 22
@@ -516,25 +513,25 @@ node_templates:
       resource_id: { get_input: agents_security_group_id }
       description: ''
 
-  cli_resources:
-    type: cloudify.nodes.Root
-    interfaces:
-      cloudify.interfaces.lifecycle:
-        create:
-          implementation: scripts/create-resources-archive.sh
-          executor: central_deployment_agent
-    relationships:
-      - target: cli_vm
-        type: cloudify.relationships.depends_on
-        source_interfaces:
-          cloudify.interfaces.relationship_lifecycle:
-            establish:
-              implementation: scripts/copy-training-resources.sh
-              executor: central_deployment_agent
-              inputs:
-                host: { get_attribute: [ TARGET, public_ip_address ]}
-                user: { get_input: cli_ssh_user }
-                key_filename: { get_property: [ keypair, private_key_path ] }
+#  cli_resources:
+#    type: cloudify.nodes.Root
+#    interfaces:
+#      cloudify.interfaces.lifecycle:
+#        create:
+#          implementation: scripts/create-resources-archive.sh
+#          executor: central_deployment_agent
+#    relationships:
+#      - target: cli_vm
+#        type: cloudify.relationships.depends_on
+#        source_interfaces:
+#          cloudify.interfaces.relationship_lifecycle:
+#            establish:
+#              implementation: scripts/copy-training-resources.sh
+#              executor: central_deployment_agent
+#              inputs:
+#                host: { get_attribute: [ TARGET, public_ip_address ]}
+#                user: { get_input: cli_ssh_user }
+#                key_filename: { get_property: [ keypair, private_key_path ] }
 
   resources_vm:
     type: resources_vm
@@ -563,13 +560,13 @@ node_templates:
           implementation: scripts/download-resources.py
           inputs:
             resources:
-              - url: http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
-                location: ~/yaml/spec/cloudify/3.4.1/types.yaml
-              - url: http://www.getcloudify.org/spec/fabric-plugin/1.4.1/plugin.yaml
-                location: ~/yaml/spec/fabric-plugin/1.4.1/plugin.yaml
-              - url: http://repository.cloudifysource.org/org/cloudify3/wagons/cloudify-fabric-plugin/1.4.1/cloudify_fabric_plugin-1.4.1-py27-none-linux_x86_64-centos-Core.wgn
+              - url: http://www.getcloudify.org/spec/cloudify/3.4.2/types.yaml
+                location: ~/yaml/spec/cloudify/3.4.2/types.yaml
+              - url: http://www.getcloudify.org/spec/fabric-plugin/1.4.2/plugin.yaml
+                location: ~/yaml/spec/fabric-plugin/1.4.2/plugin.yaml
+              - url: http://repository.cloudifysource.org/org/cloudify3/wagons/cloudify-fabric-plugin/1.4.2/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
                 location: ~/
-              - url: http://repository.cloudifysource.org/org/cloudify3/3.4.1/sp-RELEASE/cloudify-manager-resources_3.4.1-sp-b410.tar.gz
+              - url: http://repository.cloudifysource.org/org/cloudify3/3.4.2/sp-RELEASE/cloudify-manager-resources_3.4.2-sp-b420.tar.gz
                 location: ~/
         start:
           # For some reason, running this:

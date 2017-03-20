@@ -3,7 +3,7 @@
 # Otherwise, credentials may be stored in the bash history on the CLI machine.
 SSH_PARMS=(-i ${key_filename} -o "StrictHostKeyChecking no")
 TEMP_LABS_ARCHIVE=/tmp/labs.tar.gz
-ctx logger info "Downloading labs archive to ${TEMP_LABS_ARCHIVE}"
+ctx logger info "Downloading labs archive: ${labs_archive} -> ${TEMP_LABS_ARCHIVE}"
 curl -L --user ${github_user}:${github_api_key} --output ${TEMP_LABS_ARCHIVE} ${labs_archive}
 ctx logger info "Copying labs archive to remote machine"
 scp "${SSH_PARMS[@]}" /tmp/labs.tar.gz ${user}@${host}:${TEMP_LABS_ARCHIVE}

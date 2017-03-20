@@ -16,9 +16,9 @@ Obtain the NodeCellar application from GitHub (this lab assumes that `~/mgr` is 
 
 ```bash
 cd ~
-curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4.1-maint.zip
+curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4.2-maint.zip
 unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4.1-maint cloudify-nodecellar-example
+mv cloudify-nodecellar-example-3.4.2-maint cloudify-nodecellar-example
 ```
 
 That will download the latest NodeCellar application and its blueprints, and extract them into `./cloudify-nodecellar-example`.
@@ -120,7 +120,7 @@ Finished executing workflow install on deployment nc-dep-1
 
 Point your browser to your NodeJS's public IP, port 8080. You should now see the NodeCellar application. click the "Start Browsing Node Cellar" button and see the list of wines that is retrieved from the installed Mongo database.
 
-![Nodecellar](../../../raw/3.4.1/running-nodecellar-on-manager/nodecellar.png "NodeCellar")
+![Nodecellar](../../../raw/3.4.2/running-nodecellar-on-manager/nodecellar.png "NodeCellar")
 
 ## Step 8: View executions
 

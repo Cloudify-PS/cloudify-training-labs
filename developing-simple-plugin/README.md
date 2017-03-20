@@ -27,16 +27,16 @@ To develop a plugin, you will need to install the following:
 *   Cloudify's libraries:
     1.  Create a new virtual environment (for example: `virtualenv /tmp/my-env`)
     2.  Activate it (`source /tmp/my-env/bin/python`)
-    3.  Install Cloudify (`pip install cloudify==3.4.1`)
+    3.  Install Cloudify (`pip install cloudify==3.4.2`)
 
 ## Step 1: Download the plugin template
 
 ```bash
 mkdir -p ~/work/plugin-lab && cd ~/work/plugin-lab
-curl -L -o template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.4.1.zip
+curl -L -o template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.4.2.zip
 unzip template.zip
 rm template.zip
-mv cloudify-plugin-template-3.4.1 test-plugin
+mv cloudify-plugin-template-3.4.2 test-plugin
 ```
 
 That will download `cloudify-plugin-template`, extract it and rename the resulting directory.
