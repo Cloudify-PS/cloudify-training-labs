@@ -8,7 +8,7 @@ ctx instance runtime_properties target_dir $target_dir
 temp_file=$(mktemp --tmpdir static-appXXX.zip)
 
 ctx logger info "Installing application: downloading from $url into $temp_file..."
-curl -J -o $temp_dfile $url
+curl -J -o $temp_file $url
 
 ctx logger info "Creating directory: $target_dir"
 mkdir -p $target_dir

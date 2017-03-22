@@ -4,7 +4,7 @@ port=$(ctx node properties port)
 document_root=$(ctx node properties document_root)
 ctx logger info "Configuring Apache web server to listen on port $port"
 
-sudo echo "Listen ${port}" > /etc/httpd/conf.d/listen.conf
+sudo sh -c 'echo "Listen '${port}'" > /etc/httpd/conf.d/listen.conf'
 
 # If started - reload the configuration.
 
