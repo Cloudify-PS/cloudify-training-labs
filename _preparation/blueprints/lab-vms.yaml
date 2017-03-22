@@ -348,7 +348,7 @@ node_templates:
           implementation: fabric.fabric_plugin.tasks.run_commands
           inputs:
             commands:
-              - sudo yum -y install unzip git nano
+              - sudo yum -y install zip unzip git nano
               # pip and virtualenv are not needed by Cloudify as of 3.4, but needed by the
               # developing-simple-plugin lab
               - curl https://bootstrap.pypa.io/get-pip.py | sudo python

@@ -24,13 +24,13 @@ You can use Horizon to import the QCOW2 image into OpenStack:
 
 ### Step 2: Prepare networking prerequisites
 
-The [Cloudify Manager prerequisites page](http://docs.getcloudify.org/3.4.1/manager/prerequisites/) describes a few
+The [Cloudify Manager prerequisites page](http://docs.getcloudify.org/3.4.2/manager/prerequisites/) describes a few
 networking- & security-related prerequisites. You will have to ensure that you have the following:
 
 * A security group that allows access to the manager via the ports specified in the Prerequisites page:
   * Ports 80, 443 and 22 from anywhere.
   * Ports 5672, 53229 and 8101 from any VM that is going to be managed by Cloudify and has the Cloudify Agent installed on it.
-* A security group that allows access to agents, as specified in the [Agent prerequisites description](http://docs.getcloudify.org/3.4.1/agents/overview/).
+* A security group that allows access to agents, as specified in the [Agent prerequisites description](http://docs.getcloudify.org/3.4.2/agents/overview/).
 * A network to connect the Cloudify Manager to.
 * A keypair to use for SSH'ing into the Cloudify Manager VM.
 
@@ -100,9 +100,9 @@ The blueprints may have already been downloaded during previous labs. If not:
 
 ```bash
 cd ~
-curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.1.zip
+curl -L -o manager-blueprints.zip https://github.com/cloudify-cosmo/cloudify-manager-blueprints/archive/3.4.2.zip
 unzip manager-blueprints.zip
-mv cloudify-manager-blueprints-3.4.1 cloudify-manager-blueprints
+mv cloudify-manager-blueprints-3.4.2 cloudify-manager-blueprints
 ```
 
 ### Step 2: Prepare `inputs.yaml`
