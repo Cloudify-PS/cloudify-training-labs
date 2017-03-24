@@ -42,6 +42,7 @@ external to the main blueprint, and included from there.
 1.  Add a node type called `apache`:
     * Derived from `cloudify.nodes.Root`.
     * Containing a property called `port`, of type `integer`, with the default value of `80`.
+    * Containing a property called `document_root`, of type `string`, with the default value of `/var/www/html`.
     * Implementing the `cloudify.interfaces.lifecycle` interface, and:
       * Mapping the `create` operation to `scripts/apache-install.sh`
       * Mapping the `configure` operation to `scripts/apache-configure.sh`
@@ -61,18 +62,9 @@ external to the main blueprint, and included from there.
 called `target_dir` on the node instance for which the operation is running. You will need this information
 later.
 
-### Add relationship type
-
-Add a relationship type called `app_contained_in_apache`.
-
-The relationship type should be derived from the built-in `cloudify.relationships.contained_in` type.
-
-The relationship type will map the `establish` operation in the `cloudify.interfaces.relationship_lifecycle`
-**source** interface, to `scripts/app-to-apache.sh`.
-
 ### Add node templates
 
-**Back in `blueprint.yaml`**, we will now create some node templates.
+**Back in `~/my_bp/blueprint.yaml`**, we will now create some node templates.
 
 1.  Add a node template called `host`, of type `cloudify.nodes.Compute`.
     *   Add a property called `agent_config`, with the value being a dictionary containing the following:
@@ -86,7 +78,18 @@ The relationship type will map the `establish` operation in the `cloudify.interf
     *   Provide the following property values:
         *   `url`: `file:///home/centos/training-resources/static-app.zip`
 
+### Add relationship type
+
+**Back in `~/my_bp/include/type-definitions.yaml`**, add a relationship type called `app_contained_in_apache`.
+
+The relationship type should be derived from the built-in `cloudify.relationships.contained_in` type.
+
+The relationship type will map the `establish` operation in the `cloudify.interfaces.relationship_lifecycle`
+**source** interface, to `scripts/app-to-apache.sh`.
+
 ### Add relationship instances
+
+**Back in `~/my_bp/blueprint.yaml`**:
 
 *   To the `web_server` node:
     * Add a relationship where the target is the `host` node, and the type is the standard containment type.
@@ -102,7 +105,7 @@ The relationship type will map the `establish` operation in the `cloudify.interf
 
 Open `include/type-definitions.yaml`. For the `configure` operation in the `apache` node type, add an input called `port`,
 of type `integer`. The default value for the input should be defined so the following happens: when the `configure`
-operation is called, Cloudify retrieves the value of the `port` property for the particular node template that the
+operation is called, Cloudify retrieves the value of the `port` property for the same node instance that the
 operation runs on.
 
 ### Edit relationship type
@@ -147,6 +150,9 @@ cfy local outputs
 
 You should receive the value of the `outputs` section defined in the blueprint, with values calculated in
 real time.
+
+You should now be able to point your browser at `http://<cli-public-ip>:8080/app/hello.html` and get the static
+app that had just been deployed.
 
 Once done, invoke the `uninstall` workflow to clean up:
 

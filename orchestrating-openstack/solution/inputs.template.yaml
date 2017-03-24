@@ -3,9 +3,9 @@ keystone_password: ''
 keystone_tenant_name: ''
 keystone_url: ''
 region: ''
-webserver_port: 8080
-agent_user: ''
+external_network_name: ''
+router_name: ''
+network_name: ''
+cidr: ''
 image: ''
 flavor: ''
-external_network_name: ''
-default_scale_count: 1

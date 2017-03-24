@@ -14,9 +14,11 @@ This project contains the labs material for the official Cloudify training cours
 8.  [Manager Bootstrapping](simple-bootstrap)
 9.  [Installing NodeCellar on Cloudify Manager](running-nodecellar-on-manager)
 10. [Monitoring](monitoring)
-11. [Working with OpenStack](openstack)
-12. [Bootstrapping Offline](offline-bootstrap)
-13. [Troubleshooting](troubleshooting)
+11. [Orchestrating OpenStack Resources](orchestrating-openstack)
+12. [Cloudify Manager and OpenStack](openstack-manager)
+13. [Scaling](scaling)
+14. [Bootstrapping Offline](offline-bootstrap)
+15. [Troubleshooting](troubleshooting)
 
 ## Virtual Machines
 

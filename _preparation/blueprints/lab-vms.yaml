@@ -159,22 +159,30 @@ dsl_definitions:
     key_filename: { get_property: [ keypair, private_key_path ] }
 
 node_types:
-  lab_vm:
+  vm_base:
     derived_from: cloudify.aws.nodes.Instance
     properties:
       aws_config:
         default: *aws_config
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure:
+          implementation: aws.ec2.instance.modify_attributes
+          inputs:
+            new_attributes:
+              default:
+                blockDeviceMapping: ['/dev/sda1=true']
+
+  lab_vm:
+    derived_from: vm_base
+    properties:
       agent_config:
         default:
           install_method: none
-#          user: centos
-#          key: { get_input: private_key_path }
 
   resources_vm:
-    derived_from: cloudify.aws.nodes.Instance
+    derived_from: vm_base
     properties:
-      aws_config:
-        default: *aws_config
       agent_config:
         default:
           install_method: remote
