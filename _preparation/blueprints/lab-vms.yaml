@@ -167,7 +167,7 @@ node_types:
     interfaces:
       cloudify.interfaces.lifecycle:
         configure:
-          implementation: aws.ec2.instance.modify_attributes
+          implementation: aws.cloudify_aws.ec2.instance.modify_attributes
           inputs:
             new_attributes:
               default:
