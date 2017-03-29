@@ -1,0 +1,45 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
+  - http://www.getcloudify.org/spec/aws-plugin/1.4.2/plugin.yaml
+  - plugins/custom/plugin.yaml
+
+inputs:
+  aws_access_key_id:
+    type: string
+    description: |
+      AWS API access key ID (must have EC2 rights)
+  
+  aws_secret_access_key:
+    type: string
+    description: |
+      AWS API secret access key (must have EC2 rights)
+    
+  aws_region_name:
+    type: string
+    default: us-east-1
+    description: |
+      AWS EC2 region name
+    
+  target_ec2_id:
+    type: string
+    description: |
+      AWS EC2 ID of an existing instance to run the lab against
+
+dsl_definitions:
+  aws_config: &aws_config
+    aws_access_key_id: { get_input: aws_access_key_id }
+    aws_secret_access_key: { get_input: aws_secret_access_key }
+    ec2_region_name: { get_input: aws_region_name }
+
+node_templates:
+  hacker_vm:
+    type: hacker.aws.nodes.Instance
+    properties:
+      resource_id: { get_input: target_ec2_id }
+      use_external_resource: true
+      aws_config: *aws_config
+      agent_config:
+        install_method: none
+      

@@ -1,0 +1,154 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+
+plugins:
+  pkg:
+    executor: central_deployment_agent
+    package_name: cloudify-aws-api-gateway-plugin
+    package_version: '0.1'
+    source: lab
+
+
+data_types:
+  cloudify.datatypes.aws.Config:
+    properties:
+      aws_access_key_id:
+        description: >
+          The ID of your AWS ACCESS KEY ID.
+        type: string
+        required: false
+      aws_secret_access_key:
+        description: >
+          The ID of your AWS SECRET ACCESS KEY.
+        type: string
+        required: false
+      ec2_region_name:
+        description: >
+          The EC2 Region RegionName, such as us-east-1.
+          (Not us-east-1b, which is an availability zone, or US East, which is a Region.)
+        type: string
+        required: false
+      api_gateway_region_name:
+        description: >
+          The API Gateway Region RegionName, such as us-east-1. Defaults to the value
+          given to ec2_region_name
+        type: string
+        required: false
+
+
+dsl_definitions:
+  Base_config: &Base_config
+    use_external_resource:
+      description: >
+        Indicate whether the resource exists or if Cloudify should create the resource,
+        true if you are bringing an existing resource, false if you want cloudify to create it.
+      type: boolean
+      default: false
+    resource_id:
+      description: >
+        The AWS resource ID of the external resource, if use_external_resource is true.
+        Otherwise it is an empty string.
+      type: string
+      default: ''
+    aws_config:
+        description: >
+          A dictionary of values to pass to authenticate with the AWS API.
+        type: cloudify.datatypes.aws.Config
+        required: false
+  
+  # Exposed runtime properties
+  # "aws_resource_id": AWS ID of the API
+  # "aws_resource_name": AWS name / title of the API
+  API_properties: &API_properties
+    <<: *Base_config
+    name:
+      description: >
+        The name of the RestApi.
+        Required if "use_external_resource" is not set.
+      required: false
+      default: ''
+    description:
+      description: >
+        The description of the RestApi.
+        Required if "use_external_resource" is not set.
+      required: false
+      default: ''
+    version:
+      description: >
+        A version identifier for the API.
+        Required if "use_external_resource" is not set.
+      required: false
+      default: ''
+    import_mode:
+      description: >
+        Import mode. This can either be "merge" or "overwrite".
+      required: false
+      default: overwrite
+    import:
+      description: >
+        Swagger import data. This can either be a string that is a
+        path to an import data file or it can be JSON/YAML/dict with
+        the actual import data. This key is required if not
+        using "use_external_resource"!
+      required: false
+      
+  # Exposed runtime properties
+  # "aws_resource_id": AWS ID of the Deployment
+  # "stage_name": Stage name for the deployment. If more than one exist, only
+  #     the first will be presented here.
+  # "invoke_url": Publicly accessible API endpoint for the deployment stage
+  Deployment_properties: &Deployment_properties
+    <<: *Base_config
+    api_id:
+      description: >
+        AWS ID of the API to create a deployment for. Alternatively,
+        specify a contained_in relationship to an API node. If both
+        methods are used, this property takes priority.
+      required: false
+    name:
+      description: >
+        Name of the deployment stage. This key is required if not
+        using "use_external_resource"!
+      required: false
+      default: ''
+    description:
+      description: >
+        Description of the deployment stage
+      required: false
+      default: ''
+
+
+node_types:
+  cloudify.nodes.aws.apigateway.API:
+    derived_from: cloudify.nodes.Root
+    properties:
+      <<: *API_properties
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create: pkg.api_gateway.resources.api.create
+        configure: pkg.api_gateway.resources.api.configure
+        delete: pkg.api_gateway.resources.api.delete
+
+  cloudify.nodes.aws.apigateway.Deployment:
+    derived_from: cloudify.nodes.Root
+    properties:
+      <<: *Deployment_properties
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create: pkg.api_gateway.resources.deployment.create
+        delete: pkg.api_gateway.resources.deployment.delete
+      cloudify.interfaces.validation:
+        creation:
+          implementation: pkg.api_gateway.resources.deployment.create_validation
+          inputs:
+            path:
+              description: >
+                URL path (appended to Deployment invoke URL) to
+                perform a GET request against.
+              type: string
+              default: '/'
+            expected:
+              description: >
+                A string to compare results of the request against.
+              type: string
+              default: '{"status": "OK", "version": "1.0.0"}'
