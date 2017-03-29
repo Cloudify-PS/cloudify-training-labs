@@ -1,0 +1,12 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4.1/types.yaml
+  - plugins/custom/plugin.yaml
+
+node_templates:
+  # This is needed to be a valid blueprint, but
+  # we will not be using any node / instances in
+  # this lab.
+  dummy:
+    type: cloudify.nodes.Root

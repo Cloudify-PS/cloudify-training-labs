@@ -43,6 +43,18 @@ inputs:
   flavor:
     type: string
 
+  agent_install_method:
+    type: string
+    default: none
+
+  agent_user:
+    type: string
+    default: ''
+
+  agent_key:
+    type: string
+    default: ''
+
 dsl_definitions:
   openstack_configuration: &openstack_configuration
     username: { get_input: keystone_username }
@@ -108,7 +120,9 @@ node_templates:
       flavor: { get_input: flavor }
       management_network_name: { get_attribute: [network, external_name]}
       agent_config:
-        install_method: none
+        install_method: { get_input: agent_install_method }
+        user: { get_input: agent_user }
+        key: { get_input: agent_key }
     relationships:
       - target: sg
         type: cloudify.openstack.server_connected_to_security_group

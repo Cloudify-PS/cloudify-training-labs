@@ -160,11 +160,37 @@ Notes:
 *   The server needs to be associated with a keypair. To achieve that, use the `cloudify.openstack.server_connected_to_keypair` relationship.
 *   The server needs to be connected to the network. To achieve that, use a `cloudify.relationships.connected_to` relationship
     between the server and the network.
-*   As we're working locally (using `cfy local`), agent installation must not be attempted. Therefore, provide the `agent_config`
-    property, with the value of a dictionary, containing the key `install_method` with the value `none`:
-    
+*   Add the property for agent configuration (`agent_config`) as follows:
+
     ```yaml
     properties:
       agent_config:
-        install_method: none
+        install_method: { get_input: agent_install_method }
+        user: { get_input: agent_user }
+        key: { get_input: agent_key }
     ```
+
+    Also, add the relevant input definitions to the `input:` section. The type of all three inputs should be `string`.
+    The default for `agent_install_method` should be `none`, and the default for the two others should be an empty string
+    (`''`).
+    
+## Step 5: Run the blueprint locally
+
+Prepare an inputs file, containing the values for the various inputs you had defined.
+For local invocations (using `cfy local`), you don't have to specify the `agent_*` inputs.
+
+Then:
+
+```bash
+mkdir /tmp/openstack && cd /tmp/openstack
+cfy local install -p <path_to_blueprint> -i <path_to_inputs_file>
+```
+
+## Step 6 (optional): Run the blueprint on a manager
+
+Modify the inputs file so it contains overrides to the `agent_*` inputs:
+
+*   `agent_install_method` should be set to `remote`.
+*   `agent_user` should be set to a user that is allowed to log into the VM you're creating.
+*   `agent_key` should be set to the path of the private key file that the manager should use to SSH into the
+    new VM.
