@@ -2,22 +2,18 @@
 
 In this lab, we will run a very basic blueprint using Cloudify.
 
-From within the VM containing the Cloudify CLI, create a directory to be used for Cloudify's local run:
+As we are going to run this blueprint locally, we need to initialize the CLI's local profile first:
 
 ```bash
-mkdir -p ~/cfylocal && cd ~/cfylocal
+cfy init ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml
 ```
 
-Next, initialize a Cloudify environment, using the basic blueprint:
-
-```bash
-cfy local init -p ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml
-```
+That initializes the current user's local Cloudify profile by setting the provided blueprint as a context.
 
 ## Invoke the `install` workflow
 
 ```bash
-cfy local execute -w install
+cfy executions start 
 ```
 
 The output should be similar to the following:

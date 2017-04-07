@@ -1,7 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/3.4.2/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.0/types.yaml
   - http://www.getcloudify.org/spec/fabric-plugin/1.4.2/plugin.yaml
   - http://www.getcloudify.org/spec/aws-plugin/1.4.4/plugin.yaml
 
@@ -27,7 +27,7 @@ inputs:
     default: false
   lab_vms_security_group_id:
     type: string
-    default: cfy-3.4.2-lab-vm
+    default: cfy-4.0.0-lab-vm
   # Keypair
   keypair_name:
     type: string
@@ -59,7 +59,7 @@ inputs:
     default: centos
   labs_archive:
     type: string
-    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/3.4.2.tar.gz
+    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.0.tar.gz
   github_user:
     type: string
   github_api_key:
@@ -70,7 +70,7 @@ inputs:
     default: false
   cli_security_group_id:
     type: string
-    default: cfy-training-3.4.2-cli
+    default: cfy-training-4.0.0-cli
   # Manager
   manager_image_id:
     type: string
@@ -86,7 +86,7 @@ inputs:
     default: false
   manager_security_group_id:
     type: string
-    default: cfy-training-3.4.2-manager
+    default: cfy-training-4.0.0-manager
   # NodeJS
   nodejs_image_id:
     type: string
@@ -101,7 +101,7 @@ inputs:
     type: boolean
     default: false
   nodejs_security_group_id:
-    default: cfy-training-3.4.2-nodejs
+    default: cfy-training-4.0.0-nodejs
   # MongoDB
   mongodb_image_id:
     type: string
@@ -116,7 +116,7 @@ inputs:
     type: boolean
     default: false
   mongodb_security_group_id:
-    default: cfy-training-3.4.2-mongodb
+    default: cfy-training-4.0.0-mongodb
   # Resources
   use_existing_resources_vm:
     type: boolean
@@ -129,7 +129,7 @@ inputs:
     default: false
   resources_security_group_id:
     type: string
-    default: cfy-3.4.2-resources
+    default: cfy-4.0.0-resources
   resources_image_id:
     type: string
     default: ami-6d1c2007
@@ -369,13 +369,6 @@ node_templates:
             host: { get_attribute: [ cli_vm, public_ip_address ]}
             user: { get_input: cli_ssh_user }
             key_filename: { get_property: [ keypair, private_key_path ] }
-      labs:
-        pull:
-          implementation: fabric.fabric_plugin.tasks.run_commands
-          inputs:
-            commands:
-              - cd cloudify-training-labs && git pull
-            fabric_env: *cli_fabric_env
     relationships:
       - target: cli_vm
         type: cloudify.relationships.contained_in
@@ -505,7 +498,7 @@ node_templates:
       aws_config: *aws_config
       use_external_resource: { get_input: use_existing_resources_security_group }
       resource_id: { get_input: resources_security_group_id }
-      description: For Cloudify 3.4.2 training resources
+      description: For Cloudify training resources
       rules:
         - ip_protocol: tcp
           from_port: 22
@@ -566,13 +559,13 @@ node_templates:
           implementation: scripts/download-resources.py
           inputs:
             resources:
-              - url: http://www.getcloudify.org/spec/cloudify/3.4.2/types.yaml
-                location: ~/yaml/spec/cloudify/3.4.2/types.yaml
+              - url: http://www.getcloudify.org/spec/cloudify/4.0/types.yaml
+                location: ~/yaml/spec/cloudify/4.0/types.yaml
               - url: http://www.getcloudify.org/spec/fabric-plugin/1.4.2/plugin.yaml
                 location: ~/yaml/spec/fabric-plugin/1.4.2/plugin.yaml
               - url: http://repository.cloudifysource.org/org/cloudify3/wagons/cloudify-fabric-plugin/1.4.2/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
                 location: ~/
-              - url: http://repository.cloudifysource.org/org/cloudify3/3.4.2/sp-RELEASE/cloudify-manager-resources_3.4.2-sp-b420.tar.gz
+              - url: http://repository.cloudifysource.org/cloudify/4.0.0/ga-release/cloudify-manager-resources_4.0.0-ga.tar.gz
                 location: ~/
         start:
           # For some reason, running this:

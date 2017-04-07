@@ -38,5 +38,5 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 3.4.2
+Cloudify CLI 4.0.0
 ```

@@ -26,4 +26,4 @@ case "$KIND" in
         exit 1
 esac
 
-cfy executions start -d $DEPLOYMENT_ID -w execute_operation -p '{"operation": "cloudify.interfaces.lifecycle.'$OP'", "'$filter'": '${criteria}'}' -l
+cfy executions start -d $DEPLOYMENT_ID -p '{"operation": "cloudify.interfaces.lifecycle.'$OP'", "'$filter'": '${criteria}'}' execute_operation
