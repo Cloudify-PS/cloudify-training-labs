@@ -271,6 +271,14 @@ node_templates:
           to_port: 53229
           cidr_ip: { get_input: cidr_block }
         - ip_protocol: tcp
+          from_port: 53333
+          to_port: 53333
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 5671
+          to_port: 5671
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
           from_port: 5672
           to_port: 5672
           cidr_ip: { get_input: cidr_block }

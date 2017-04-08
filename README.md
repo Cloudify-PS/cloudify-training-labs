@@ -65,7 +65,7 @@ in order to verify proper installation, these applications have to be accessible
   ```
   
 * Clone the training labs (replace `<labs-branch>` with the branch corresponding to the Cloudify version you are
-  training for. For example: `3.4.2`)
+  training for. For example: `4.0`)
 
   ```bash
   git clone -b <labs-branch> https://github.com/Cloudify-PS/cloudify-training-labs.git
@@ -76,7 +76,7 @@ in order to verify proper installation, these applications have to be accessible
 If you don't have a Manager VM provided to you, or you would like to use your own image:
 
 * Use a CentOS 7.x image
-* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.getcloudify.org/3.4.2/manager/prerequisites/),
+* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.getcloudify.org/4.0.0/manager/prerequisites/),
 with the following exceptions:
   * The minimum amount of RAM should be 4GB.
   * The security group to which this VM is connected should have more permissive rules than the ones stated,

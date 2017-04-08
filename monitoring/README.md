@@ -17,10 +17,9 @@ You can use the Diamond collectors' reference for information how to configure c
 ### Step 2: Upload and install the blueprint
 
 ```bash
-cd ~/mgr
-cfy blueprints upload -p $LAB_ROOT/blueprint/blueprint.yaml -b monitoring
-cfy deployments create -b monitoring -d mon -i $LAB_ROOT/inputs.yaml
-cfy executions start -d mon -w install -l
+cfy blueprints upload $LAB_ROOT/blueprint/blueprint.yaml -b monitoring
+cfy deployments create mon -b monitoring -i $LAB_ROOT/inputs.yaml
+cfy executions start -d mon install
 ```
 
 ### Step 3: Review monitoring in the UI
