@@ -30,7 +30,7 @@ tosca_definitions_version: <add_version_here>
 
 ### Imports
 
-* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/3.4.2/types.yaml
+* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.0/types.yaml
 * Add an import statement to a file called `include/type-definitions.yaml`.
 
 ### Add node types
@@ -138,14 +138,13 @@ cp -R ~/cloudify-training-labs/blueprints/solution/scripts ~/my_bp
 Now that the blueprint is ready, try running it:
 
 ```bash
-cd ~/cfylocal
-cfy local install -p ~/my_bp/blueprint.yaml -i 'apache_listening_port=8080'
+cfy install ~/my_bp/blueprint.yaml -i 'apache_listening_port=8080'
 ```
 
 When installation is done, obtain the outputs:
 
 ```bash
-cfy local outputs
+cfy deployments outputs
 ```
 
 You should receive the value of the `outputs` section defined in the blueprint, with values calculated in
@@ -157,5 +156,5 @@ app that had just been deployed.
 Once done, invoke the `uninstall` workflow to clean up:
 
 ```bash
-cfy local uninstall
+cfy uninstall
 ```

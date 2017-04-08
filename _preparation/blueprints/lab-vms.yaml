@@ -408,6 +408,9 @@ node_templates:
     relationships:
       - target: cli_vm
         type: cloudify.relationships.contained_in
+      # Ensure that all packages are installed before proceeding.
+      - target: cli_configuration
+        type: cloudify.relationships.depends_on
       # Ensure the labs are installed on the CLI machine before we create the resources package.
       - target: cli_labs
         type: cloudify.relationships.depends_on
