@@ -57,6 +57,10 @@ manager_resources_package: http://repository.cloudifysource.org/cloudify/4.0.0/g
    minimum_required_total_physical_memory_in_mb: 3500
    ```
 
+2. By default, the `admin_password` input is set to an empty string. In that case, the manager will generate a password
+   and will display it at the end of the bootstrap process. You may uncomment that input and provide your own value
+   instead.
+
 ### Step 3: Trigger the bootstrap process
 
 ```bash
