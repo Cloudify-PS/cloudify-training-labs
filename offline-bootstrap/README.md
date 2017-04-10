@@ -15,12 +15,12 @@ A "Resources" VM has been prepared by the instructor, containing all resources r
 having to access the public network. The resource locations are:
 
 * YAML files referred to by the manager blueprint
-  * http://<resources-vm-ip>:8080/yaml/spec/cloudify/3.4.2/types.yaml
+  * http://<resources-vm-ip>:8080/yaml/spec/cloudify/4.0/types.yaml
   * http://<resources-vm-ip>:8080/yaml/spec/fabric-plugin/1.4.2/plugin.yaml
 * Wagon file(s) for plugins used by the manager blueprint
   * http://<resources-vm-ip>:8080/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
 * Manager resources package
-  * http://<resources-vm-ip>:8080/cloudify-manager-resources_3.4.2-sp-b420.tar.gz
+  * http://<resources-vm-ip>:8080/cloudify-manager-resources_4.0.0-ga.tar.gz
 
 Make sure that:
 
@@ -38,7 +38,7 @@ mkdir ~/offline && cd ~/offline
 We're going to use a new virtualenv here, in order to exercise the installation of the Fabric plugin's wagon into it:
 
 ```bash
-python get-cloudify.py --version 3.4.2 -e ~/offline-cfy-env -v
+python get-cloudify.py --version 4.0 -e ~/offline-cfy-env -v
 . ~/offline-cfy-env/bin/activate
 
 cfy --version
@@ -51,7 +51,7 @@ the bootstrap), the Fabric plugin's code needs to be available in the Python pat
 plugin's Wagon file:
 
 ```bash
-wagon install -s http://<resources-vm-ip>:8080/cloudify_fabric_plugin-1.4.1-py27-none-linux_x86_64-centos-Core.wgn -v
+wagon install -s http://<resources-vm-ip>:8080/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn -v
 ```
 
 ### Edit the `config.yaml` file

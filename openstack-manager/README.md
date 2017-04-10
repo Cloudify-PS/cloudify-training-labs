@@ -11,16 +11,16 @@ Both approaches will be covered in this lab. You may choose to practice either, 
 
 ## Part 1: Preparations
 
-The [Cloudify Manager prerequisites page](http://docs.getcloudify.org/3.4.2/manager/prerequisites/) describes a few
+The [Cloudify Manager prerequisites page](http://docs.getcloudify.org/4.0/manager/prerequisites/) describes a few
 networking- and security-related prerequisites. You will have to ensure that you have the following:
 
 * A security group that allows access to the manager via the ports specified in the Prerequisites page:
   * Ports 80, 443 and 22, with the source being any address / CIDR / security group that you'd like to access
     Cloudify Manager from.
-  * Ports 5672, 53229 and 8101 from any VM that:
+  * Ports 5671, 5672, 53229, 53333 and 8101 from any VM that:
     * Is going to be created by Cloudify; and
     * Is going to have the Cloudify Agent installed on it.
-* A security group that allows access to agents, as specified in the [Agent prerequisites description](http://docs.getcloudify.org/3.4.2/agents/overview/).
+* A security group that allows access to agents, as specified in the [Agent prerequisites description](http://docs.getcloudify.org/4.0/agents/overview/).
 * A network to connect the Cloudify Manager to.
 * A keypair to use for SSH'ing into the Cloudify Manager VM.
 
@@ -31,7 +31,7 @@ networking- and security-related prerequisites. You will have to ensure that you
 * Edit `cloudify-management`'s rules, allowing:
     * Ports 80, 443 and 22 from anywhere (in production systems, you will most likely want to restrict this by CIDR or
       a security group).
-    * Ports 5672, 53229 and 8101 from the security group `cloudify-agents`.
+    * Ports 5671, 5672, 53229, 53333 and 8101 from the security group `cloudify-agents`.
 * Edit `cloudify-agents`'s rules, allowing:
     * Ports 22 and 5985 from the security group `cloudify-management`.
 
@@ -42,7 +42,7 @@ of enabling agent <-> manager communication.
 
 ### Step 1: Import the Cloudify Manager image to OpenStack
 
-The official Cloudify Manager image is located at: http://repository.cloudifysource.org/org/cloudify3/3.4.2/sp-RELEASE/manager3.4.2-insecure-image.qcow2
+The official Cloudify Manager image is located at: http://repository.cloudifysource.org/org/cloudify3/4.0/sp-RELEASE/manager4.0-insecure-image.qcow2
 
 You can use Horizon to import the QCOW2 image into OpenStack:
 
@@ -120,50 +120,83 @@ Create a virtual machine for installing the Cloudify Manager on.
 ### Step 2: Bootstrap
 
 Use the instructions provided in the [Manager Bootstrapping lab](../simple-bootstrap) to perform the bootstrap.
+
+### Step 3: Upload plugins
  
+Once bootstrapping is complete, upload the OpenStack and Fabric plugin packages:
+
+```bash
+cd ~
+curl -J -O http://repository.cloudifysource.org/cloudify/wagons/cloudify-openstack-plugin/2.0.1/cloudify_openstack_plugin-2.0.1-py27-none-linux_x86_64-centos-Core.wgn
+curl -J -O http://repository.cloudifysource.org/cloudify/wagons/cloudify-fabric-plugin/1.4.2/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
+cfy plugins upload ~/cloudify_openstack_plugin-2.0.1-py27-none-linux_x86_64-centos-Core.wgn
+cfy plugins upload ~/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
+```
+
+### Step 4: Initialize `openstack_config.json`
+
+The NodeCellar blueprint we're going to use, is designed to work with manager-wide OpenStack configuration.
+Therefore, **on the manager**, create `/root/openstack_config.json` with the following contents:
+
+```json
+{
+    "username": "<your-username>",
+    "password": "<your-password>",
+    "tenant_name": "<tenant-name>",
+    "auth_url": "<keystone-url>",
+    "region": "<region-name>"
+}
+```
+
 ## Part 3: NodeCellar
 
 NodeCellar may also have been downloaded previously. If not:
 
 ```bash
 cd ~
-curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4.2-maint.zip
-unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4.2-maint cloudify-nodecellar-example
+curl -L -o nodecellar.tar.gz https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
+mkdir nodecellar && cd nodecellar
+tar -zxv --strip-components=1 -f ../nodecellar.tar.gz
 ```
 
 ### Step 1: Switch to a Cloudify directory
 
-If you are using a Cloudify Manager that has been bootstrapped, switch to the directory from which you performed
-the bootstrap process (`~/mgr`, unless you deviated from the aforementioned instructions).
+If you are using a Cloudify Manager that has been bootstrapped, you can skip this step.
 
-If you are using a Cloudify Manager that has been created from an image, create a new directory somewhere, switch
-to it, and type:
+If you are using a Cloudify Manager that has been created from an image, type the following command:
 
 ```bash
-cfy use -t <manager's-ip-address>
+cfy profiles use -t <manager's-ip-address> -u <manager-username> -p <manager-password>
 ```
 
 ### Step 2: Prepare nodecellar's blueprint
 
 ```bash
-cp ../cloudify-nodecellar-example/inputs/openstack.yaml.template ./nc-inputs.yaml
+cp ~/nodecellar/inputs/openstack.yaml.template ~/nc-os-inputs.yaml
 ```
 
-Then edit `nc-inputs.yaml`:
+Then edit `~/nc-os-inputs.yaml`:
 
 ```yaml
 image: <image-id>
 flavor: <flavor-id>
 agent_user: centos
+network_name: <name of network to connect to>
+floating_network_id: <name of external network>
+key_pair_name: <name of keypair to use>
+private_key_path: <path to private key>
 ```
+
+**NOTE**: as the blueprint is designed to use an existing keypair, you'll have to provide the private key to the manager.
+That is the purpose of the `private_key_path` input. Before continuing, you must ensure that the private key is available
+*at the manager side*, in the location you specified in `private_key_path`.
 
 ### Step 3: Upload the blueprint, create a deployment, run install
 
 ```bash
-cfy blueprints upload -p ../cloudify-nodecellar-example/openstack-blueprint.yaml -b nc
-cfy deployments create -b nc -d nc -i nc-inputs.yaml
-cfy executions start -d nc -w install -l
+cfy blueprints upload ~/nodecellar/openstack-blueprint.yaml -b nc
+cfy deployments create -b nc -i ~/nc-os-inputs.yaml nc
+cfy executions start -d nc install
 ```
 
 ### Step 4: Test the application
@@ -171,7 +204,7 @@ cfy executions start -d nc -w install -l
 Get the floating IP address of the NodeJS node which was created on OpenStack, by retrieving the deployment's outputs:
 
 ```bash
-cfy deployments outputs -d nc
+cfy deployments outputs nc
 ```
 
 Then browse to it (port 8080).
@@ -179,7 +212,7 @@ Then browse to it (port 8080).
 ### Step 5: Cleanup
 
 ```bash
-cfy executions start -d nc -w uninstall -l
-cfy deployments delete -d nc
-cfy blueprints delete -b nc
+cfy executions start -d nc uninstall
+cfy deployments delete nc
+cfy blueprints delete nc
 ```

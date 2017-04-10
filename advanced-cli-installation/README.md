@@ -22,7 +22,7 @@ curl -J -O http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cl
 ### Step 3: Run the installation script
 
 ```bash
-python get-cloudify.py --version 3.4.2 -e ~/cfy-env -v
+python get-cloudify.py --version 4.0 -e ~/cfy-env -v
 ```
 
 This will create a Python virtualenv in `~/cfy-env` and install the CLI in it.
@@ -37,5 +37,5 @@ cfy --version
 You should receive the following output:
 
 ```bash
-Cloudify CLI 3.4.2
+Cloudify CLI 4.0.0
 ```

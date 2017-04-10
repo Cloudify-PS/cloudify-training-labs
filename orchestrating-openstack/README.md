@@ -182,8 +182,7 @@ For local invocations (using `cfy local`), you don't have to specify the `agent_
 Then:
 
 ```bash
-mkdir /tmp/openstack && cd /tmp/openstack
-cfy local install -p <path_to_blueprint> -i <path_to_inputs_file>
+cfy install <path_to_blueprint> -i <path_to_inputs_file>
 ```
 
 ## Step 6 (optional): Run the blueprint on a manager
