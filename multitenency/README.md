@@ -7,8 +7,9 @@ When you install Cloudify, a default tenant, named default-tenant, is also insta
  
 ## Step 1: Log in as admin
 ```
-cfy profiles use -u admin -p admin
+cfy profiles use -u admin -p <password>
 ```
+Use the password generated during the Manager Bootstrapping lab.
 
 ## Step 2: Create 2 tenants using the following commands
 ```
@@ -20,6 +21,22 @@ cfy tenants create TenantB
 
 ```
 cfy tenants list
+```
+
+You should be able to see the nely created tenants
+```
+...
+
+Listing all tenants...
+
+Tenants:
++----------------+--------+-------+
+|      name      | groups | users |
++----------------+--------+-------+
+| default_tenant |        |   1   |
+|   TenantA      |        |       |
+|   TenantB      |        |       |
++----------------+--------+-------+
 ```
 
 ## Step 4: Create 3 users:
@@ -38,7 +55,7 @@ cfy user-groups add-user -g UserGroupI User1
 cfy user-groups add-user -g UserGroupI User2
 ```
 
-## Step 6: Assign users to the tenants using:
+## Step 6: Assign users to the tenants:
 ```
 cfy tenants add-user-group -t TenantA UserGroupI
 cfy tenants add-user -t TenantB User3
@@ -51,7 +68,19 @@ cfy blueprints upload -b singlehost-blueprint.yaml -t TenantA https://github.com
 
 ## Step 8: See the resource that was just uploaded:
 ```
-Cfy blueprints list
+cfy blueprints list
+```
+
+You should be able to see your blueprint listed for the specified tenant
+```
+Listing all blueprints...
+
+Blueprints:
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
+|              id              |     description      |       main_file_name      |        created_at        |        updated_at        | permission |  tenant_name   | created_by |
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
+| singlehost-blueprint.yaml    |                      | singlehost-blueprint.yaml | 2017-04-04 06:48:53.255  | 2017-04-04 06:48:53.255  |  creator   |     TenantA    |   admin    |
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
 ```
 
 ## Step 9: Login as User1
@@ -64,10 +93,35 @@ cfy profiles set -u User1 -p password -t TenantA
 cfy tenants list
 ```
 
+Example output
+
+```
+Listing all tenants...
+
+Tenants:
++----------------+--------+-------+
+|      name      | groups | users |
++----------------+--------+-------+
+|   TenantA      |   1    |   1   |
++----------------+--------+-------+
+```
+
 ## Step 11: Show the user can see the resources in TenantA
 ```
 cfy blueprints list
 ```
+You should be able to see previously uploaded bluyeprint for this tenant
+```
+Listing all blueprints...
+
+Blueprints:
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
+|              id              |     description      |       main_file_name      |        created_at        |        updated_at        | permission |  tenant_name   | created_by |
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
+| singlehost-blueprint.yaml    |                      | singlehost-blueprint.yaml | 2017-04-04 06:48:53.255  | 2017-04-04 06:48:53.255  |  creator   |     TenantA    |   admin    |
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
+```
+
 
 ## Step 12: Show that User1 can’t access tenants he’s not associated with: 
 ```
@@ -86,7 +140,32 @@ cfy profiles set -u User3 -p password -t TenantB
 cfy tenants list
 ```
 
+```
+Listing all tenants...
+
+Tenants:
++----------------+--------+-------+
+|      name      | groups | users |
++----------------+--------+-------+
+|   TenantB      |   1    |   1   |
++----------------+--------+-------+
+```
+
 ## Step 15: Show the user can't see any resources because there aren't any in tenantB. 
 ```
 cfy blueprints list
 ```
+
+Example output:
+
+```
+Listing all blueprints...
+
+Blueprints:
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
+|              id              |     description      |       main_file_name      |        created_at        |        updated_at        | permission |  tenant_name   | created_by |
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
++------------------------------+----------------------+---------------------------+--------------------------+--------------------------+------------+----------------+------------+
+```
+User should not be able to view TenantA blueprint
+
