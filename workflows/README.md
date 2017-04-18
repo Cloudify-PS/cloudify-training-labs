@@ -21,15 +21,14 @@ Grep the blueprint for `REPLACE_WITH`. Replace that string with an operation def
 
 ### Step 2: Run in local mode
 
-Run the `execute_operation` workflow in local mode (you should be able to complete the commands by yourself):
+Run the `execute_operation` workflow in local mode:
 
 ```bash
-cd $LAB_ROOT
-cfy local init -p blueprint/blueprint.yaml
-cfy local execute -w execute_operation -p <execution-parameters.yaml> ...
+cfy init $LAB_ROOT/blueprint/blueprint.yaml
+cfy executions start -p ~/execution-parameters.yaml execute_operation
 ```
 
-The `<execution-parameters.yaml>` file should be a YAML file that you create, containing parameters to pass to the `execute_operation` workflow, such as:
+The `execution-parameters.yaml` file should be a YAML file that you create, containing parameters to pass to the `execute_operation` workflow, such as:
 
 * `operation`
 * `node_ids`
@@ -48,7 +47,7 @@ First, we need to find the instance ID of the node we would like to heal. Rememb
 To find the node instance, execute the following command (from the CLI VM):
 
 ```bash
-cfy local instances
+cfy node-instances
 ```
 
 The output shows all node instances in the topology. For each node instance, both the instance ID and the node ID are shown. The node ID is the name of the
@@ -57,7 +56,7 @@ node in the blueprint; the node instance ID is the ID of the particular instance
 Then, execute the `heal` workflow. For example:
 
 ```bash
-cfy local execute -w heal -p 'node_instance_id=lab_vm_a644a'
+cfy executions start -p 'node_instance_id=lab_vm_a644a' heal
 ```
 
 ## Part III: Uninstall

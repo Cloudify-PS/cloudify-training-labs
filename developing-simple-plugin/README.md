@@ -5,17 +5,38 @@ In this lab, we will develop a very simple plugin and use it within a blueprint.
 The lab is designed so the developed plugin is embedded with the blueprint; however, note that, most typically, plugins are packaged and stored on a server, so they can be reused
 by multiple blueprints.
 
+## Prerequisites
+
+**NOTE**: If you are doing this lab using VM's prepared for you as part of an official course, all prerequisites are
+already met, so you can skip this sction.
+
+To develop a plugin, you will need to install the following:
+
+*   `pip`: Most Linux distributions already contain this. Otherwise:
+    
+    ```bash
+    curl https://bootstrap.pypa.io/get-pip.py | sudo python
+    ```
+
+*   `virtualenv`: Can be installed via:
+    
+    ```bash
+    sudo pip install virtualenv
+    ```
+
+*   Cloudify's libraries:
+    1.  Create a new virtual environment (for example: `virtualenv /tmp/my-env`)
+    2.  Activate it (`source /tmp/my-env/bin/python`)
+    3.  Install Cloudify (`pip install cloudify==4.0`)
+
 ## Step 1: Download the plugin template
 
 ```bash
-mkdir -p ~/work/plugin-lab && cd ~/work/plugin-lab
-curl -L -o template.zip https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/3.4.zip
-unzip template.zip
-rm template.zip
-mv cloudify-plugin-template-3.4 test-plugin
+curl -L -o ~/plugin-template.tar.gz https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.0.tar.gz
+mkdir -p ~/work && cd ~/work && tar -zxv --strip-components=1 -f ~/plugin-template.tar.gz
 ```
 
-That will download `cloudify-plugin-template`, extract it and rename the resulting directory.
+That will download `cloudify-plugin-template` and extract it.
 
 ## Step 2: Edit `setup.py`
 
@@ -34,7 +55,7 @@ vi test-plugin/plugin/tasks.py
 Modify the `my_task` method (you may rename it as well). Our goal is to write an operation that:
 
 * Receives two arguments, `str1` and `str2`
-* Prints the arguments
+* Prints the arguments to the Cloudify log
 * Stores a concat of these two strings under a runtime property called `result` on the same node instance that the plugin operates on
 * Prints the result to the Cloudify log
 
@@ -91,12 +112,19 @@ cd test-plugin
 You will see output similar to the following:
 
 ```
-2015-07-29 13:14:08 CFY <test_my_task> Starting 'install' workflow execution
-2015-07-29 13:14:08 CFY <test_my_task> [test_node_template_eeade] Creating node
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade] Configuring node
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade] Starting node
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Sending task 'plugin.tasks.my_task'
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Task started 'plugin.tasks.my_task'
-2015-07-29 13:14:09 CFY <test_my_task> [test_node_template_eeade.start] Task succeeded 'plugin.tasks.my_task'
-2015-07-29 13:14:09 CFY <test_my_task> 'install' workflow execution succeeded
+2017-01-29 01:38:13 CFY <test_my_task> Starting 'install' workflow execution
+2017-01-29 01:38:13 CFY <test_my_task> [test_node_template_jjthv4] Creating node
+2017-01-29 01:38:13 CFY <test_my_task> [test_node_template_jjthv4] Configuring node
+2017-01-29 01:38:14 CFY <test_my_task> [test_node_template_jjthv4] Starting node
+2017-01-29 01:38:14 CFY <test_my_task> [test_node_template_jjthv4.start] Sending task 'plugin.tasks.my_task'
+2017-01-29 01:38:14 CFY <test_my_task> [test_node_template_jjthv4.start] Task started 'plugin.tasks.my_task'
+2017-01-29 01:38:14 LOG <test_my_task> [test_node_template_jjthv4.start] INFO: str1=mark, str2=knopfler
+2017-01-29 01:38:14 LOG <test_my_task> [test_node_template_jjthv4.start] INFO: result=markknopfler
+2017-01-29 01:38:14 CFY <test_my_task> [test_node_template_jjthv4.start] Task succeeded 'plugin.tasks.my_task'
+2017-01-29 01:38:14 CFY <test_my_task> 'install' workflow execution succeeded
+.
+----------------------------------------------------------------------
+Ran 1 test in 2.092s
+
+OK
 ```

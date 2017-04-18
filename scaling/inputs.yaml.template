@@ -1,5 +1,11 @@
-default_scale_count: 1
-vm_image_id: ''
-vm_flavor: ''
+keystone_username: ''
+keystone_password: ''
+keystone_tenant_name: ''
+keystone_url: ''
+region: ''
 webserver_port: 8080
-agent_user: centos
+agent_user: ''
+image: ''
+flavor: ''
+external_network_name: ''
+default_scale_count: 1

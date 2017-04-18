@@ -24,24 +24,23 @@ grep -r "REPLACE_WITH" $LAB_ROOT
 Once you're done, you can run the application in local mode:
 
 ```bash
-cd ~/cfylocal
-cfy local install -p $LAB_ROOT/blueprint/blueprint.yaml -i $LAB_ROOT/inputs/local.yaml
+cfy install $LAB_ROOT/blueprint/blueprint.yaml -i $LAB_ROOT/inputs/local.yaml
 ```
 
 Then, run the following CLI command:
 
 ```bash
-cfy local outputs
+cfy deployments outputs
 ```
 
 This command will display the deployment's outputs, as defined in the application's blueprint.
 
 Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application should show up:
 
-![HelloWorld app](../../../raw/3.4.0/using-scripts/helloworld.png "HelloWorld app")
+![HelloWorld app](../../../raw/4.0/using-scripts/helloworld.png "HelloWorld app")
 
 To clean up:
 
 ```bash
-cfy local uninstall
+cfy uninstall
 ```

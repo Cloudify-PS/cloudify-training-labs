@@ -11,16 +11,15 @@ In this lab, we will use the Cloudify CLI to deploy NodeCellar on the same CLI m
 
 ```bash
 cd ~
-curl -L -o nodecellar.zip https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/3.4-maint.zip
-unzip nodecellar.zip
-mv cloudify-nodecellar-example-3.4-maint cloudify-nodecellar-example
+curl -L -o nodecellar.tar.gz https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
+mkdir nodecellar && cd nodecellar
+tar -zxv --strip-components=1 -f ../nodecellar.tar.gz
 ```
 
 ### Step 2: Install the blueprint
 
 ```bash
-cd ~/cfylocal
-cfy local install -p ../cloudify-nodecellar-example/local-blueprint.yaml
+cfy install local-blueprint.yaml
 ```
 
 You should now see the CLI in action - iterating through the blueprint's nodes, creating them, starting them and
@@ -28,19 +27,19 @@ instantiating relationships.
 
 ```
 ...
-2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb] Starting node
-2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb.start] Sending task 'script_runner.tasks.run'
-2016-06-15 17:28:02 CFY <local> [nodecellar_7f2bb.start] Task started 'script_runner.tasks.run'
-2016-06-15 17:28:02 LOG <local> [nodecellar_7f2bb.start] INFO: Executing: /tmp/tmpQXZZRp-start-nodecellar-app.sh
-2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: MongoDB is located at localhost:27017
-2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: Starting nodecellar application on port 8080
-2016-06-15 17:28:04 LOG <local> [nodecellar_7f2bb.start] INFO: /tmp/ee4c9789-8292-413a-83c0-9f3fee4cda36/nodejs/nodejs-binaries/bin/node /tmp/ee4c9789-8292-413a-83c0-9f3fee4cda36/nodecellar/nodecellar-source/server.js
-2016-06-15 17:28:05 LOG <local> [nodecellar_7f2bb.start] INFO: Running Nodecellar liveness detection on port 8080
-2016-06-15 17:28:05 LOG <local> [nodecellar_7f2bb.start] INFO: [GET] http://localhost:8080 200
-2016-06-15 17:28:06 LOG <local> [nodecellar_7f2bb.start] INFO: Sucessfully started Nodecellar (9881)
-2016-06-15 17:28:06 LOG <local> [nodecellar_7f2bb.start] INFO: Execution done (return_code=0): /tmp/tmpQXZZRp-start-nodecellar-app.sh
-2016-06-15 17:28:06 CFY <local> [nodecellar_7f2bb.start] Task succeeded 'script_runner.tasks.run'
-2016-06-15 17:28:07 CFY <local> 'install' workflow execution succeeded
+2017-04-08 19:52:05.682  CFY <local> [nodecellar_6d9ggv] Starting node
+2017-04-08 19:52:05.758  CFY <local> [nodecellar_6d9ggv.start] Sending task 'script_runner.tasks.run'
+2017-04-08 19:52:05.797  CFY <local> [nodecellar_6d9ggv.start] Task started 'script_runner.tasks.run'
+2017-04-08 19:52:05.799  LOG <local> [nodecellar_6d9ggv.start] INFO: Executing: /tmp/tmpdn7ujc-start-nodecellar-app.sh
+2017-04-08 19:52:07.782  LOG <local> [nodecellar_6d9ggv.start] INFO: MongoDB is located at localhost:27017
+2017-04-08 19:52:08.066  LOG <local> [nodecellar_6d9ggv.start] INFO: Starting nodecellar application on port 8080
+2017-04-08 19:52:08.350  LOG <local> [nodecellar_6d9ggv.start] INFO: /tmp/a4aeecee-20be-4aa9-adee-01cc85d9ae93/nodejs/nodejs-binaries/bin/node /tmp/a4aeecee-20be-4aa9-adee-01cc85d9ae93/nodecellar/nodecellar-source/server.js
+2017-04-08 19:52:08.934  LOG <local> [nodecellar_6d9ggv.start] INFO: Running Nodecellar liveness detection on port 8080
+2017-04-08 19:52:09.426  LOG <local> [nodecellar_6d9ggv.start] INFO: [GET] http://localhost:8080 200
+2017-04-08 19:52:09.990  LOG <local> [nodecellar_6d9ggv.start] INFO: Sucessfully started Nodecellar (9915)
+2017-04-08 19:52:10.091  LOG <local> [nodecellar_6d9ggv.start] INFO: Execution done (return_code=0): /tmp/tmpdn7ujc-start-nodecellar-app.sh
+2017-04-08 19:52:10.092  CFY <local> [nodecellar_6d9ggv.start] Task succeeded 'script_runner.tasks.run'
+2017-04-08 19:52:10.685  CFY <local> 'install' workflow execution succeeded
 ```
 
 ### Step 3: Test the application
@@ -51,7 +50,7 @@ the NodeCellar application.
 Also, run the following command:
 
 ```bash
-cfy local outputs
+cfy deployments outputs
 ```
 
 This command will calculate the value of the `outputs` structure in the blueprint, and print it out.
@@ -68,7 +67,7 @@ This command will calculate the value of the `outputs` structure in the blueprin
 ### Step 4: Uninstall the application
 
 ```bash
-cfy local uninstall
+cfy uninstall
 ```
 
 That will run the `uninstall` built-in workflow, which calls the `stop` and `delete` operations on all nodes, while
