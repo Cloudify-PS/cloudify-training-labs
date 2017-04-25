@@ -17,6 +17,7 @@ cli_image_id: ami-6d1c2007
 cli_instance_type: t2.micro
 cli_ssh_user: centos
 labs_archive: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.0.tar.gz
+nodecellar_archive: https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
 github_user: ''
 github_api_key: ''
 use_existing_cli_security_group: false

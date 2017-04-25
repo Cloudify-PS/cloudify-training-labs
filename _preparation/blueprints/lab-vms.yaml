@@ -60,6 +60,9 @@ inputs:
   labs_archive:
     type: string
     default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.0.tar.gz
+  nodecellar_archive:
+    type: string
+    default: https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
   github_user:
     type: string
   github_api_key:
@@ -396,6 +399,7 @@ node_templates:
             user: { get_input: cli_ssh_user }
             key_filename: { get_property: [ keypair, private_key_path ] }
             labs_archive: { get_input: labs_archive }
+            nodecellar_archive: { get_input: nodecellar_archive }
             github_user: { get_input: github_user }
             github_api_key: { get_input: github_api_key }
     relationships:

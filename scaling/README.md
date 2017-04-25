@@ -6,7 +6,17 @@ The purpose of this lab is to deploy and scale an example web application.
 
 ```bash
 cd ~
-curl -L -o helloworld.zip https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/3.4.2-maint.zip
+curl -L -o helloworld.tar.gz https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/4.0-maint.zip
+mkdir helloworld && cd helloworld
+
+
+
+
+
+
+
+
+
 unzip helloworld.zip
 mv cloudify-hello-world-example-3.4.2-maint cloudify-hello-world
 ```

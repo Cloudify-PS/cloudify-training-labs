@@ -26,26 +26,17 @@ cfy executions start -d mon install
 
 1. In the web UI, go to the Deployments screen.
 2. Click your deployment.
-3. Click the "Monitoring" tab.
+3. Click your username at the top right, and select "Edit Mode".
+4. Click the "Add Widget" button.
+5. Select the "Deployment metric graph" widget. Click "Add".
+6. Click your username at the top right, and select "Exit Edit Mode".
 
-Now you can see the Grafana dashboard, with a few default metrics defined. This dashboard is dynamically created for every deployment when you click the "Monitoring" tab.
-
-### Step 4: Add a new graph to the dashboard
-
-Now let's add a new graph to the dashboard:
-
-1. Click the *Add a Row* button at the bottom right part of the screen. 
-2. Click the left handle button, and then *Add panel* -> *Graph*.
-3. Click the graph's title -> *Edit*.
-4. Type `cpu` in the *Series* field. You should see a list of series names available in InfluxDB (these were pushed into InfluxDB by the CPU collector you installed in your blueprint). Choose one of them (`mon.host.host_xxxxxx.cpu_total_user` for example).
-5. Go to the *General* tab and give a meaningful title to your graph. You can also change the `span` attribute to control the width of the graph you just created (`12` being 100% of the dashboard's width). Feel free to play around with the other tabs as well to define your graph.
-6. You can also control other aspects of the dashboard, such as the resolution, auto-refresh rate, etc.
-7. You can also export your dashboard to JSON by clicking *Save* -> *Export dashboard*.
+The metrics widget will now appear on the screen.
 
 ### Step 5: Uninstall the application
 
 ```bash
-cfy executions start -d mon -w uninstall -l
-cfy deployments delete -d mon
-cfy blueprints delete -b monitoring
+cfy executions start -d mon uninstall
+cfy deployments delete mon
+cfy blueprints delete monitoring
 ```
