@@ -12,9 +12,9 @@ ctx logger info "Downloading NodeCellar archive: ${nodecellar_archive} -> ${TEMP
 curl -L --user ${github_user}:${github_api_key} --output ${TEMP_NODECELLAR_ARCHIVE} ${nodecellar_archive}
 
 ctx logger info "Extracting labs archive..."
-cat ${TEMP_LABS_ARCHIVE} | ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf cloudify-training-labs; mkdir cloudify-training-labs; cd cloudify-training-labs; tar -zxv --strip-components=1 -"
+cat ${TEMP_LABS_ARCHIVE} | ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf cloudify-training-labs; mkdir cloudify-training-labs; cd cloudify-training-labs; tar -zxv --strip-components=1"
 
 ctx logger info "Extracting NodeCellar archive..."
-cat ${TEMP_NODECELLAR_ARCHIVE} | ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf nodecellar; mkdir nodecellar; cd nodecellar; tar -zxv --strip-components=1 -"
+cat ${TEMP_NODECELLAR_ARCHIVE} | ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf nodecellar; mkdir nodecellar; cd nodecellar; tar -zxv --strip-components=1"
 
 ctx logger info "Done."
