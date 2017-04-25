@@ -6,22 +6,10 @@ The blueprint we are going to work with, will install a sample application calle
 currently going through the full training schedule, this is the same application introduced in a previous lab:
 "Running NodeCellar Locally". The only difference is that we are going to use a different blueprint for
 installing this application).
- 
-## Step 1: Download the NodeCellar blueprints
 
-**NOTE**: You may already have downloaded the blueprints in an earlier lab. If you have, then please skip
-this step.
+**NOTE**: The NodeCellar blueprints are already available for you on the CLI VM, under `~/nodecellar`.
 
-```bash
-cd ~
-curl -L -o nodecellar.tar.gz https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
-mkdir nodecellar && cd nodecellar
-tar -zxv --strip-components=1 -f ../nodecellar.tar.gz
-```
-
-That will download the latest NodeCellar application and its blueprints, and extract them into `~/nodecellar`.
-
-## Step 2: Copy private key to the Manager's VM
+## Step 1: Copy private key to the Manager's VM
 
 The blueprint that we are going to install, instructs Cloudify to install the example application on existing VMs.
 Cloudify, therefore, needs access to the private key used to log into these VMs.
@@ -33,7 +21,7 @@ scp -i ~/cfy-training.pem ~/cfy-training.pem centos@<manager-ip>:~/
 ssh -i ~/cfy-training.pem centos@<manager-ip> 'sudo mv cfy-training.pem /root'
 ```
 
-## Step 3: Configure the inputs file
+## Step 2: Configure the inputs file
 
 The NodeCellar archive contains a template for a blueprints inputs file. This template should be edited to reflect your environment.
 
@@ -53,7 +41,7 @@ agent_private_key_path: /root/cfy-training.pem
 
 **NOTE**: `agent_private_key_path` should be the path to the key file *as it is known to the Cloudify Manager*.
 
-## Step 4: Upload the blueprint
+## Step 3: Upload the blueprint
 
 ```bash
 cfy blueprints upload ~/nodecellar/simple-blueprint.yaml -b nodecellar
@@ -76,7 +64,7 @@ To witness that the blueprint has been uploaded:
     ```
 *   Through the UI: Go to the Cloudify Manager's web UI and select the "Local Blueprints" section.
 
-## Step 5: Create a deployment
+## Step 4: Create a deployment
 
 Once NodeCellar's blueprint is uploaded, we need to create a deployment for it, using the inputs file we customized in step 3.
 
@@ -91,7 +79,7 @@ Creating new deployment from blueprint nodecellar...
 Deployment created. The deployment's id is nc-dep-1
 ```
 
-## Step 6: Execute the `install` workflow
+## Step 5: Execute the `install` workflow
 
 Once the deployment has been created, we can install the NodeCellar application. Trigger the `install` workflow by typing:
 
@@ -121,13 +109,13 @@ Finished executing workflow install on deployment nc-dep-1
 * Run 'cfy events list -e f2b27bb3-184d-4c3a-926f-106f30a29492' to retrieve the execution's events/logs
 ```
 
-## Step 7: Access the application
+## Step 6: Access the application
 
 Point your browser to your NodeJS's public IP, port 8080. You should now see the NodeCellar application. click the "Start Browsing Node Cellar" button and see the list of wines that is retrieved from the installed Mongo database.
 
 ![Nodecellar](../../../raw/4.0/running-nodecellar-on-manager/nodecellar.png "NodeCellar")
 
-## Step 8: View executions
+## Step 7: View executions
 
 ```bash
 cfy executions list -d nc-dep-1
@@ -135,7 +123,7 @@ cfy executions list -d nc-dep-1
 
 That will view all workflow executions that have been started on the `nc-dep-1` deployment.
 
-## Step 9: View outputs
+## Step 8: View outputs
 
 You can view the deployment's outputs by using the following command:
 
@@ -143,7 +131,7 @@ You can view the deployment's outputs by using the following command:
 cfy deployments outputs nc-dep-1
 ```
 
-## Step 10: Execute the `uninstall` workflow
+## Step 9: Execute the `uninstall` workflow
 
 To uninstall the application, trigger the `uninstall` workflow:
 

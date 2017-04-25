@@ -29,24 +29,18 @@ To develop a plugin, you will need to install the following:
     2.  Activate it (`source /tmp/my-env/bin/python`)
     3.  Install Cloudify (`pip install cloudify==4.0`)
 
-## Step 1: Download the plugin template
+**NOTE**: The plugin development template is already available for you on your CLI VM, under `~/plugin-template`.
+
+## Step 1: Edit `setup.py`
 
 ```bash
-curl -L -o ~/plugin-template.tar.gz https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.0.tar.gz
-mkdir -p ~/work && cd ~/work && tar -zxv --strip-components=1 -f ~/plugin-template.tar.gz
-```
-
-That will download `cloudify-plugin-template` and extract it.
-
-## Step 2: Edit `setup.py`
-
-```bash
+cd plugin-template
 vi test-plugin/setup.py
 ```
 
 Edit the `setup.py` file for your needs. In particular, note the `install_requires` and `test_requires` keys: these ensure that proper dependencies are provided to the plugin during build and runtime.
 
-## Step 3: Edit `tasks.py`
+## Step 2: Edit `tasks.py`
 
 ```bash
 vi test-plugin/plugin/tasks.py
@@ -59,7 +53,7 @@ Modify the `my_task` method (you may rename it as well). Our goal is to write an
 * Stores a concat of these two strings under a runtime property called `result` on the same node instance that the plugin operates on
 * Prints the result to the Cloudify log
 
-## Step 4: Edit `test_plugin.yaml`
+## Step 3: Edit `test_plugin.yaml`
 
 ```bash
 vi test-plugin/plugin/tests/blueprint/test_plugin.yaml
@@ -69,7 +63,7 @@ This YAML file is intended to function as a `plugin.yaml` file for the plugin, w
 
 * `plugin_name` should be replaced with any name you desire. That would be the plugin's name as it is referred-to in blueprints.
 
-## Step 5: Edit `blueprint.yaml`
+## Step 4: Edit `blueprint.yaml`
 
 ```bash
 vi test-plugin/plugin/tests/blueprint/blueprint.yaml
@@ -82,7 +76,7 @@ This YAML file is a standard blueprints file, against which the plugin test runs
 * `inputs` (under `node_templates`): these should correspond to your plugin's parameters.
 * `outputs`: make sure you collect the correct runtime property
 
-## Step 6: Edit `test_plugin.py`
+## Step 5: Edit `test_plugin.py`
 
 ```bash
 vi test-plugin/plugin/tests/test_plugin.py
@@ -91,7 +85,7 @@ vi test-plugin/plugin/tests/test_plugin.py
 * Edit the `inputs` (in the `workflow_test` decorator) dictionary to include `str1` and `str2`.
 * Add appropriate assertions in the `test_my_task` method.
 
-## Step 7: Install plugin requirements
+## Step 6: Install plugin requirements
 
 Before running the tester, you need to install its Python dependencies.
 It is a good practice to install packages into a Python virtual environment, rather than to the system-level

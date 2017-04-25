@@ -16,6 +16,7 @@ The installation script is available here: http://gigaspaces-repository-eu.s3.am
 (You can get the link to it from the Cloudify official documentation: http://docs.getcloudify.org/4.0.0/installation/from-script/)
 
 ```bash
+cd ~
 curl -J -O http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/get-cloudify.py
 ```
 
