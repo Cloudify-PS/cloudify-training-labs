@@ -11,14 +11,10 @@ curl -L --user ${github_user}:${github_api_key} --output ${TEMP_LABS_ARCHIVE} ${
 ctx logger info "Downloading NodeCellar archive: ${nodecellar_archive} -> ${TEMP_NODECELLAR_ARCHIVE}"
 curl -L --user ${github_user}:${github_api_key} --output ${TEMP_NODECELLAR_ARCHIVE} ${nodecellar_archive}
 
-ctx logger info "Copying labs archive to remote machine..."
-scp "${SSH_PARMS[@]}" ${TEMP_LABS_ARCHIVE} ${user}@${host}:${TEMP_LABS_ARCHIVE}
 ctx logger info "Extracting labs archive..."
-ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf cloudify-training-labs && mkdir cloudify-training-labs && cd cloudify-training-labs && tar -zxv --strip-components=1 -f ${TEMP_LABS_ARCHIVE}"
+cat ${TEMP_LABS_ARCHIVE} | ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf cloudify-training-labs; mkdir cloudify-training-labs; cd cloudify-training-labs; tar -zxv --strip-components=1 -"
 
-ctx logger info "Copying NodeCellar archive to remote machine..."
-scp "${SSH_PARMS[@]}" ${TEMP_NODECELLAR_ARCHIVE} ${user}@${host}:${TEMP_NODECELLAR_ARCHIVE}
 ctx logger info "Extracting NodeCellar archive..."
-ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf nodecellar && mkdir nodecellar && cd nodecellar && tar -zxv --strip-components=1 -f ${TEMP_NODECELLAR_ARCHIVE}"
+cat ${TEMP_NODECELLAR_ARCHIVE} | ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf nodecellar; mkdir nodecellar; cd nodecellar; tar -zxv --strip-components=1 -"
 
 ctx logger info "Done."

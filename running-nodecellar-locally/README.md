@@ -5,21 +5,14 @@
 
 In this lab, we will use the Cloudify CLI to deploy NodeCellar on the same CLI machine, using a blueprint.
 
+The NodeCellar blueprints are already available for you, on the CLI VM, under `~/nodecellar`.
+
 ## Process
 
-### Step 1: Download and extract the NodeCellar blueprints
+### Step 1: Install the blueprint
 
 ```bash
-cd ~
-curl -L -o nodecellar.tar.gz https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
-mkdir nodecellar && cd nodecellar
-tar -zxv --strip-components=1 -f ../nodecellar.tar.gz
-```
-
-### Step 2: Install the blueprint
-
-```bash
-cfy install local-blueprint.yaml
+cfy install ~/nodecellar/local-blueprint.yaml
 ```
 
 You should now see the CLI in action - iterating through the blueprint's nodes, creating them, starting them and
@@ -42,7 +35,7 @@ instantiating relationships.
 2017-04-08 19:52:10.685  CFY <local> 'install' workflow execution succeeded
 ```
 
-### Step 3: Test the application
+### Step 2: Test the application
 
 The application is now installed. Point your browser to `http://<cli-vm-public-ip>:8080` and you should see
 the NodeCellar application.
@@ -64,7 +57,7 @@ This command will calculate the value of the `outputs` structure in the blueprin
 }
 ```
 
-### Step 4: Uninstall the application
+### Step 3: Uninstall the application
 
 ```bash
 cfy uninstall
