@@ -35,7 +35,7 @@ To develop a plugin, you will need to install the following:
 
 ```bash
 cd plugin-template
-vi test-plugin/setup.py
+vi setup.py
 ```
 
 Edit the `setup.py` file for your needs. In particular, note the `install_requires` and `test_requires` keys: these ensure that proper dependencies are provided to the plugin during build and runtime.
@@ -43,10 +43,10 @@ Edit the `setup.py` file for your needs. In particular, note the `install_requir
 ## Step 2: Edit `tasks.py`
 
 ```bash
-vi test-plugin/plugin/tasks.py
+vi plugin/tasks.py
 ```
 
-Modify the `my_task` method (you may rename it as well). Our goal is to write an operation that:
+Modify the `my_task` function (you may rename it as well). Our goal is to write an operation that:
 
 * Receives two arguments, `str1` and `str2`
 * Prints the arguments to the Cloudify log
@@ -56,7 +56,7 @@ Modify the `my_task` method (you may rename it as well). Our goal is to write an
 ## Step 3: Edit `test_plugin.yaml`
 
 ```bash
-vi test-plugin/plugin/tests/blueprint/test_plugin.yaml
+vi plugin/tests/blueprint/plugin/test_plugin.yaml
 ```
 
 This YAML file is intended to function as a `plugin.yaml` file for the plugin, when run through integration tests. Edit it as follows:
@@ -66,7 +66,7 @@ This YAML file is intended to function as a `plugin.yaml` file for the plugin, w
 ## Step 4: Edit `blueprint.yaml`
 
 ```bash
-vi test-plugin/plugin/tests/blueprint/blueprint.yaml
+vi plugin/tests/blueprint/blueprint.yaml
 ```
 
 This YAML file is a standard blueprints file, against which the plugin test runs. Change it to accommodate your plugin. In particular, pay attention to the following:
@@ -79,7 +79,7 @@ This YAML file is a standard blueprints file, against which the plugin test runs
 ## Step 5: Edit `test_plugin.py`
 
 ```bash
-vi test-plugin/plugin/tests/test_plugin.py
+vi plugin/tests/test_plugin.py
 ```
 
 * Edit the `inputs` (in the `workflow_test` decorator) dictionary to include `str1` and `str2`.
@@ -93,8 +93,7 @@ libraries. Therefore, we will create a virtual environment and work from there:
 
 ```bash
 virtualenv ~/dev-env
-cd test-plugin
-~/dev-env/bin/pip install -r dev-requirements.txt
+~/dev-env/bin/pip install -r ~/plugin-template/dev-requirements.txt
 ```
 
 ## Step 8: Run the unit test

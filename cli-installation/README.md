@@ -40,3 +40,15 @@ The output should be similar to the following:
 ```
 Cloudify CLI 4.0.0
 ```
+
+### Look at profiles
+
+```bash
+cfy profiles list
+```
+
+As this is a fresh CLI installation, there are no profiles defined. You should get the following message:
+
+```
+No profiles found. You can create a new profile by bootstrapping a manager via `cfy bootstrap` or using an existing manager via the `cfy profiles use` command
+```
