@@ -63,7 +63,7 @@ inputs:
   nodecellar_archive:
     type: string
     default: https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
-  plugin_template_arhive:
+  plugin_template_archive:
     type: string
     default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.0.tar.gz
   github_user:
@@ -403,7 +403,7 @@ node_templates:
             key_filename: { get_property: [ keypair, private_key_path ] }
             labs_archive: { get_input: labs_archive }
             nodecellar_archive: { get_input: nodecellar_archive }
-            plugin_template_arhive: { get_input: plugin_template_arhive }
+            plugin_template_archive: { get_input: plugin_template_archive }
             github_user: { get_input: github_user }
             github_api_key: { get_input: github_api_key }
     relationships:
