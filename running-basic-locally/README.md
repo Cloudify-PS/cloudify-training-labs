@@ -85,4 +85,8 @@ there is a command that performs both at the same time:
 cfy install ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml
 ```
 
-Conversely, the `cfy uninstall` command runs the `uninstall` workflow.
+Conversely, the following runs the `uninstall` workflow:
+
+```bash
+cfy uninstall
+```
