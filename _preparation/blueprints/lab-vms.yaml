@@ -282,15 +282,39 @@ node_templates:
           cidr_ip: { get_input: cidr_block }
         - ip_protocol: tcp
           from_port: 5671
-          to_port: 5671
-          cidr_ip: { get_input: cidr_block }
-        - ip_protocol: tcp
-          from_port: 5672
           to_port: 5672
           cidr_ip: { get_input: cidr_block }
         - ip_protocol: tcp
           from_port: 8101
           to_port: 8101
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8300
+          to_port: 8300
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8301
+          to_port: 8301
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: udp
+          from_port: 8301
+          to_port: 8301
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8500
+          to_port: 8500
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8500
+          to_port: 8500
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 15432
+          to_port: 15432
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 22000
+          to_port: 22000
           cidr_ip: { get_input: cidr_block }
     relationships:
       - target: vpc
