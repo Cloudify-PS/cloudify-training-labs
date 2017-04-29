@@ -93,36 +93,21 @@ inputs:
   manager_security_group_id:
     type: string
     default: cfy-training-4.0.0-manager
-  # NodeJS
-  nodejs_image_id:
+  # App
+  app_image_id:
     type: string
     default: ami-6d1c2007
-  nodejs_instance_type:
+  app_instance_type:
     type: string
     default: t2.micro
-  nodejs_ssh_user:
+  app_ssh_user:
     type: string
     default: centos
-  use_existing_nodejs_security_group:
+  use_existing_app_security_group:
     type: boolean
     default: false
-  nodejs_security_group_id:
-    default: cfy-training-4.0.0-nodejs
-  # MongoDB
-  mongodb_image_id:
-    type: string
-    default: ami-6d1c2007
-  mongodb_instance_type:
-    type: string
-    default: t2.micro
-  mongodb_ssh_user:
-    type: string
-    default: centos
-  use_existing_mongodb_security_group:
-    type: boolean
-    default: false
-  mongodb_security_group_id:
-    default: cfy-training-4.0.0-mongodb
+  app_security_group_id:
+    default: cfy-training-4.0.0-app
   # Resources
   use_existing_resources_vm:
     type: boolean
@@ -155,9 +140,9 @@ dsl_definitions:
     host_string: { get_attribute: [ cli_vm, public_ip_address ]}
     user: { get_input: cli_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
-  nodejs_fabric_env: &nodejs_fabric_env
-    host_string: { get_attribute: [ nodejs_vm, public_ip_address ]}
-    user: { get_input: nodejs_ssh_user }
+  app_fabric_env: &app_fabric_env
+    host_string: { get_attribute: [ app_vm, public_ip_address ]}
+    user: { get_input: app_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
   resources_fabric_env: &resources_fabric_env
     host_string: { get_attribute: [ resources_vm, ip ]}
@@ -315,13 +300,13 @@ node_templates:
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
-  nodejs_security_group:
+  app_security_group:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: { get_input: use_existing_nodejs_security_group }
-      resource_id: { get_input: nodejs_security_group_id }
-      description: Cloudify Training (NodeJS)
+      use_external_resource: { get_input: use_existing_app_security_group }
+      resource_id: { get_input: app_security_group_id }
+      description: Cloudify Training (App)
       rules:
         - ip_protocol: tcp
           from_port: 22
@@ -331,30 +316,10 @@ node_templates:
           from_port: 8080
           to_port: 8080
           cidr_ip: 0.0.0.0/0
-        # Required for monitoring lab
         - ip_protocol: tcp
-          from_port: 8082
-          to_port: 8082
+          from_port: 80
+          to_port: 80
           cidr_ip: 0.0.0.0/0
-    relationships:
-      - target: vpc
-        type: cloudify.aws.relationships.security_group_contained_in_vpc
-  mongodb_security_group:
-    type: cloudify.aws.nodes.SecurityGroup
-    properties:
-      aws_config: *aws_config
-      use_external_resource: { get_input: use_existing_mongodb_security_group }
-      resource_id: { get_input: mongodb_security_group_id }
-      description: Cloudify Training (MongoDB)
-      rules:
-        - ip_protocol: tcp
-          from_port: 22
-          to_port: 22
-          cidr_ip: 0.0.0.0/0
-        - ip_protocol: tcp
-          from_port: 27017
-          to_port: 27017
-          cidr_ip: { get_input: cidr_block }
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
@@ -422,7 +387,6 @@ node_templates:
             user: { get_input: cli_ssh_user }
             key_filename: { get_property: [ keypair, private_key_path ] }
             labs_archive: { get_input: labs_archive }
-            nodecellar_archive: { get_input: nodecellar_archive }
             plugin_template_archive: { get_input: plugin_template_archive }
             github_user: { get_input: github_user }
             github_api_key: { get_input: github_api_key }
@@ -475,23 +439,23 @@ node_templates:
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
-  nodejs_ip:
+  app_ip:
     type: cloudify.aws.nodes.ElasticIP
     properties:
       aws_config: *aws_config
       domain: vpc
-  nodejs_vm:
+  app_vm:
     type: lab_vm
     properties:
-      image_id: { get_input: nodejs_image_id }
-      instance_type: { get_input: nodejs_instance_type }
-      name: { concat: [{ get_input: server_names_prefix }, 'nodejs']}
+      image_id: { get_input: app_image_id }
+      instance_type: { get_input: app_instance_type }
+      name: { concat: [{ get_input: server_names_prefix }, 'app']}
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
-      - target: nodejs_ip
+      - target: app_ip
         type: cloudify.aws.relationships.instance_connected_to_elastic_ip
-      - target: nodejs_security_group
+      - target: app_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: lab_vm_security_group
         type: cloudify.aws.relationships.instance_connected_to_security_group
@@ -499,7 +463,7 @@ node_templates:
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
-  nodejs_configuration:
+  app_configuration:
     type: cloudify.nodes.Root
     interfaces:
       cloudify.interfaces.lifecycle:
@@ -509,27 +473,10 @@ node_templates:
             commands:
               # Required for monitoring lab
               - sudo yum -y install unzip
-            fabric_env: *nodejs_fabric_env
+            fabric_env: *app_fabric_env
     relationships:
-      - target: nodejs_vm
+      - target: app_vm
         type: cloudify.relationships.contained_in
-  mongodb_vm:
-    type: lab_vm
-    properties:
-      image_id: { get_input: mongodb_image_id }
-      instance_type: { get_input: mongodb_instance_type }
-      name: { concat: [{ get_input: server_names_prefix }, 'mongodb']}
-    relationships:
-      - target: keypair
-        type: cloudify.aws.relationships.instance_connected_to_keypair
-      - target: mongodb_security_group
-        type: cloudify.aws.relationships.instance_connected_to_security_group
-      - target: lab_vm_security_group
-        type: cloudify.aws.relationships.instance_connected_to_security_group
-      - target: agents_security_group
-        type: cloudify.aws.relationships.instance_connected_to_security_group
-      - target: subnet
-        type: cloudify.aws.relationships.instance_connected_to_subnet
 
   resources_security_group:
     type: cloudify.aws.nodes.SecurityGroup
@@ -618,7 +565,7 @@ node_templates:
 
 groups:
   trainee:
-    members: [cli_vm, cli_ip, nodejs_vm, nodejs_ip, manager_vm, manager_ip, mongodb_vm]
+    members: [cli_vm, cli_ip, app_vm, app_ip, manager_vm, manager_ip]
 
 policies:
   trainee_policy:
@@ -636,7 +583,6 @@ outputs:
       manager:
         private: { get_attribute: [manager_vm, ip] }
         public: { get_attribute: [manager_vm, public_ip_address]}
-      nodejs:
-        private: { get_attribute: [nodejs_vm, ip] }
-        public: { get_attribute: [nodejs_vm, public_ip_address]}
-      mongodb: { get_attribute: [mongodb_vm, ip] }
+      app:
+        private: { get_attribute: [app_vm, ip] }
+        public: { get_attribute: [app_vm, public_ip_address]}
