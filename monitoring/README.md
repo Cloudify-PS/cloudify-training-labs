@@ -20,7 +20,7 @@ You can use the Diamond collectors' reference for information how to configure c
 
 ```bash
 cfy blueprints upload $LAB_ROOT/blueprint/blueprint.yaml -b monitoring
-cfy deployments create mon -b monitoring -i $LAB_ROOT/inputs.yaml 'vm_ip_address=<app-vm-ip-address>'
+cfy deployments create mon -b monitoring -i 'vm_ip_address=<app-vm-ip-address>'
 cfy executions start -d mon install
 ```
 

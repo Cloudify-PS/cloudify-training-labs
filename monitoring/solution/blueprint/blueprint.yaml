@@ -9,8 +9,10 @@ inputs:
     type: string
   ssh_user:
     type: string
+    default: centos
   key_filename:
     type: string
+    default: /root/cfy-training.pem
 
 node_templates:  
   host:
