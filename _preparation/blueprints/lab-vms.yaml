@@ -305,10 +305,6 @@ node_templates:
           to_port: 8500
           cidr_ip: { get_input: cidr_block }
         - ip_protocol: tcp
-          from_port: 8500
-          to_port: 8500
-          cidr_ip: { get_input: cidr_block }
-        - ip_protocol: tcp
           from_port: 15432
           to_port: 15432
           cidr_ip: { get_input: cidr_block }
