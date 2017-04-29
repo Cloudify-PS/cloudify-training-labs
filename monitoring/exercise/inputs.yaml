@@ -1,3 +1,0 @@
-vm_ip_address: REPLACE_WITH_TARGET_VMs_PRIVATE_IP_ADDRESS
-ssh_user: centos
-key_filename: /root/cfy-training.pem

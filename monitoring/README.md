@@ -16,9 +16,11 @@ You can use the Diamond collectors' reference for information how to configure c
  
 ### Step 2: Upload and install the blueprint
 
+**NOTE**: Replace `<app-vm-ip-address>` with the private IP address of your application VM.
+
 ```bash
 cfy blueprints upload $LAB_ROOT/blueprint/blueprint.yaml -b monitoring
-cfy deployments create mon -b monitoring -i $LAB_ROOT/inputs.yaml
+cfy deployments create mon -b monitoring -i $LAB_ROOT/inputs.yaml 'vm_ip_address=<app-vm-ip-address>'
 cfy executions start -d mon install
 ```
 
