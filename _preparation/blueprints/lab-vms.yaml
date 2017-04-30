@@ -137,7 +137,7 @@ dsl_definitions:
     aws_secret_access_key: { get_input: aws_secret_access_key }
     ec2_region_name: { get_input: ec2_region_name }
   cli_fabric_env: &cli_fabric_env
-    host_string: { get_attribute: [ cli_vm, public_ip_address ]}
+    host_string: { get_attribute: [ cli_vm, ip ]}
     user: { get_input: cli_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
   cli_ssh_parms: &cli_ssh_parms
@@ -145,7 +145,7 @@ dsl_definitions:
     user: { get_input: cli_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
   app_fabric_env: &app_fabric_env
-    host_string: { get_attribute: [ app_vm, public_ip_address ]}
+    host_string: { get_attribute: [ app_vm, ip ]}
     user: { get_input: app_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
   resources_fabric_env: &resources_fabric_env
