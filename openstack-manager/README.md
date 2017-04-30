@@ -95,70 +95,38 @@ curl -J -O http://repository.cloudifysource.org/cloudify/wagons/cloudify-opensta
 cfy plugins upload ~/cloudify_openstack_plugin-2.0.1-py27-none-linux_x86_64-centos-Core.wgn
 ```
 
-### Step 4: Initialize `openstack_config.json`
+## Part 3: Orchestrate Application
 
-The NodeCellar blueprint we're going to use, is designed to work with manager-wide OpenStack configuration.
-Therefore, **on the manager**, create `/root/openstack_config.json` with the following contents:
+We will orchestrate Cloudify's "Hello World" application. The blueprints already exist on your CLI VM, under
+`~/hello-world`.
 
-```json
-{
-    "username": "<your-username>",
-    "password": "<your-password>",
-    "tenant_name": "<tenant-name>",
-    "auth_url": "<keystone-url>",
-    "region": "<region-name>"
-}
-```
+### Step 1: Prepare CLI profile
 
-## Part 3: NodeCellar
+Switch to a CLI profile that is configured to communicate with your manager.
 
-NodeCellar may also have been downloaded previously. If not:
+*   If you are using a Cloudify Manager that has been bootstrapped using the instructions of "Part 2" above, then the
+    profile already exists and is the currently "active" one.
+*   If you are using a Cloudify Manager that has been created from an image, or a Cloudify Manager for which there's
+    no CLI profile configured yet:
 
-```bash
-cd ~
-curl -L -o nodecellar.tar.gz https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
-mkdir nodecellar && cd nodecellar
-tar -zxv --strip-components=1 -f ../nodecellar.tar.gz
-```
+    ```bash
+    cfy profiles use -t <manager's-ip-address> -u <manager-username> -p <manager-password> -t default_tenant
+    ```
 
-### Step 1: Switch to a Cloudify directory
+### Step 2: Prepare inputs file
 
-If you are using a Cloudify Manager that has been bootstrapped, you can skip this step.
+Create a new YAML file, `~/hw-inputs.yaml`, to contain inputs for the Hello World application.
+Looking at `~/hello-world/openstack-blueprint.yaml`, construct your inputs YAML file to contain values that
+are relevant to your environment.
 
-If you are using a Cloudify Manager that has been created from an image, type the following command:
-
-```bash
-cfy profiles use -t <manager's-ip-address> -u <manager-username> -p <manager-password>
-```
-
-### Step 2: Prepare nodecellar's blueprint
-
-```bash
-cp ~/nodecellar/inputs/openstack.yaml.template ~/nc-os-inputs.yaml
-```
-
-Then edit `~/nc-os-inputs.yaml`:
-
-```yaml
-image: <image-id>
-flavor: <flavor-id>
-agent_user: centos
-network_name: <name of network to connect to>
-floating_network_id: <name of external network>
-key_pair_name: <name of keypair to use>
-private_key_path: <path to private key>
-```
-
-**NOTE**: as the blueprint is designed to use an existing keypair, you'll have to provide the private key to the manager.
+**NOTE**: as the blueprint is designed to use an existing keypair, you'll have to provide the private key file to the manager.
 That is the purpose of the `private_key_path` input. Before continuing, you must ensure that the private key is available
 *at the manager side*, in the location you specified in `private_key_path`.
 
 ### Step 3: Upload the blueprint, create a deployment, run install
 
 ```bash
-cfy blueprints upload ~/nodecellar/openstack-blueprint.yaml -b nc
-cfy deployments create -b nc -i ~/nc-os-inputs.yaml nc
-cfy executions start -d nc install
+cfy install ~/hello-world/openstack-blueprint.yaml -b helloworld -d helloworld -i ~/hw-inputs.yaml
 ```
 
 ### Step 4: Test the application
