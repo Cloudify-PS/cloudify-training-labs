@@ -17,7 +17,7 @@ networking- and security-related prerequisites. You will have to ensure that you
 * A security group that allows access to the manager via the ports specified in the Prerequisites page:
   * Ports 80, 443 and 22, with the source being any address / CIDR / security group that you'd like to access
     Cloudify Manager from.
-  * Ports 5671, 5672, 53229, 53333 and 8101 from any VM that:
+  * Ports 5671, 5672, 53229, and 53333 from any VM that:
     * Is going to be created by Cloudify; and
     * Is going to have the Cloudify Agent installed on it.
 * A security group that allows access to agents, as specified in the [Agent prerequisites description](http://docs.getcloudify.org/4.0/agents/overview/).
@@ -31,7 +31,7 @@ networking- and security-related prerequisites. You will have to ensure that you
 * Edit `cloudify-management`'s rules, allowing:
     * Ports 80, 443 and 22 from anywhere (in production systems, you will most likely want to restrict this by CIDR or
       a security group).
-    * Ports 5671, 5672, 53229, 53333 and 8101 from the security group `cloudify-agents`.
+    * Ports 5671, 5672, 53229, and 53333 from the security group `cloudify-agents`.
 * Edit `cloudify-agents`'s rules, allowing:
     * Ports 22 and 5985 from the security group `cloudify-management`.
 
@@ -42,7 +42,7 @@ of enabling agent <-> manager communication.
 
 ### Step 1: Import the Cloudify Manager image to OpenStack
 
-The official Cloudify Manager image is located at: http://repository.cloudifysource.org/org/cloudify3/4.0/sp-RELEASE/manager4.0-insecure-image.qcow2
+The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.0.0/ga-release/cloudify-manager-premium-4.0.qcow2
 
 You can use Horizon to import the QCOW2 image into OpenStack:
 
@@ -67,47 +67,11 @@ From Horizon:
 Back at the *Instances* view, associate a floating IP to the new VM (unless the VM is on a network that is routable from
 within the machine you're accessing the manager from).
 
-### Step 3: Configure Cloudify Manager
+### Step 3: Access Cloudify Manager
 
-Open a browser window to `http://<manager-ip-address>`. You will see the Cloudify Manager UI, showing a single blueprint called `CloudifySettings`.
+Open a browser window to `http://<manager-ip-address>`. You will see the Cloudify Manager UI.
 
-1.  Click *Create Deployment*.
-2.  Populate the fields as follows:
-
-    | Field                             | Value                                                                                     |
-    |-----------------------------------|-------------------------------------------------------------------------------------------|
-    | Deployment Name                   | `settings`                                                                                |
-    | `openstack_auth_url`              | Default OpenStack KeyStone URL                                                            |
-    | `user_ssh_key`                    | `none`                                                                                    |
-    | `agents_security_group`           | Name of security group to create, and that will be automatically associated with new VM's |
-    | `openstack_region`                | Default OpenStack region                                                                  |
-    | `openstack_password`              | Default OpenStack password                                                                |
-    | `agents_to_manager_inbound_ports` | *leave default*                                                                           |
-    | `openstack_tenant_name`           | Default OpenStack tenant                                                                  |
-    | `agents_user`                     | *leave default*                                                                           |
-    | `openstack_username`              | Default OpenStack username                                                                |
-    | `agents_keypair_name`             | Name of keypair to create, and that will be associated with new VM's                      |
-
-    As an alternative, you can provide all values as a JSON blob, by selecting the *RAW* button and pasting the JSON.
-    For example:
-    
-    ```json
-    {
-        "openstack_auth_url": "https://Openstack_MANAGEMENT_IP:5000/v3",
-        "user_ssh_key": "none",
-        "agents_security_group_name": "cfy-agents",
-        "openstack_region": "RegionOne",
-        "openstack_password": "my_openstack_password",
-        "agents_to_manager_inbound_ports": "5672,8101,53229",
-        "openstack_tenant_name": "my_tenant",
-        "agents_user": "centos",
-        "openstack_username": "my_openstack_username",
-        "agents_keypair_name": "cfy-agents-key"
-    }
-    ```
-3.  Click *Create*.
-4.  Click the *Execute Workflow* button.
-5.  Select *install* and click *Confirm*.
+**NOTE**: You may need to associate a floating IP to the new VM first (depending on your network setup).
 
 ## Part 2: Bootstrapping a Manager
 
@@ -119,18 +83,16 @@ Create a virtual machine for installing the Cloudify Manager on.
 
 ### Step 2: Bootstrap
 
-Use the instructions provided in the [Manager Bootstrapping lab](../simple-bootstrap) to perform the bootstrap.
+Use the instructions provided in the [Manager Bootstrapping lab](../bootstrap) to perform the bootstrap.
 
 ### Step 3: Upload plugins
  
-Once bootstrapping is complete, upload the OpenStack and Fabric plugin packages:
+Once bootstrapping is complete, upload the OpenStack plugin package:
 
 ```bash
 cd ~
 curl -J -O http://repository.cloudifysource.org/cloudify/wagons/cloudify-openstack-plugin/2.0.1/cloudify_openstack_plugin-2.0.1-py27-none-linux_x86_64-centos-Core.wgn
-curl -J -O http://repository.cloudifysource.org/cloudify/wagons/cloudify-fabric-plugin/1.4.2/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
 cfy plugins upload ~/cloudify_openstack_plugin-2.0.1-py27-none-linux_x86_64-centos-Core.wgn
-cfy plugins upload ~/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
 ```
 
 ### Step 4: Initialize `openstack_config.json`

@@ -18,6 +18,7 @@ cli_instance_type: t2.micro
 cli_ssh_user: centos
 labs_archive: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.0.tar.gz
 plugin_template_archive: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.0.tar.gz
+hello_world_archive: https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/4.0-maint.tar.gz
 cli_rpm: http://repository.cloudifysource.org/cloudify/4.0.0/ga-release/cloudify-4.0.0~ga.el6.x86_64.rpm
 github_user: ''
 github_api_key: ''

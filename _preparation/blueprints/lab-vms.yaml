@@ -63,6 +63,9 @@ inputs:
   plugin_template_archive:
     type: string
     default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.0.tar.gz
+  hello_world_archive:
+    type: string
+    default: https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/4.0-maint.tar.gz
   cli_rpm:
     type: string
     default: http://repository.cloudifysource.org/cloudify/4.0.0/ga-release/cloudify-4.0.0~ga.el6.x86_64.rpm
@@ -271,11 +274,7 @@ node_templates:
           cidr_ip: { get_input: cidr_block }
         - ip_protocol: tcp
           from_port: 5671
-          to_port: 5672
-          cidr_ip: { get_input: cidr_block }
-        - ip_protocol: tcp
-          from_port: 8101
-          to_port: 8101
+          to_port: 5671
           cidr_ip: { get_input: cidr_block }
         - ip_protocol: tcp
           from_port: 8300
@@ -396,6 +395,7 @@ node_templates:
             <<: *cli_ssh_parms
             labs_archive: { get_input: labs_archive }
             plugin_template_archive: { get_input: plugin_template_archive }
+            hello_world_archive: { get_input: hello_world_archive }
             github_user: { get_input: github_user }
             github_api_key: { get_input: github_api_key }
     relationships:
