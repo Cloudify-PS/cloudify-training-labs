@@ -269,6 +269,11 @@ node_templates:
           from_port: 5671
           to_port: 5672
           cidr_ip: { get_input: cidr_block }
+          # https://cloudifysource.atlassian.net/browse/STAGE-304
+        - ip_protocol: tcp
+          from_port: 8086
+          to_port: 8086
+          cidr_ip: { get_input: cidr_block }
         - ip_protocol: tcp
           from_port: 8101
           to_port: 8101
