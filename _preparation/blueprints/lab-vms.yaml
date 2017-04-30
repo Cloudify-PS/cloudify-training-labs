@@ -140,6 +140,10 @@ dsl_definitions:
     host_string: { get_attribute: [ cli_vm, public_ip_address ]}
     user: { get_input: cli_ssh_user }
     key_filename: { get_property: [ keypair, private_key_path ] }
+  cli_ssh_parms: &cli_ssh_parms
+    host: { get_attribute: [ cli_vm, public_ip_address ]}
+    user: { get_input: cli_ssh_user }
+    key_filename: { get_property: [ keypair, private_key_path ] }
   app_fabric_env: &app_fabric_env
     host_string: { get_attribute: [ app_vm, public_ip_address ]}
     user: { get_input: app_ssh_user }
@@ -369,14 +373,13 @@ node_templates:
         configure:
           implementation: scripts/configure.sh
           executor: central_deployment_agent
-          inputs:
-            host: { get_attribute: [ cli_vm, public_ip_address ]}
-            user: { get_input: cli_ssh_user }
-            key_filename: { get_property: [ keypair, private_key_path ] }
+          inputs: *cli_ssh_parms
       custom:
         install_cli:
           implementation: scripts/install-cli.sh
+          executor: central_deployment_agent
           inputs:
+            <<: *cli_ssh_parms
             cli_rpm: { get_input: cli_rpm }
     relationships:
       - target: cli_vm
@@ -393,9 +396,7 @@ node_templates:
           implementation: scripts/refresh-labs.sh
           executor: central_deployment_agent
           inputs:
-            host: { get_attribute: [ cli_vm, public_ip_address ]}
-            user: { get_input: cli_ssh_user }
-            key_filename: { get_property: [ keypair, private_key_path ] }
+            <<: *cli_ssh_parms
             labs_archive: { get_input: labs_archive }
             plugin_template_archive: { get_input: plugin_template_archive }
             github_user: { get_input: github_user }
