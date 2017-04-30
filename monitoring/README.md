@@ -24,14 +24,17 @@ cfy deployments create mon -b monitoring -i 'vm_ip_address=<app-vm-ip-address>'
 cfy executions start -d mon install
 ```
 
-### Step 3: Review monitoring in the UI
+### Step 3: Show metrics in the UI
 
-1. In the web UI, go to the Deployments screen.
-2. Click your deployment.
-3. Click your username at the top right, and select "Edit Mode".
-4. Click the "Add Widget" button.
-5. Select the "Deployment metric graph" widget. Click "Add".
-6. Click your username at the top right, and select "Exit Edit Mode".
+1.  Log in to the UI. Make sure to write "127.0.0.1" in the "Manager IP" field.
+2.  Go to the Deployments screen.
+3.  Click your deployment.
+4.  Click your username at the top right, and select "Edit Mode".
+5.  Click the "Add Widget" button.
+6.  Select the "Deployment metric graph" widget. Click "Add".
+7.  Click the "Add Widget" button again.
+8.  Select the "Time filter" widget. Click "Add".
+9.  Click your username at the top right, and select "Exit Edit Mode".
 
 The metrics widget will now appear on the screen.
 
