@@ -60,12 +60,12 @@ inputs:
   labs_archive:
     type: string
     default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.0.tar.gz
-  nodecellar_archive:
-    type: string
-    default: https://github.com/Cloudify-PS/cloudify-nodecellar-example/archive/4.0-maint.tar.gz
   plugin_template_archive:
     type: string
     default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.0.tar.gz
+  cli_rpm:
+    type: string
+    default: http://repository.cloudifysource.org/cloudify/4.0.0/ga-release/cloudify-4.0.0~ga.el6.x86_64.rpm
   github_user:
     type: string
   github_api_key:
@@ -373,6 +373,11 @@ node_templates:
             host: { get_attribute: [ cli_vm, public_ip_address ]}
             user: { get_input: cli_ssh_user }
             key_filename: { get_property: [ keypair, private_key_path ] }
+      custom:
+        install_cli:
+          implementation: scripts/install-cli.sh
+          inputs:
+            cli_rpm: { get_input: cli_rpm }
     relationships:
       - target: cli_vm
         type: cloudify.relationships.contained_in
