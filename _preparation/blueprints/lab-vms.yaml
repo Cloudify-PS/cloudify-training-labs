@@ -376,11 +376,13 @@ node_templates:
           inputs: *cli_ssh_parms
       custom:
         install_cli:
-          implementation: scripts/install-cli.sh
-          executor: central_deployment_agent
+          implementation: fabric.fabric_plugin.tasks.run_commands
           inputs:
-            <<: *cli_ssh_parms
-            cli_rpm: { get_input: cli_rpm }
+            commands:
+              - { concat: ['curl -J -o /tmp/cfy-cli.rpm ', { get_input: cli_rpm }] }
+              - sudo yum -y install /tmp/cfy-cli.rpm
+              - rm -rf /tmp/cfy-cli.rpm
+            fabric_env: *cli_fabric_env
     relationships:
       - target: cli_vm
         type: cloudify.relationships.contained_in
