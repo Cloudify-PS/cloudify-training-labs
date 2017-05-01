@@ -1,16 +1,24 @@
 import os
 import sys
+import argparse
 from cloudify_rest_client import CloudifyClient
 
-if len(sys.argv) != 3:
-    print "Format: {} <manager-ip> <deployment>".format(os.path.basename(__file__))
-    exit(1)
+parser = argparse.ArgumentParser()
+parser.add_argument('manager_ip', help='hostname or IP address of the manager')
+parser.add_argument('username', help='username to authenticate with')
+parser.add_argument('password', help='password to authenticate with')
+parser.add_argument('deployment_id', help='ID of the deployment to analyze')
+parser.add_argument('--tenant', help='tenant to operate on (optional; defaults to the default tenant)')
 
-manager_ip = sys.argv[1]
-deployment_id = sys.argv[2]
+args = parser.parse_args()
 
-client = CloudifyClient(manager_ip)
-nodes = client.nodes.list(deployment_id=deployment_id)
+tenant_id = args.tenant or 'default_tenant'
+
+client = CloudifyClient(host=args.manager_ip,
+                        username=args.username,
+                        password=args.password,
+                        tenant=tenant_id)
+nodes = client.nodes.list(deployment_id=args.deployment_id)
 compute_nodes=[]
 public_compute_nodes=[]
 nodes_map = {}
@@ -29,7 +37,7 @@ for node in nodes:
 trainees = {}
 
 for compute_node in compute_nodes:
-    node_instances = client.node_instances.list(deployment_id=deployment_id,
+    node_instances = client.node_instances.list(deployment_id=args.deployment_id,
                                                 node_id=compute_node)
     for node_instance in node_instances:
         scaling_group_id = node_instance.scaling_groups[0]['id']
