@@ -1,4 +1,4 @@
-# Lab: Installing Aplication using Cloudify Manager
+# Lab: Installing Application using Cloudify Manager
 
 In this lab, we will install a sample application on Cloudify Manager.
 
