@@ -1,6 +1,6 @@
 # Lab: Workflows
 
-It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
+Ensure that the `LAB_ROOT` environment variable points to the exercise's root directory by executing:
 
 ```bash
 export LAB_ROOT=~/cloudify-training-labs/workflows/exercise

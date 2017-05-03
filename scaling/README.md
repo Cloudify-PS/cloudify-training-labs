@@ -2,27 +2,7 @@
 
 The purpose of this lab is to deploy and scale an example web application.
 
-## Step 1: Download example application
-
-```bash
-cd ~
-curl -L -o helloworld.tar.gz https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/4.0-maint.zip
-mkdir helloworld && cd helloworld
-
-
-
-
-
-
-
-
-
-unzip helloworld.zip
-mv cloudify-hello-world-example-3.4.2-maint cloudify-hello-world
-```
-
-This will download the latest Hello World example application and extract it to `~/cloudify-hello-world`.
-
+We are going to use the "Hello World" application that is already available on the CLI VM under `~/hello-world`.
 
 ## Step 2: Prepare inputs file
 

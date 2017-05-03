@@ -2,7 +2,7 @@
 
 The purpose of this lab is to fix a broken blueprint and install it locally.
 
-It is assumed that the `LAB_ROOT` environment variable points to the exercise's root directory. Otherwise, export it:
+Ensure that the `LAB_ROOT` environment variable points to the exercise's root directory by executing:
 
 ```bash
 export LAB_ROOT=~/cloudify-training-labs/using-scripts/exercise
