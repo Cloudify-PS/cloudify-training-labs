@@ -75,20 +75,67 @@ Cloudify Manager cluster initialized!
 Encryption key: pyYUkPgZ5Uvw1kSWrivYTg==
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
 To see the list of nodes in the cluster, and their status:
 
 ```bash
 cfy cluster nodes list
 ```
+
+You'll see something along the lines of:
+
+```
+HA Cluster nodes
++----------+---------------+--------+--------+
+|   name   |    host_ip    | master | online |
++----------+---------------+--------+--------+
+| backup_1 | 192.168.0.155 | False  |  True  |
+| backup_2 | 192.168.0.156 | False  |  True  |
+|  master  | 192.168.0.154 |  True  |  True  |
++----------+---------------+--------+--------+
+```
+
+## Step 8: Change the master
+
+```bash
+cfy cluster set-active backup_1
+```
+
+That will set `backup_1` as the active manager. `cfy cluster nodes list` again will yield:
+
+```
+HA Cluster nodes
++----------+---------------+--------+--------+
+|   name   |    host_ip    | master | online |
++----------+---------------+--------+--------+
+| backup_1 | 192.168.0.155 |  True  |  True  |
+| backup_2 | 192.168.0.156 | False  |  True  |
+|  master  | 192.168.0.154 | False  |  True  |
++----------+---------------+--------+--------+
+```
+
+## Step 9: Bring the active manager down
+
+Use your Cloud provider's interface to bring down the manager machine that currently acts as the active manager
+(if you followed all steps so far, this should be the `backup_1` node).
+
+Now, list the cluster nodes again:
+
+```bash
+cfy cluster nodes list
+```
+
+You'll get:
+
+```
+HA Cluster nodes
++----------+---------------+--------+--------+
+|   name   |    host_ip    | master | online |
++----------+---------------+--------+--------+
+| backup_1 | 192.168.0.155 | False  | False  |
+| backup_2 | 192.168.0.156 |  True  |  True  |
+|  master  | 192.168.0.154 | False  |  True  |
++----------+---------------+--------+--------+
+```
+
+(Note that the new active manager is selected at random; so in your case, it could be that `master` becomes the active
+manager instead of `backup_2`)
