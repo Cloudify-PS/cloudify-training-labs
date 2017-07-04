@@ -15,12 +15,12 @@ A "Resources" VM has been prepared by the instructor, containing all resources r
 having to access the public network. The resource locations are:
 
 * YAML files referred to by the manager blueprint
-  * http://<resources-vm-ip>:8080/yaml/spec/cloudify/4.0/types.yaml
+  * http://<resources-vm-ip>:8080/yaml/spec/cloudify/4.0.1/types.yaml
   * http://<resources-vm-ip>:8080/yaml/spec/fabric-plugin/1.4.2/plugin.yaml
 * Wagon file(s) for plugins used by the manager blueprint
   * http://<resources-vm-ip>:8080/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
 * Manager resources package
-  * http://<resources-vm-ip>:8080/cloudify-manager-resources_4.0.0-ga.tar.gz
+  * http://<resources-vm-ip>:8080/cloudify-manager-resources_4.0.1-sp.tar.gz
 
 Make sure that:
 
@@ -38,7 +38,7 @@ mkdir ~/offline && cd ~/offline
 We're going to use a new virtualenv here, in order to exercise the installation of the Fabric plugin's wagon into it:
 
 ```bash
-python get-cloudify.py --version 4.0 -e ~/offline-cfy-env -v
+python get-cloudify.py --version 4.0.1 -e ~/offline-cfy-env -v
 . ~/offline-cfy-env/bin/activate
 
 cfy --version
@@ -69,7 +69,7 @@ import_resolver:
 ### Prepare a manager inputs file
 
 ```bash
-cp ~/cloudify-manager-blueprints-3.4.2/simple-manager-blueprint-inputs.yaml ./offline-mgr-inputs.yaml
+cp ~/cloudify-manager-blueprints/simple-manager-blueprint-inputs.yaml ./offline-mgr-inputs.yaml
 vi offline-mgr-inputs.yaml
 ```
 
@@ -90,7 +90,7 @@ be uncommented and customized:
 ### Execute the bootstrap
 
 ```bash
-cfy bootstrap -p ~/cloudify-manager-blueprints-3.4.2/simple-manager-blueprint.yaml -i offline-mgr-inputs.yaml  
+cfy bootstrap -p ~/cloudify-manager-blueprints/simple-manager-blueprint.yaml -i offline-mgr-inputs.yaml  
 ```
 
 _Note that in the command above, we didn't specify `--install-plugins`. There's no need to (as the required plugins

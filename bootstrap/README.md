@@ -45,7 +45,7 @@ public_ip: MANAGER_VM_PUBLIC_IP
 private_ip: MANAGER_VM_PRIVATE_IP
 ssh_user: centos
 ssh_key_filename: ~/cfy-training.pem
-manager_resources_package: http://repository.cloudifysource.org/cloudify/4.0.0/ga-release/cloudify-manager-resources_4.0.0-ga.tar.gz
+manager_resources_package: http://repository.cloudifysource.org/cloudify/4.0.1/sp-release/cloudify-manager-resources_4.0.1-sp.tar.gz
 ```
 
 **NOTES**

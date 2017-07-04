@@ -33,16 +33,22 @@ Populate the following parameters:
 ```yaml
 server_ip: <your-app-vm-ip-address>
 agent_user: centos
-agent_private_key_path: /root/cfy-training.pem
+agent_private_key_path: /etc/cloudify/cfy-training.pem
 ```
 
 **NOTE** This blueprint is designed to install a Cloudify Agent on your "app" VM. To do that, Cloudify Manager needs
 to SSH into the VM, which in turn requires Cloudify Manager to have access to a private key. That is the purpose of
 the `agent_private_key_path` input. Therefore, before proceeding, you must copy the `cfy-training.pem` file to the manager,
-and place it under `/root`.
+and place it under `/etc/cloudify`.
 
-(You may choose to place it anywhere on the file system, as long as `agent_private_key_path
-is also updated above)
+In addition, set the file's permissions so the user `cfyuser` can, at the least, read it:
+
+```bash
+sudo chown cfyuser:cfyuser /etc/cloudify/cfy-training.pem
+sudo chmod 600 /etc/cloudify/cfy-training.pem
+```
+
+(You may choose to place it anywhere on the file system, as long as `agent_private_key_path` is also updated above)
 
 ## Step 4: Create a deployment
 

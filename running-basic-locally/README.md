@@ -5,7 +5,7 @@ In this lab, we will run a very basic blueprint using Cloudify.
 As we are going to run this blueprint locally, we need to initialize the CLI's local profile first:
 
 ```bash
-cfy init ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml
+cfy init ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml -b basic
 ```
 
 That initializes the current user's local Cloudify profile by setting the provided blueprint as a context.
@@ -13,7 +13,7 @@ That initializes the current user's local Cloudify profile by setting the provid
 ## Invoke the `install` workflow
 
 ```bash
-cfy executions start install
+cfy executions start install -b basic
 ```
 
 The output should be similar to the following:
@@ -50,7 +50,7 @@ The output should be similar to the following:
 ## Invoke the `uninstall` workflow
 
 ```bash
-cfy executions start uninstall
+cfy executions start uninstall -b basic
 ```
 
 The output should be similar to the following:
@@ -82,11 +82,11 @@ Since the sequence of initializing a blueprint and running the `install` workflo
 there is a command that performs both at the same time:
 
 ```bash
-cfy install ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml
+cfy install ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml -b basic
 ```
 
 Conversely, the following runs the `uninstall` workflow:
 
 ```bash
-cfy uninstall
+cfy uninstall -b basic
 ```
