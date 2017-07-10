@@ -86,7 +86,7 @@ PID=$!
 wait_for_server $tomcatPort 'tomcat'
 # This runtime property is used by the stop-tomcat script for killing this tomcat instance.
 # Make sure you use the same property name here and there.
-REPLACE_WITH_A_COMMAND_THAT_STORES_THE_PROCESS_ID_IN_THE_RUNTIME_PROPERTIES_OF_THE_INSTANCE_VIA_THE_OPERATION_CONTEXT
+REPLACE_WITH_A_COMMAND_THAT_STORES_THE_PROCESS_ID_IN_THE_RUNTIME_PROPERTIES_OF_THE_INSTANCE_VIA_THE_CONTEXT_OBJECT
 
 
 ctx logger info "${currHostName}:${currFilename} End of $0"
