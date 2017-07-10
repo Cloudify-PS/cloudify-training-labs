@@ -27,3 +27,4 @@ case "$KIND" in
 esac
 
 cfy executions start -d $DEPLOYMENT_ID -p '{"operation": "cloudify.interfaces.lifecycle.'$OP'", "'$filter'": '${criteria}'}' execute_operation
+
