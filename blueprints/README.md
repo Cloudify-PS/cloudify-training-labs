@@ -138,13 +138,13 @@ cp -R ~/cloudify-training-labs/blueprints/solution/scripts ~/my_bp
 Now that the blueprint is ready, try running it:
 
 ```bash
-cfy install ~/my_bp/blueprint.yaml -i 'apache_listening_port=8080'
+cfy install ~/my_bp/blueprint.yaml -i 'apache_listening_port=8080' -b bp_test
 ```
 
 When installation is done, obtain the outputs:
 
 ```bash
-cfy deployments outputs
+cfy deployments outputs -b bp_test
 ```
 
 You should receive the value of the `outputs` section defined in the blueprint, with values calculated in
@@ -156,5 +156,5 @@ app that had just been deployed.
 Once done, invoke the `uninstall` workflow to clean up:
 
 ```bash
-cfy uninstall
+cfy uninstall -b bp_test
 ```
