@@ -1,8 +1,8 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/4.0.1/types.yaml
-  - http://www.getcloudify.org/spec/fabric-plugin/1.4.2/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.1/types.yaml
+  - http://www.getcloudify.org/spec/fabric-plugin/1.5/plugin.yaml
   - http://www.getcloudify.org/spec/aws-plugin/1.4.12/plugin.yaml
 
 inputs:
@@ -27,7 +27,7 @@ inputs:
     default: false
   lab_vms_security_group_id:
     type: string
-    default: cfy-4.0.1-lab-vm
+    default: cfy-4.1-lab-vm
   # Keypair
   keypair_name:
     type: string
@@ -59,16 +59,16 @@ inputs:
     default: centos
   labs_archive:
     type: string
-    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.0.tar.gz
+    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.1.tar.gz
   plugin_template_archive:
     type: string
-    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.0.1.tar.gz
+    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.1.tar.gz
   hello_world_archive:
     type: string
     default: https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/4.0-maint.tar.gz
   cli_rpm:
     type: string
-    default: http://repository.cloudifysource.org/cloudify/4.0.1/sp-release/cloudify-4.0.1~sp.el6.x86_64.rpm
+    default: http://repository.cloudifysource.org/cloudify/4.1.0/ga-release/cloudify-4.1.0~ga.el6.x86_64.rpm
   github_user:
     type: string
   github_api_key:
@@ -79,7 +79,7 @@ inputs:
     default: false
   cli_security_group_id:
     type: string
-    default: cfy-training-4.0.1-cli
+    default: cfy-training-4.1-cli
   # Manager
   manager_image_id:
     type: string
@@ -95,7 +95,7 @@ inputs:
     default: false
   manager_security_group_id:
     type: string
-    default: cfy-training-4.0.1-manager
+    default: cfy-training-4.1-manager
   # App
   app_image_id:
     type: string
@@ -110,7 +110,7 @@ inputs:
     type: boolean
     default: false
   app_security_group_id:
-    default: cfy-training-4.0.1-app
+    default: cfy-training-4.1-app
   # Resources
   use_existing_resources_vm:
     type: boolean
@@ -123,7 +123,7 @@ inputs:
     default: false
   resources_security_group_id:
     type: string
-    default: cfy-4.0.1-resources
+    default: cfy-4.1-resources
   resources_image_id:
     type: string
     default: ami-6d1c2007
@@ -554,13 +554,13 @@ node_templates:
           implementation: scripts/download-resources.py
           inputs:
             resources:
-              - url: http://www.getcloudify.org/spec/cloudify/4.0.1/types.yaml
-                location: ~/yaml/spec/cloudify/4.0.1/types.yaml
-              - url: http://www.getcloudify.org/spec/fabric-plugin/1.4.2/plugin.yaml
-                location: ~/yaml/spec/fabric-plugin/1.4.2/plugin.yaml
-              - url: http://repository.cloudifysource.org/org/cloudify3/wagons/cloudify-fabric-plugin/1.4.2/cloudify_fabric_plugin-1.4.2-py27-none-linux_x86_64-centos-Core.wgn
+              - url: http://www.getcloudify.org/spec/cloudify/4.1/types.yaml
+                location: ~/yaml/spec/cloudify/4.1/types.yaml
+              - url: http://www.getcloudify.org/spec/fabric-plugin/1.5/plugin.yaml
+                location: ~/yaml/spec/fabric-plugin/1.5/plugin.yaml
+              - url: http://repository.cloudifysource.org/org/cloudify3/wagons/cloudify-fabric-plugin/1.5/cloudify_fabric_plugin-1.5-py27-none-linux_x86_64-centos-Core.wgn
                 location: ~/
-              - url: http://repository.cloudifysource.org/cloudify/4.0.1/sp-release/cloudify-manager-resources_4.0.1-sp.tar.gz
+              - url: http://repository.cloudifysource.org/cloudify/4.1.0/ga-release/cloudify-manager-resources_4.1.0-ga.tar.gz
                 location: ~/
         start:
           # For some reason, running this:

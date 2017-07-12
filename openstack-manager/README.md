@@ -42,7 +42,7 @@ of enabling agent <-> manager communication.
 
 ### Step 1: Import the Cloudify Manager image to OpenStack
 
-The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.0.1/sp-release/cloudify-manager-premium-4.0.1.qcow2
+The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.1/sp-release/cloudify-manager-premium-4.1.qcow2
 
 You can use Horizon to import the QCOW2 image into OpenStack:
 
