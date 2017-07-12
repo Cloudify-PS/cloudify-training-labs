@@ -56,7 +56,7 @@ node in the blueprint; the node instance ID is the ID of the particular instance
 Then, execute the `heal` workflow. For example:
 
 ```bash
-cfy executions -b workflows start -p 'node_instance_id=lab_vm_a644a' heal
+cfy executions start -b workflows -p 'node_instance_id=lab_vm_a644a' heal
 ```
 
 ## Part III: Uninstall

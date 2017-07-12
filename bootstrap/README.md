@@ -45,7 +45,6 @@ public_ip: MANAGER_VM_PUBLIC_IP
 private_ip: MANAGER_VM_PRIVATE_IP
 ssh_user: centos
 ssh_key_filename: ~/cfy-training.pem
-manager_resources_package: http://repository.cloudifysource.org/cloudify/4.1.0/ga-release/cloudify-manager-resources_4.1.0-ga.tar.gz
 ```
 
 **NOTES**
@@ -98,16 +97,17 @@ Services:
 +--------------------------------+---------+
 |            service             |  status |
 +--------------------------------+---------+
-| InfluxDB                       | running |
-| Celery Management              | running |
+| Cloudify Composer              | running |
 | Logstash                       | running |
-| RabbitMQ                       | running |
+| Webserver                      | running |
+| Cloudify Stage                 | running |
+| InfluxDB                       | running |
 | AMQP InfluxDB                  | running |
+| RabbitMQ                       | running |
+| Celery Management              | running |
 | PostgreSQL                     | running |
 | Manager Rest-Service           | running |
-| Cloudify Stage                 | running |
 | Riemann                        | running |
-| Webserver                      | running |
 +--------------------------------+---------+
 ```
 
@@ -117,8 +117,8 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the Cloudify Manager's UI login page:
 
-![Cloudify 4.0 Login](../../../raw/4.0/simple-bootstrap/cfy-ui-login.png "Cloudify UI: Login")
+![Cloudify 4.1 Login](../../../raw/4.1/bootstrap/cfy-ui-login.png "Cloudify UI: Login")
 
 Enter `admin` as the username, and the manager's password. Upon logging in, you'll see the Cloudify UI:
 
-![Cloudify 4.0 Landing Page](../../../raw/4.0/simple-bootstrap/cfy-ui-landing.png "Cloudify UI: Landing Page")
+![Cloudify 4.1 Landing Page](../../../raw/4.1/bootstrap/cfy-ui-landing.png "Cloudify UI: Landing Page")
