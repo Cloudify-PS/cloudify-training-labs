@@ -19,6 +19,11 @@ client = CloudifyClient(host=args.manager_ip,
                         password=args.password,
                         tenant=tenant_id)
 nodes = client.nodes.list(deployment_id=args.deployment_id)
+
+if not nodes:
+    print 'No nodes returned for deployment ID {0}. Are you sure this deployment exists?'.format(args.deployment_id)
+    exit(1)
+
 compute_nodes=[]
 public_compute_nodes=[]
 nodes_map = {}
