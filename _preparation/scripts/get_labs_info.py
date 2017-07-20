@@ -2,6 +2,10 @@ import os
 import sys
 import argparse
 from cloudify_rest_client import CloudifyClient
+from cloudify_rest_client.node_instances import NodeInstance
+
+def is_virtual_ip_node(node):
+    return 'cloudify.nodes.VirtualIP' in node.type_hierarchy
 
 parser = argparse.ArgumentParser()
 parser.add_argument('manager_ip', help='hostname or IP address of the manager')
@@ -24,18 +28,25 @@ if not nodes:
     print 'No nodes returned for deployment ID {0}. Are you sure this deployment exists?'.format(args.deployment_id)
     exit(1)
 
+node_instances = client.node_instances.list(deployment_id=args.deployment_id)
+
 compute_nodes=[]
 public_compute_nodes=[]
 nodes_map = {}
+node_instances_map = {}
+
 for node in nodes:
     nodes_map[node.id] = node
+
+for node_instance in node_instances:
+    node_instances_map[node_instance.id] = node_instance
 
 for node in nodes:
     if 'lab_vm' in node.type_hierarchy:
         compute_nodes.append(node.id)
         for rel in node.relationships:
             target_node = nodes_map[rel['target_id']]
-            if 'cloudify.nodes.VirtualIP' in target_node.type_hierarchy:
+            if is_virtual_ip_node(target_node):
                 public_compute_nodes.append(node.id)
                 continue
 
@@ -54,12 +65,18 @@ for compute_node in compute_nodes:
 
         trainee[node_instance.node_id] = {}
         trainee[node_instance.node_id]['private'] = node_instance.runtime_properties['ip']
+        trainee[node_instance.node_id]['instance'] = node_instance.id
 
-        if node_instance.node_id in public_compute_nodes:
-            trainee[node_instance.node_id]['public'] = node_instance.runtime_properties['public_ip_address']
+        for rel in node_instance.relationships:
+            target_node = nodes_map[rel['target_name']]
+            if is_virtual_ip_node(target_node):
+                target_node_instance = node_instances_map[rel['target_id']]
+                trainee[node_instance.node_id]['public'] = target_node_instance.runtime_properties['aws_resource_id']
+                break
 
 header = []
 for node in compute_nodes:
+    header.append("{}.instance".format(node))
     header.append("{}.private".format(node))
     if node in public_compute_nodes:
         header.append("{}.public".format(node))
@@ -69,6 +86,7 @@ print ",".join(header)
 for trainee in trainees:
     lst = []
     for node in compute_nodes:
+        lst.append(trainees[trainee][node]['instance'])
         lst.append(trainees[trainee][node]['private'])
         if node in public_compute_nodes:
             lst.append(trainees[trainee][node]['public'])

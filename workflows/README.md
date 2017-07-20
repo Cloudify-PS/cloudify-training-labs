@@ -11,9 +11,9 @@ export LAB_ROOT=~/cloudify-training-labs/workflows/exercise
 `$LAB_ROOT/blueprint/blueprint.yaml` is a very simple blueprint, defining a node called `lab`.
 Your task consists of:
 
-1.  Add an operation to the `lab` node
-2.  Bind the operation to the included script, `scripts/my-logging-operation.sh`
-3.  Use the `execute_operation` workflow to invoke the script
+1.  Adding an operation to the `lab` node
+2.  Binding the operation to the included script, `scripts/my-logging-operation.sh`
+3.  Using the `execute_operation` workflow to invoke the script
 
 ### Step 1: Replace placeholders
 
