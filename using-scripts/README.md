@@ -39,6 +39,13 @@ Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application
 
 ![HelloWorld app](../../../raw/4.1/using-scripts/helloworld.png "HelloWorld app")
 
+**NOTE**: if you use `curl` instead of a browser, you must use the `-L` flag to have `curl` follow
+redirects:
+
+```bash
+curl -L http://<cli-machine-public-ip>:8081/helloworld
+```
+
 To clean up:
 
 ```bash
