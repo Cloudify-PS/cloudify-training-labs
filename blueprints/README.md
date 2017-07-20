@@ -96,9 +96,9 @@ The relationship type will map the `establish` operation in the `cloudify.interf
 *   To the `my_app` node:
     * Add a relationship where the target is the `web_server` node, and the type is `app_contained_in_apache`.
 
-### Add inputs
+### Add blueprint inputs
 
-1.  Add an input for the Apache listening port. The input name should be `apache_listening_port`, the type should be `integer`, with no default.
+1.  Add a blueprint input for the Apache listening port. The input name should be `apache_listening_port`, the type should be `integer`, with no default.
 2.  Change the `web_server` node so the value of the `port` property is taken from the `apache_listening_port` input.
 
 ### Add a property reference
