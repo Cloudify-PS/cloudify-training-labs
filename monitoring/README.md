@@ -1,4 +1,4 @@
-# Lab: Deploying Collectors and Using the Grafana Dashboard
+# Lab: Monitoring
 
 The purpose of this lab is to add monitoring to an existing blueprint.
 
