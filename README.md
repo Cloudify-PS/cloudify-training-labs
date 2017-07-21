@@ -11,12 +11,13 @@ This project contains the labs material for the official Cloudify training cours
 5.  [Developing a Simple Plugin](developing-simple-plugin)
 6.  [Workflows](workflows)
 7.  [Bootstrapping](bootstrap)
-8.  [Monitoring](monitoring)
-9.  [Orchestrating OpenStack Resources](orchestrating-openstack)
-10. [Cloudify Manager and OpenStack](openstack-manager)
-11. [Scaling](scaling)
-12. [Bootstrapping Offline](offline-bootstrap)
-13. [Troubleshooting](troubleshooting)
+8.  [Installing Application using Cloudify Manager](hello-manager)
+9.  [Monitoring](monitoring)
+10. [Orchestrating OpenStack Resources](orchestrating-openstack)
+11. [Cloudify Manager and OpenStack](openstack-manager)
+12. [Scaling](scaling)
+13. [Bootstrapping Offline](offline-bootstrap)
+14. [Troubleshooting](troubleshooting)
 
 ## Virtual Machines
 
