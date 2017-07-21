@@ -15,7 +15,7 @@ case "$KIND" in
         ;;
     app )
         filter='node_ids'
-        criteria='["nodejs_vm","mongodb_vm"]'
+        criteria='["app_vm"]'
         ;;
     all )
         filter='type_names'
