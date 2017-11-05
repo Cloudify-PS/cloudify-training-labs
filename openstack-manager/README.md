@@ -91,8 +91,8 @@ Once bootstrapping is complete, upload the OpenStack plugin package:
 
 ```bash
 cd ~
-curl -J -O http://repository.cloudifysource.org/cloudify/wagons/cloudify-openstack-plugin/2.0.1/cloudify_openstack_plugin-2.0.1-py27-none-linux_x86_64-centos-Core.wgn
-cfy plugins upload ~/cloudify_openstack_plugin-2.0.1-py27-none-linux_x86_64-centos-Core.wgn
+curl -J -O https://github.com/cloudify-cosmo/cloudify-openstack-plugin/releases/download/2.2.0/cloudify_openstack_plugin-2.2.0-py27-none-linux_x86_64-centos-Core.wgn
+cfy plugins upload ~/cloudify_openstack_plugin-2.2.0-py27-none-linux_x86_64-centos-Core.wgn
 ```
 
 ## Part 3: Orchestrate Application

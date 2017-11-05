@@ -15,7 +15,7 @@ A "Resources" VM has been prepared by the instructor, containing all resources r
 having to access the public network. The resource locations are:
 
 * YAML files referred to by the manager blueprint
-  * http://<resources-vm-ip>:8080/yaml/spec/cloudify/4.1/types.yaml
+  * http://<resources-vm-ip>:8080/yaml/spec/cloudify/4.1.1/types.yaml
   * http://<resources-vm-ip>:8080/yaml/spec/fabric-plugin/1.5/plugin.yaml
 * Wagon file(s) for plugins used by the manager blueprint
   * http://<resources-vm-ip>:8080/cloudify_fabric_plugin-1.5-py27-none-linux_x86_64-centos-Core.wgn

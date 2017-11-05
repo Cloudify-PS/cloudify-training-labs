@@ -1,9 +1,9 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/4.1/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.1.1/types.yaml
   - http://www.getcloudify.org/spec/fabric-plugin/1.5/plugin.yaml
-  - http://www.getcloudify.org/spec/aws-plugin/1.4.13/plugin.yaml
+  - https://github.com/cloudify-cosmo/cloudify-aws-plugin/releases/download/1.5.1.2/plugin.yaml
 
 inputs:
   # General
@@ -19,15 +19,9 @@ inputs:
     default: us-east-1
   agents_security_group_id:
     type: string
-  server_names_prefix:
+  resources_prefix:
     type: string
     default: ''
-  use_existing_lab_vms_security_group:
-    type: boolean
-    default: false
-  lab_vms_security_group_id:
-    type: string
-    default: cfy-4.1-lab-vm
   # Keypair
   keypair_name:
     type: string
@@ -62,24 +56,17 @@ inputs:
     default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.1.tar.gz
   plugin_template_archive:
     type: string
-    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.1.tar.gz
+    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.1.1.tar.gz
   hello_world_archive:
     type: string
     default: https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/4.0-maint.tar.gz
   cli_rpm:
     type: string
-    default: http://repository.cloudifysource.org/cloudify/4.1.0/ga-release/cloudify-4.1.0~ga.el6.x86_64.rpm
+    default: http://repository.cloudifysource.org/cloudify/4.1.1/ga-release/cloudify-enterprise-cli-4.1.1ga.rpm
   github_user:
     type: string
   github_api_key:
     type: string
-  # CLI security group
-  use_existing_cli_security_group:
-    type: boolean
-    default: false
-  cli_security_group_id:
-    type: string
-    default: cfy-training-4.1-cli
   # Manager
   manager_image_id:
     type: string
@@ -90,12 +77,6 @@ inputs:
   manager_ssh_user:
     type: string
     default: centos
-  use_existing_manager_security_group:
-    type: boolean
-    default: false
-  manager_security_group_id:
-    type: string
-    default: cfy-training-4.1-manager
   # App
   app_image_id:
     type: string
@@ -106,11 +87,6 @@ inputs:
   app_ssh_user:
     type: string
     default: centos
-  use_existing_app_security_group:
-    type: boolean
-    default: false
-  app_security_group_id:
-    default: cfy-training-4.1-app
   # Resources
   use_existing_resources_vm:
     type: boolean
@@ -118,12 +94,6 @@ inputs:
   resources_vm_name:
     type: string
     default: ''
-  use_existing_resources_security_group:
-    type: boolean
-    default: false
-  resources_security_group_id:
-    type: string
-    default: cfy-4.1-resources
   resources_image_id:
     type: string
     default: ami-6d1c2007
@@ -219,8 +189,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: { get_input: use_existing_cli_security_group }
-      resource_id: { get_input: cli_security_group_id }
+      resource_id: { concat: [ { get_input: resources_prefix }, '-cli-sg'] }
       description: Cloudify Training (CLI)
       rules:
         - ip_protocol: tcp
@@ -248,8 +217,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: { get_input: use_existing_manager_security_group }
-      resource_id: { get_input: manager_security_group_id }
+      resource_id: { concat: [ { get_input: resources_prefix }, '-mgr-sg'] }
       description: Cloudify Training (manager)
       rules:
         - ip_protocol: tcp
@@ -312,8 +280,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: { get_input: use_existing_app_security_group }
-      resource_id: { get_input: app_security_group_id }
+      resource_id: { concat: [ { get_input: resources_prefix }, '-app-sg'] }
       description: Cloudify Training (App)
       rules:
         - ip_protocol: tcp
@@ -341,7 +308,7 @@ node_templates:
     properties:
       image_id: { get_input: cli_image_id }
       instance_type: { get_input: cli_instance_type }
-      name: { concat: [{ get_input: server_names_prefix }, 'cli']}
+      name: { concat: [{ get_input: resources_prefix }, 'cli']}
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -379,9 +346,7 @@ node_templates:
           implementation: fabric.fabric_plugin.tasks.run_commands
           inputs:
             commands:
-              - { concat: ['curl -J -o /tmp/cfy-cli.rpm ', { get_input: cli_rpm }] }
-              - sudo yum -y install /tmp/cfy-cli.rpm
-              - rm -rf /tmp/cfy-cli.rpm
+              - { concat: ['sudo yum -y install ', { get_input: cli_rpm }] }
             fabric_env: *cli_fabric_env
     relationships:
       - target: cli_vm
@@ -439,7 +404,7 @@ node_templates:
     properties:
       image_id: { get_input: manager_image_id }
       instance_type: { get_input: manager_instance_type }
-      name: { concat: [{ get_input: server_names_prefix }, 'manager']}
+      name: { concat: [{ get_input: resources_prefix }, 'manager']}
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -463,7 +428,7 @@ node_templates:
     properties:
       image_id: { get_input: app_image_id }
       instance_type: { get_input: app_instance_type }
-      name: { concat: [{ get_input: server_names_prefix }, 'app']}
+      name: { concat: [{ get_input: resources_prefix }, 'app']}
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -496,8 +461,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: { get_input: use_existing_resources_security_group }
-      resource_id: { get_input: resources_security_group_id }
+      resource_id: { concat: [ { get_input: resources_prefix }, '-resources-sg'] }
       description: For Cloudify training resources
       rules:
         - ip_protocol: tcp
@@ -516,8 +480,7 @@ node_templates:
     type: cloudify.aws.nodes.SecurityGroup
     properties:
       aws_config: *aws_config
-      use_external_resource: { get_input: use_existing_lab_vms_security_group }
-      resource_id: { get_input: lab_vms_security_group_id }
+      resource_id: { concat: [ { get_input: resources_prefix }, '-lab-sg'] }
       description: For all lab VMs
     # No rules. This is for future use.
     relationships:
@@ -537,7 +500,6 @@ node_templates:
     properties:
       use_external_resource: { get_input: use_existing_resources_vm }
       resource_id: { get_input: resources_vm_name }
-      resource_id: { get_input: resources_security_group_id }
       image_id: { get_input: resources_image_id }
       instance_type: { get_input: resources_instance_type }
       name: resources
@@ -559,13 +521,13 @@ node_templates:
           implementation: scripts/download-resources.py
           inputs:
             resources:
-              - url: http://www.getcloudify.org/spec/cloudify/4.1/types.yaml
-                location: ~/yaml/spec/cloudify/4.1/types.yaml
+              - url: http://www.getcloudify.org/spec/cloudify/4.1.1/types.yaml
+                location: ~/yaml/spec/cloudify/4.1.1/types.yaml
               - url: http://www.getcloudify.org/spec/fabric-plugin/1.5/plugin.yaml
                 location: ~/yaml/spec/fabric-plugin/1.5/plugin.yaml
               - url: http://repository.cloudifysource.org/org/cloudify3/wagons/cloudify-fabric-plugin/1.5/cloudify_fabric_plugin-1.5-py27-none-linux_x86_64-centos-Core.wgn
                 location: ~/
-              - url: http://repository.cloudifysource.org/cloudify/4.1.0/ga-release/cloudify-manager-resources_4.1.0-ga.tar.gz
+              - url: http://repository.cloudifysource.org/cloudify/4.1.1/ga-release/cloudify-manager-resources_4.1.1-ga.tar.gz
                 location: ~/
         start:
           # For some reason, running this:
