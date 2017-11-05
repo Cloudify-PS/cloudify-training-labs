@@ -10,7 +10,7 @@ In this lab, we will write a blueprint that creates resources on OpenStack. We w
 
 Also, we will connect all resources together.
 
-For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.getcloudify.org/4.0/plugins/openstack/
+For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.getcloudify.org/4.1/plugins/openstack/
 
 ## Step 1: Create blueprint's skeleton
 
