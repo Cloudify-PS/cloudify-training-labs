@@ -1,30 +1,16 @@
-#!/bin/bash -x
+#!/bin/bash -e
 
-currHostName=`hostname`
-currFilename=$(basename "$0")
-
-newPort=$(ctx node properties port)
-ctx logger info "${currHostName}:${currFilename} :newPort ${port}"
+new_port=$(ctx node properties port)
+REPLACE_WITH_A_COMMAND_THAT_WRITES_THE_TOMCAT_PORT_TO_THE_LOG_VIA_THE_CONTEXT_OBJECT
 
 war_url=$(ctx node properties war_url)
-ctx logger info "${currHostName}:${currFilename} :war_url ${war_url}"
+ctx logger info "war_url: ${war_url}"
 
 war_filename=$(ctx node properties war_filename)
-ctx logger info "${currHostName}:${currFilename} :war_filename ${war_filename}"
-
-tomcat_version=$(ctx node properties tomcat_version)
-ctx logger info "${currHostName}:${currFilename} :tomcat_version ${tomcat_version}"
+ctx logger info "war_filename: ${war_filename}"
 
 application_name=$(ctx node properties application_name)
-ctx logger info "${currHostName}:${currFilename} :application_name ${application_name}"
-
-if [ -f /usr/bin/wget ]; then
-	DOWNLOADER="wget"
-elif [ -f /usr/bin/curl ]; then
-	DOWNLOADER="curl"
-fi
-
-ctx logger info "${currHostName}:${currFilename} :DOWNLOADER ${DOWNLOADER}"
+ctx logger info "application_name: ${application_name}"
 
 # args:
 # $1 the error code of the last command (should be explicitly passed)
@@ -32,55 +18,41 @@ ctx logger info "${currHostName}:${currFilename} :DOWNLOADER ${DOWNLOADER}"
 # 
 # an error message is printed and the script exists with the provided error code
 function error_exit {
-	ctx logger info "${currHostName}:${currFilename} $2 : error code: $1"
+	ctx logger info "Error encountered: error code = $1, message = $2"
 	exit $1
 }
 
-# args:
-# $1 download description.
-# $2 download link.
-# $3 output file.
-function download {
-	ctx logger info "${currHostName}:${currFilename} Downloading $1 from $2 ..."
-	if [ "$DOWNLOADER" == "wget" ];then
-		Q_FLAG="--no-check-certificate -q"
-		O_FLAG="-O" 
-		LINK_FLAG=""
-	elif [ "$DOWNLOADER" == "curl" ];then
-		Q_FLAG="--silent -k"
-		O_FLAG="-o"
-		LINK_FLAG="-O"
-	fi
-	ctx logger info "${currHostName}:${currFilename} $DOWNLOADER $Q_FLAG $O_FLAG $3 $LINK_FLAG $2" 
-	$DOWNLOADER $Q_FLAG $O_FLAG $3 $LINK_FLAG $2 || error_exit $? "Failed downloading $1"
-}
+tomcat_home=~/tomcat
+application_war=${tomcat_home}/${war_filename}
+tomcat_conf_dir=${tomcat_home}/conf
+server_xml_file=${tomcat_conf_dir}/server.xml
+tomcat_context_path_dir=${tomcat_conf_dir}/Catalina/localhost
+tomcat_context_file=${tomcat_context_path_dir}/${application_name}.xml
 
-tomcatHome=~/$tomcat_version
-applicationWar=$tomcatHome/$war_filename
-tomcatConfFolder=$tomcatHome/conf
-serverXml=$tomcatConfFolder/server.xml
-tomcatContextPathFolder=$tomcatConfFolder/Catalina/localhost
-tomcatContextFile=$tomcatContextPathFolder/$application_name.xml
+ctx logger info "Tomcat home: ${tomcat_home}"
+ctx logger info "Application WAR: ${application_war}"
+ctx logger info "Tomcat context path directory: ${tomcat_context_path_dir}"
+ctx logger info "Tomcat context file: ${tomcat_context_file}"
 
+mkdir -p ${tomcat_home}
+curl --silent -k -o ${application_war} -O ${war_url} || error_exit $? "Failed downloading $1"
 
-ctx logger info "${currHostName}:${currFilename} tomcatHome is ${tomcatHome}"
-ctx logger info "${currHostName}:${currFilename} applicationWar is ${applicationWar}"
-ctx logger info "${currHostName}:${currFilename} tomcatContextPathFolder is ${tomcatContextPathFolder}"
-ctx logger info "${currHostName}:${currFilename} tomcatContextFile is ${tomcatContextFile}"
-
-mkdir -p $tomcatHome
-
-download "WarFile" $war_url $applicationWar
-
-mkdir -p $tomcatContextPathFolder
+mkdir -p ${tomcat_context_path_dir}
 
 # Write the context configuration
-rm -f $tomcatContextFile
-echo "<Context docBase=\"${applicationWar}\" />" > $tomcatContextFile
+rm -f ${tomcat_context_file}
 
-ctx logger info "${currHostName}:${currFilename} Replacing 8080 with ${newPort} in $serverXml"
-sed -i -e "s/port=\"8080\"/port=\"$newPort\"/g" $serverXml
+cat << EOF > ${tomcat_context_file}
+<Context docBase="${application_war}" />
+EOF
 
+ctx logger info "Replacing 8080 with ${new_port} in ${server_xml_file}"
+sed -i -e "s/port=\"8080\"/port=\"${new_port}\"/g" ${server_xml_file}
 
-ctx logger info "${currHostName}:${currFilename} End of $0"
-echo "End of $0"
+public_ip=$1
+ctx logger info "Public IP: ${public_ip}"
+
+application_url=${public_ip}:${new_port}/${application_name}/
+ctx logger info "Application URL: ${application_url}"
+
+REPLACE_WITH_A_COMMAND_THAT_STORES_THE_APPLICATION_URL_IN_THE_RUNTIME_PROPERTIES_OF_THE_INSTANCE_VIA_THE_CONTEXT_OBJECT

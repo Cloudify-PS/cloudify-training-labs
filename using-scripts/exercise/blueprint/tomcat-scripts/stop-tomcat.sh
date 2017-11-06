@@ -1,16 +1,8 @@
-#!/bin/bash
+#!/bin/bash -e
 
-currHostName=`hostname`
-currFilename=$(basename "$0")
-
-ctx logger info "${currHostName}:${currFilename} Killing tomcat..."
-
+ctx logger info "Killing tomcat..."
 
 PID=$(ctx instance runtime_properties pid)
 kill -9 $PID
 
-ctx logger info "${currHostName}:${currFilename} Successfully stopped tomcat (${PID})"
-
-
-ctx logger info "${currHostName}:${currFilename} End of $0"
-echo "End of $0"
+ctx logger info "Successfully stopped tomcat (process ID: ${PID})"

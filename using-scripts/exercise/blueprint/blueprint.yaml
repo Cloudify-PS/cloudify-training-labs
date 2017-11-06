@@ -14,8 +14,6 @@ inputs:
     type: string
   war_filename:
     type: string
-  tomcat_version:
-    type: string
   java_url:
     type: string
   install_agent:
@@ -35,18 +33,21 @@ node_types:
   web_server:
     derived_from: cloudify.nodes.WebServer
     properties:
-      tomcat_version:
-        description: 'The tomcat version that you are using. E.g: apache-tomcat-7.0.23'
       download_path:
-        description: 'A full url path to the Tomcat zip file'
+        type: string
+        description: URL for the Tomcat installation tar.gz file
       war_url:
-        description: 'A full url path to the war file'
+        type: string
+        description: URL for the sample WAR file
       war_filename:
-        description: 'The name of the war file. E.g: helloworld.war'
+        type: string
+        description: Name of the WAR file name (e.g. 'helloworld.war')
       java_url:
-        description: 'A full url to jdk-6u32-linux-x64.bin'
+        type: string
+        description: URL for the JDK installation tar.gz file
       application_name:
-        description: 'The name of the application. E.g: helloworld'
+        type: string
+        description: Application's name (e.g. 'helloworld')
 
 node_templates:  
   tomcat_vm:
@@ -61,20 +62,19 @@ node_templates:
       download_path: { get_input: download_path }
       war_url: { get_input: war_url }
       war_filename: { get_input: war_filename }
-      tomcat_version: { get_input: tomcat_version }
       java_url: { get_input: java_url }
       application_name: { get_input: application_name }
     interfaces:
       cloudify.interfaces.lifecycle:
-        create:
+        create: REPLACE_WITH_APPROPRIATE_SCRIPT
+        configure:
           implementation: REPLACE_WITH_APPROPRIATE_SCRIPT
           inputs:
             process:
               args: [get_input: vm_ip_address]
-        configure: REPLACE_WITH_APPROPRIATE_SCRIPT
         start: REPLACE_WITH_APPROPRIATE_SCRIPT
         stop: REPLACE_WITH_APPROPRIATE_SCRIPT
-        uninstall: REPLACE_WITH_APPROPRIATE_SCRIPT
+        delete: REPLACE_WITH_APPROPRIATE_SCRIPT
 
     relationships:
       - type: cloudify.relationships.contained_in

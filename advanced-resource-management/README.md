@@ -1,12 +1,13 @@
-# Lab: Advanced user and resource management
+# Lab: Advanced User and Resource Management
 
-The purpose of this lab is to show the advanced user and resource management.
+The purpose of this lab is to show Cloudify's advanced user and resource management.
 
 This lab shows the following procedures:
+
 * Changing a user's role
-* Uploading resources as private
-* Showing the resource's creator 
-* Deactivating a user. 
+* Uploading resources as private resources
+* Showing a resource's creator
+* Deactivating a user
 
 **NOTE** Please complete the Multitenancy lab first
 

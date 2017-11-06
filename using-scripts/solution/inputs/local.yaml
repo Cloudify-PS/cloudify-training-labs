@@ -1,9 +1,8 @@
 port: 8081
-download_path: http://repository.cloudifysource.org/org/apache/tomcat/7.0.23/apache-tomcat-7.0.23.zip
-war_url: https://repository.cloudifysource.org/org/cloudifysource/examples/helloworld/helloworld.war
+download_path: https://s3.amazonaws.com/cloudify-training-resources/labs/apache-tomcat-7.0.82.tar.gz
+war_url: https://s3.amazonaws.com/cloudify-training-resources/labs/helloworld.war
 war_filename: helloworld.war
-tomcat_version: apache-tomcat-7.0.23
-java_url: http://repository.cloudifysource.org/com/oracle/java/1.6.0_32/jdk-6u32-linux-x64.bin
+java_url: https://s3.amazonaws.com/cloudify-training-resources/labs/jdk-8u151-linux-x64.tar.gz
 install_agent: false
 vm_ip_address: 127.0.0.1
 application_name: helloworld
