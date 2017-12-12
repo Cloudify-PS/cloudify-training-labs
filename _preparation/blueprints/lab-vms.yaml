@@ -1,8 +1,8 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/4.1.1/types.yaml
-  - http://www.getcloudify.org/spec/fabric-plugin/1.5/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.2/types.yaml
+  - http://www.getcloudify.org/spec/fabric-plugin/1.5.1/plugin.yaml
   - https://github.com/cloudify-cosmo/cloudify-aws-plugin/releases/download/1.5.1.2/plugin.yaml
 
 inputs:
@@ -53,21 +53,25 @@ inputs:
     default: centos
   labs_archive:
     type: string
-    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.1.tar.gz
+    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.2.tar.gz
   plugin_template_archive:
     type: string
-    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.1.1.tar.gz
+    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.2.tar.gz
   hello_world_archive:
     type: string
     default: https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/4.0-maint.tar.gz
   cli_rpm:
     type: string
-    default: http://repository.cloudifysource.org/cloudify/4.1.1/ga-release/cloudify-enterprise-cli-4.1.1ga.rpm
+    default: http://repository.cloudifysource.org/cloudify/4.2.0/ga-release/cloudify-cli-4.2ga.rpm
   github_user:
     type: string
   github_api_key:
     type: string
-  # Manager
+  # Manager (from AMI)
+  cm_ami_id:
+    type: string
+    default: ami-41c44e3b
+  # Manager (blank)
   manager_image_id:
     type: string
     default: ami-6d1c2007
@@ -418,6 +422,32 @@ node_templates:
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
+
+  cm_ip:
+    type: cloudify.aws.nodes.ElasticIP
+    properties:
+      aws_config: *aws_config
+      domain: vpc
+  cm_vm:
+    type: lab_vm
+    properties:
+      image_id: { get_input: cm_ami_id }
+      instance_type: { get_input: cm_instance_type }
+      name: { concat: [{ get_input: resources_prefix }, 'cm-ami']}
+    relationships:
+      - target: keypair
+        type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: cm_ip
+        type: cloudify.aws.relationships.instance_connected_to_elastic_ip
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: manager_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
+
   app_ip:
     type: cloudify.aws.nodes.ElasticIP
     properties:
@@ -521,13 +551,13 @@ node_templates:
           implementation: scripts/download-resources.py
           inputs:
             resources:
-              - url: http://www.getcloudify.org/spec/cloudify/4.1.1/types.yaml
-                location: ~/yaml/spec/cloudify/4.1.1/types.yaml
-              - url: http://www.getcloudify.org/spec/fabric-plugin/1.5/plugin.yaml
-                location: ~/yaml/spec/fabric-plugin/1.5/plugin.yaml
-              - url: http://repository.cloudifysource.org/org/cloudify3/wagons/cloudify-fabric-plugin/1.5/cloudify_fabric_plugin-1.5-py27-none-linux_x86_64-centos-Core.wgn
+              - url: http://www.getcloudify.org/spec/cloudify/4.2/types.yaml
+                location: ~/yaml/spec/cloudify/4.2/types.yaml
+              - url: http://www.getcloudify.org/spec/fabric-plugin/1.5.1/plugin.yaml
+                location: ~/yaml/spec/fabric-plugin/1.5.1/plugin.yaml
+              - url: http://repository.cloudifysource.org/cloudify/wagons/cloudify-fabric-plugin/1.5/cloudify_fabric_plugin-1.5-py27-none-linux_x86_64-centos-Core.wgn
                 location: ~/
-              - url: http://repository.cloudifysource.org/cloudify/4.1.1/ga-release/cloudify-manager-resources_4.1.1-ga.tar.gz
+              - url: http://cloudify-release-eu.s3.amazonaws.com/cloudify/4.2.0/ga-release/cloudify-manager-resources-4.2ga.tar.gz
                 location: ~/
         start:
           # For some reason, running this:
@@ -541,7 +571,7 @@ node_templates:
 
 groups:
   trainee:
-    members: [cli_vm, cli_ip, app_vm, app_ip, manager_vm, manager_ip]
+    members: [cli_vm, cli_ip, app_vm, app_ip, cm_vm, cm_ip, manager_vm, manager_ip]
 
 policies:
   trainee_policy:
@@ -556,6 +586,9 @@ outputs:
       cli:
         private: { get_attribute: [cli_vm, ip] }
         public: { get_attribute: [cli_vm, public_ip_address]}
+      cm:
+        private: { get_attribute: [cm_vm, ip] }
+        public: { get_attribute: [cm_vm, public_ip_address]}
       manager:
         private: { get_attribute: [manager_vm, ip] }
         public: { get_attribute: [manager_vm, public_ip_address]}
