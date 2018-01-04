@@ -28,10 +28,10 @@ To develop a plugin, you will need to install the following:
     1.  Create a new virtual environment (for example: `virtualenv /tmp/my-env`)
     2.  Activate it (`source /tmp/my-env/bin/activate`)
     3.  Install Cloudify's development libraries using `pip install`:
-        * `cloudify-dsl-parser==4.1`
-        * `cloudify-rest-client==4.1`
-        * `cloudify-plugins-common==4.1`
-        * `cloudify-script-plugin==1.5`
+        * `cloudify-dsl-parser==4.2`
+        * `cloudify-rest-client==4.2`
+        * `cloudify-plugins-common==4.2`
+        * `cloudify-script-plugin==1.5.1`
 
 **NOTE**: The plugin development template is already available for you on your CLI VM, under `~/plugin-template`.
 

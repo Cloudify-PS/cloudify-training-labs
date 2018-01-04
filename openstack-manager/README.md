@@ -11,7 +11,7 @@ Both approaches will be covered in this lab. You may choose to practice either, 
 
 ## Part 1: Preparations
 
-The [Cloudify Manager prerequisites page](http://docs.getcloudify.org/4.1/manager/prerequisites/) describes a few
+The [Cloudify Manager prerequisites page](http://docs.getcloudify.org/4.2.0/installation/bootstrapping/#prerequisites-for-installing-a-cloudify-manager) describes a few
 networking- and security-related prerequisites. You will have to ensure that you have the following:
 
 * A security group that allows access to the manager via the ports specified in the Prerequisites page:
@@ -20,7 +20,7 @@ networking- and security-related prerequisites. You will have to ensure that you
   * Ports 5671, 5672, 53229, and 53333 from any VM that:
     * Is going to be created by Cloudify; and
     * Is going to have the Cloudify Agent installed on it.
-* A security group that allows access to agents, as specified in the [Agent prerequisites description](http://docs.getcloudify.org/4.1/agents/overview/).
+* A security group that allows access to agents, as specified in the [Agent prerequisites description](http://docs.getcloudify.org/4.2.0/agents/overview/).
 * A network to connect the Cloudify Manager to.
 * A keypair to use for SSH'ing into the Cloudify Manager VM.
 
@@ -42,7 +42,7 @@ of enabling agent <-> manager communication.
 
 ### Step 1: Import the Cloudify Manager image to OpenStack
 
-The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.1/sp-release/cloudify-manager-premium-4.1.qcow2
+The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.2.0/ga-release/cloudify-manager-4.2ga.qcow2
 
 You can use Horizon to import the QCOW2 image into OpenStack:
 
