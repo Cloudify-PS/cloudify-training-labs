@@ -3,7 +3,7 @@ tosca_definitions_version: cloudify_dsl_1_3
 imports:
   - http://www.getcloudify.org/spec/cloudify/4.2/types.yaml
   - http://www.getcloudify.org/spec/fabric-plugin/1.5.1/plugin.yaml
-  - https://github.com/cloudify-cosmo/cloudify-aws-plugin/releases/download/1.5.1.2/plugin.yaml
+  - http://www.getcloudify.org/spec/aws-plugin/1.5.1.2/plugin.yaml
 
 inputs:
   # General
@@ -71,6 +71,9 @@ inputs:
   cm_ami_id:
     type: string
     default: ami-41c44e3b
+  cm_instance_type:
+    type: string
+    default: t2.medium
   # Manager (blank)
   manager_image_id:
     type: string
