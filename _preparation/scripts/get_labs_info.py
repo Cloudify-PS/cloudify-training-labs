@@ -1,11 +1,11 @@
-import os
-import sys
 import argparse
 from cloudify_rest_client import CloudifyClient
-from cloudify_rest_client.node_instances import NodeInstance
+from cloudify_rest_client.client import DEFAULT_PROTOCOL, SECURED_PROTOCOL
+
 
 def is_virtual_ip_node(node):
     return 'cloudify.nodes.VirtualIP' in node.type_hierarchy
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('manager_ip', help='hostname or IP address of the manager')
@@ -13,6 +13,7 @@ parser.add_argument('username', help='username to authenticate with')
 parser.add_argument('password', help='password to authenticate with')
 parser.add_argument('deployment_id', help='ID of the deployment to analyze')
 parser.add_argument('--tenant', help='tenant to operate on (optional; defaults to the default tenant)')
+parser.add_argument('--ssl', help='connect using SSL', action='store_true')
 
 args = parser.parse_args()
 
@@ -21,7 +22,9 @@ tenant_id = args.tenant or 'default_tenant'
 client = CloudifyClient(host=args.manager_ip,
                         username=args.username,
                         password=args.password,
-                        tenant=tenant_id)
+                        tenant=tenant_id,
+                        protocol=SECURED_PROTOCOL if args.ssl else DEFAULT_PROTOCOL,
+                        trust_all=True)
 nodes = client.nodes.list(deployment_id=args.deployment_id)
 
 if not nodes:
