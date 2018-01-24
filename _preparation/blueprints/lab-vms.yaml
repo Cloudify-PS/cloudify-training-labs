@@ -30,12 +30,13 @@ inputs:
   # Subnet
   use_existing_subnet:
     type: boolean
+    default: true
   subnet_id:
     type: string
   # VPC
   use_existing_vpc:
     type: boolean
-    default: false
+    default: true
   vpc_id:
     type: string
     default: ''
@@ -100,7 +101,7 @@ inputs:
     default: false
   resources_vm_name:
     type: string
-    default: ''
+    default: resources
   resources_image_id:
     type: string
     default: ami-6d1c2007
@@ -160,9 +161,8 @@ node_types:
     properties:
       agent_config:
         default:
-          install_method: remote
+          install_method: init_script
           user: centos
-          key: { get_input: private_key_path }
 
 node_templates:
   keypair:
