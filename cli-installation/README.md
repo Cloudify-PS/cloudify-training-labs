@@ -25,8 +25,8 @@ chmod 0400 <pem_file>
 Run the following commands to download the CLI RPM package and install it:
 
 ```bash
-curl -J -O http://repository.cloudifysource.org/cloudify/4.2.0/ga-release/cloudify-cli-4.2ga.rpm
-sudo yum install -y cloudify-cli-4.2ga.rpm
+curl -J -O http://repository.cloudifysource.org/cloudify/4.3.0/ga-release/cloudify-cli-4.3ga.rpm
+sudo yum install -y cloudify-cli-4.3ga.rpm
 ```
 
 ### Check Cloudify's version
@@ -38,7 +38,7 @@ cfy --version
 The output should be similar to the following:
 
 ```
-Cloudify CLI 4.2
+Cloudify CLI 4.3.0
 ```
 
 ### Look at profiles
@@ -50,5 +50,5 @@ cfy profiles list
 As this is a fresh CLI installation, there are no profiles defined. You should get the following message:
 
 ```
-No profiles found. You can create a new profile by bootstrapping a manager via `cfy bootstrap` or using an existing manager via the `cfy profiles use` command
+No profiles found. You can create a new profile by using an existing manager via the `cfy profiles use` command
 ```

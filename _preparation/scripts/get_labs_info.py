@@ -1,96 +1,97 @@
+#!/usr/bin/env python
+
 import argparse
-from cloudify_rest_client import CloudifyClient
-from cloudify_rest_client.client import DEFAULT_PROTOCOL, SECURED_PROTOCOL
+from prettytable import PrettyTable
+from cloudify_cli.cli import cfy
 
 
 def is_virtual_ip_node(node):
     return 'cloudify.nodes.VirtualIP' in node.type_hierarchy
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('manager_ip', help='hostname or IP address of the manager')
-parser.add_argument('username', help='username to authenticate with')
-parser.add_argument('password', help='password to authenticate with')
-parser.add_argument('deployment_id', help='ID of the deployment to analyze')
-parser.add_argument('--tenant', help='tenant to operate on (optional; defaults to the default tenant)')
-parser.add_argument('--ssl', help='connect using SSL', action='store_true')
+@cfy.pass_client()
+def get_labs_info(client, deployment_id):
+    nodes = client.nodes.list(deployment_id=deployment_id,
+                              sort='id')
 
-args = parser.parse_args()
+    if not nodes:
+        print 'No nodes returned for deployment ID {0}. Are you sure this deployment exists?'.format(deployment_id)
+        exit(1)
 
-tenant_id = args.tenant or 'default_tenant'
+    node_instances = client.node_instances.list(deployment_id=deployment_id)
 
-client = CloudifyClient(host=args.manager_ip,
-                        username=args.username,
-                        password=args.password,
-                        tenant=tenant_id,
-                        protocol=SECURED_PROTOCOL if args.ssl else DEFAULT_PROTOCOL,
-                        trust_all=True)
-nodes = client.nodes.list(deployment_id=args.deployment_id)
+    compute_nodes=[]
+    public_compute_nodes=[]
+    nodes_map = {}
+    node_instances_map = {}
 
-if not nodes:
-    print 'No nodes returned for deployment ID {0}. Are you sure this deployment exists?'.format(args.deployment_id)
-    exit(1)
+    for node in nodes:
+        nodes_map[node.id] = node
 
-node_instances = client.node_instances.list(deployment_id=args.deployment_id)
-
-compute_nodes=[]
-public_compute_nodes=[]
-nodes_map = {}
-node_instances_map = {}
-
-for node in nodes:
-    nodes_map[node.id] = node
-
-for node_instance in node_instances:
-    node_instances_map[node_instance.id] = node_instance
-
-for node in nodes:
-    if 'lab_vm' in node.type_hierarchy:
-        compute_nodes.append(node.id)
-        for rel in node.relationships:
-            target_node = nodes_map[rel['target_id']]
-            if is_virtual_ip_node(target_node):
-                public_compute_nodes.append(node.id)
-                continue
-
-trainees = {}
-
-for compute_node in compute_nodes:
-    node_instances = client.node_instances.list(deployment_id=args.deployment_id,
-                                                node_id=compute_node)
     for node_instance in node_instances:
-        scaling_group_id = node_instance.scaling_groups[0]['id']
-        if scaling_group_id in trainees:
-            trainee = trainees[scaling_group_id]
-        else:
-            trainee = {}
-            trainees[scaling_group_id] = trainee
+        node_instances_map[node_instance.id] = node_instance
 
-        trainee[node_instance.node_id] = {}
-        trainee[node_instance.node_id]['private'] = node_instance.runtime_properties['ip']
-        trainee[node_instance.node_id]['instance'] = node_instance.id
+    for node in nodes:
+        if 'lab_vm' in node.type_hierarchy:
+            compute_nodes.append(node)
+            for rel in node.relationships:
+                target_node = nodes_map[rel['target_id']]
+                if is_virtual_ip_node(target_node):
+                    public_compute_nodes.append(node.id)
+                    continue
 
-        for rel in node_instance.relationships:
-            target_node = nodes_map[rel['target_name']]
-            if is_virtual_ip_node(target_node):
-                target_node_instance = node_instances_map[rel['target_id']]
-                trainee[node_instance.node_id]['public'] = target_node_instance.runtime_properties['aws_resource_id']
-                break
+    trainees = {}
 
-header = []
-for node in compute_nodes:
-    header.append("{}.instance".format(node))
-    header.append("{}.private".format(node))
-    if node in public_compute_nodes:
-        header.append("{}.public".format(node))
+    for compute_node in compute_nodes:
+        node_instances = client.node_instances.list(deployment_id=deployment_id,
+                                                    node_id=compute_node.id)
+        for node_instance in node_instances:
+            scaling_group_id = node_instance.scaling_groups[0]['id']
+            if scaling_group_id in trainees:
+                trainee = trainees[scaling_group_id]
+            else:
+                trainee = {}
+                trainees[scaling_group_id] = trainee
 
-print ",".join(header)
+            trainee[node_instance.node_id] = {}
+            trainee[node_instance.node_id]['private'] = node_instance.runtime_properties['ip']
+            trainee[node_instance.node_id]['instance'] = node_instance.id
 
-for trainee in trainees:
-    lst = []
+            for rel in node_instance.relationships:
+                target_node = nodes_map[rel['target_name']]
+                if is_virtual_ip_node(target_node):
+                    target_node_instance = node_instances_map[rel['target_id']]
+                    trainee[node_instance.node_id]['public'] = target_node_instance.runtime_properties['aws_resource_id']
+                    break
+
+    header_elements = ['#']
     for node in compute_nodes:
-        lst.append(trainees[trainee][node]['instance'])
-        lst.append(trainees[trainee][node]['private'])
-        if node in public_compute_nodes:
-            lst.append(trainees[trainee][node]['public'])
-    print ",".join(lst)
+        display_name = node.properties['display_name']
+        header_elements.append("{}".format(display_name))
+        header_elements.append("{} (private)".format(display_name))
+        if node.id in public_compute_nodes:
+            header_elements.append("{} (public)".format(display_name))
+
+    table = PrettyTable(header_elements)
+
+    ix = 1
+    for trainee in trainees:
+        lst = [ix]
+        for node in compute_nodes:
+            lst.append(trainees[trainee][node.id]['instance'])
+            lst.append(trainees[trainee][node.id]['private'])
+            if node.id in public_compute_nodes:
+                lst.append(trainees[trainee][node.id]['public'])
+        table.add_row(lst)
+        ix += 1
+
+    print table
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('deployment_id',
+                        help='ID of the deployment to analyze')
+
+    args = parser.parse_args()
+
+    get_labs_info(deployment_id=args.deployment_id)

@@ -13,6 +13,10 @@ case "$KIND" in
         filter='node_ids'
         criteria='["manager_vm"]'
         ;;
+    mgr-ami )
+        filter='node_ids'
+        criteria='["cm_vm"]'
+        ;;
     app )
         filter='node_ids'
         criteria='["app_vm"]'
@@ -22,7 +26,7 @@ case "$KIND" in
         criteria='["cloudify.nodes.Compute"]'
         ;;
     * )
-        echo "Invalid option; should be either 'cli', 'mgr' or 'app'"
+        echo "Invalid option; should be either 'cli', 'mgr', 'mgr-ami'x or 'app'"
         exit 1
 esac
 

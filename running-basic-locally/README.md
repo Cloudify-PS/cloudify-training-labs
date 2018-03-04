@@ -19,32 +19,38 @@ cfy executions start install -b basic
 The output should be similar to the following:
 
 ```
-2017-04-08 15:39:19.221  CFY <local> Starting 'install' workflow execution
-2017-04-08 15:39:19.342  CFY <local> [my_host_80nls2] Creating node
-2017-04-08 15:39:19.772  CFY <local> [my_host_80nls2] Configuring node
-2017-04-08 15:39:20.152  CFY <local> [my_host_80nls2] Starting node
-2017-04-08 15:39:21.047  CFY <local> [my_application_qlovfd] Creating node
-2017-04-08 15:39:21.137  CFY <local> [my_application_qlovfd.create] Sending task 'script_runner.tasks.run'
-2017-04-08 15:39:21.162  CFY <local> [my_application_qlovfd.create] Task started 'script_runner.tasks.run'
-2017-04-08 15:39:21.237  LOG <local> [my_application_qlovfd.create] INFO: Executing: /tmp/tmpjjK7Zm-creating.sh
-2017-04-08 15:39:21.512  LOG <local> [my_application_qlovfd.create] INFO: Creating!
-2017-04-08 15:39:21.613  LOG <local> [my_application_qlovfd.create] INFO: Execution done (return_code=0): /tmp/tmpjjK7Zm-creating.sh
-2017-04-08 15:39:21.614  CFY <local> [my_application_qlovfd.create] Task succeeded 'script_runner.tasks.run'
-2017-04-08 15:39:21.893  CFY <local> [my_application_qlovfd] Configuring node
-2017-04-08 15:39:21.951  CFY <local> [my_application_qlovfd.configure] Sending task 'script_runner.tasks.run'
-2017-04-08 15:39:21.957  CFY <local> [my_application_qlovfd.configure] Task started 'script_runner.tasks.run'
-2017-04-08 15:39:21.958  LOG <local> [my_application_qlovfd.configure] INFO: Executing: /tmp/tmpzDOKnm-configuring.sh
-2017-04-08 15:39:22.236  LOG <local> [my_application_qlovfd.configure] INFO: Configuring!
-2017-04-08 15:39:22.337  LOG <local> [my_application_qlovfd.configure] INFO: Execution done (return_code=0): /tmp/tmpzDOKnm-configuring.sh
-2017-04-08 15:39:22.337  CFY <local> [my_application_qlovfd.configure] Task succeeded 'script_runner.tasks.run'
-2017-04-08 15:39:22.684  CFY <local> [my_application_qlovfd] Starting node
-2017-04-08 15:39:22.765  CFY <local> [my_application_qlovfd.start] Sending task 'script_runner.tasks.run'
-2017-04-08 15:39:22.799  CFY <local> [my_application_qlovfd.start] Task started 'script_runner.tasks.run'
-2017-04-08 15:39:22.800  LOG <local> [my_application_qlovfd.start] INFO: Executing: /tmp/tmp4HQSGc-starting.sh
-2017-04-08 15:39:23.076  LOG <local> [my_application_qlovfd.start] INFO: Starting!
-2017-04-08 15:39:23.177  LOG <local> [my_application_qlovfd.start] INFO: Execution done (return_code=0): /tmp/tmp4HQSGc-starting.sh
-2017-04-08 15:39:23.177  CFY <local> [my_application_qlovfd.start] Task succeeded 'script_runner.tasks.run'
-2017-04-08 15:39:23.585  CFY <local> 'install' workflow execution succeeded
+2018-03-04 14:30:00.451  CFY <basic> Starting 'install' workflow execution
+2018-03-04 14:30:00.571  CFY <basic> [my_host_kgn2md] Creating node
+2018-03-04 14:30:01.001  CFY <basic> [my_host_kgn2md] Configuring node
+2018-03-04 14:30:01.409  CFY <basic> [my_host_kgn2md] Starting node
+2018-03-04 14:30:02.405  CFY <basic> [my_application_l6mowd] Creating node
+2018-03-04 14:30:02.465  CFY <basic> [my_application_l6mowd.create] Sending task 'script_runner.tasks.run'
+2018-03-04 14:30:02.470  CFY <basic> [my_application_l6mowd.create] Task started 'script_runner.tasks.run'
+2018-03-04 14:30:02.525  LOG <basic> [my_application_l6mowd.create] INFO: Executing: /tmp/NDRSZ/tmpda4XDQ-creating.sh, stdout: /tmp/cloudify/logs/tasks/052993e3-f7e4-4501-acf8-b7014626d0ed.out, stderr: /tmp/cloudify/logs/tasks/052993e3-f7e4-4501-acf8-b7014626d0ed.err
+2018-03-04 14:30:02.529  LOG <basic> [my_application_l6mowd.create] INFO: Process created, PID: 9567
+2018-03-04 14:30:02.804  LOG <basic> [my_application_l6mowd.create] INFO: Creating!
+2018-03-04 14:30:02.847  LOG <basic> [my_application_l6mowd.create] INFO: Process 9567 ended
+2018-03-04 14:30:02.905  LOG <basic> [my_application_l6mowd.create] INFO: Execution done (return_code=0): /tmp/NDRSZ/tmpda4XDQ-creating.sh
+2018-03-04 14:30:02.905  CFY <basic> [my_application_l6mowd.create] Task succeeded 'script_runner.tasks.run'
+2018-03-04 14:30:03.235  CFY <basic> [my_application_l6mowd] Configuring node
+2018-03-04 14:30:03.293  CFY <basic> [my_application_l6mowd.configure] Sending task 'script_runner.tasks.run'
+2018-03-04 14:30:03.299  CFY <basic> [my_application_l6mowd.configure] Task started 'script_runner.tasks.run'
+2018-03-04 14:30:03.300  LOG <basic> [my_application_l6mowd.configure] INFO: Executing: /tmp/7PKZN/tmpfdnjV2-configuring.sh, stdout: /tmp/cloudify/logs/tasks/0b409dc6-a6d4-421e-ab31-29cc21cb55d4.out, stderr: /tmp/cloudify/logs/tasks/0b409dc6-a6d4-421e-ab31-29cc21cb55d4.err
+2018-03-04 14:30:03.305  LOG <basic> [my_application_l6mowd.configure] INFO: Process created, PID: 9572
+2018-03-04 14:30:03.579  LOG <basic> [my_application_l6mowd.configure] INFO: Configuring!
+2018-03-04 14:30:03.623  LOG <basic> [my_application_l6mowd.configure] INFO: Process 9572 ended
+2018-03-04 14:30:03.680  LOG <basic> [my_application_l6mowd.configure] INFO: Execution done (return_code=0): /tmp/7PKZN/tmpfdnjV2-configuring.sh
+2018-03-04 14:30:03.681  CFY <basic> [my_application_l6mowd.configure] Task succeeded 'script_runner.tasks.run'
+2018-03-04 14:30:04.028  CFY <basic> [my_application_l6mowd] Starting node
+2018-03-04 14:30:04.114  CFY <basic> [my_application_l6mowd.start] Sending task 'script_runner.tasks.run'
+2018-03-04 14:30:04.143  CFY <basic> [my_application_l6mowd.start] Task started 'script_runner.tasks.run'
+2018-03-04 14:30:04.144  LOG <basic> [my_application_l6mowd.start] INFO: Executing: /tmp/1YPE0/tmpsq7hOp-starting.sh, stdout: /tmp/cloudify/logs/tasks/4728c4b2-327a-41c7-9cf8-a5126474ab75.out, stderr: /tmp/cloudify/logs/tasks/4728c4b2-327a-41c7-9cf8-a5126474ab75.err
+2018-03-04 14:30:04.149  LOG <basic> [my_application_l6mowd.start] INFO: Process created, PID: 9577
+2018-03-04 14:30:04.424  LOG <basic> [my_application_l6mowd.start] INFO: Starting!
+2018-03-04 14:30:04.467  LOG <basic> [my_application_l6mowd.start] INFO: Process 9577 ended
+2018-03-04 14:30:04.525  LOG <basic> [my_application_l6mowd.start] INFO: Execution done (return_code=0): /tmp/1YPE0/tmpsq7hOp-starting.sh
+2018-03-04 14:30:04.525  CFY <basic> [my_application_l6mowd.start] Task succeeded 'script_runner.tasks.run'
+2018-03-04 14:30:04.833  CFY <basic> 'install' workflow execution succeeded
 ```
 
 ## Invoke the `uninstall` workflow
@@ -56,24 +62,28 @@ cfy executions start uninstall -b basic
 The output should be similar to the following:
 
 ```
-2017-04-08 15:40:12.877  CFY <local> Starting 'uninstall' workflow execution
-2017-04-08 15:40:12.995  CFY <local> [my_application_qlovfd] Stopping node
-2017-04-08 15:40:13.182  CFY <local> [my_application_qlovfd.stop] Sending task 'script_runner.tasks.run'
-2017-04-08 15:40:13.209  CFY <local> [my_application_qlovfd.stop] Task started 'script_runner.tasks.run'
-2017-04-08 15:40:13.286  LOG <local> [my_application_qlovfd.stop] INFO: Executing: /tmp/tmpKi_UMS-stopping.sh
-2017-04-08 15:40:13.566  LOG <local> [my_application_qlovfd.stop] INFO: Stopping!
-2017-04-08 15:40:13.667  LOG <local> [my_application_qlovfd.stop] INFO: Execution done (return_code=0): /tmp/tmpKi_UMS-stopping.sh
-2017-04-08 15:40:13.668  CFY <local> [my_application_qlovfd.stop] Task succeeded 'script_runner.tasks.run'
-2017-04-08 15:40:14.129  CFY <local> [my_application_qlovfd] Deleting node
-2017-04-08 15:40:14.194  CFY <local> [my_application_qlovfd.delete] Sending task 'script_runner.tasks.run'
-2017-04-08 15:40:14.194  CFY <local> [my_application_qlovfd.delete] Task started 'script_runner.tasks.run'
-2017-04-08 15:40:14.195  LOG <local> [my_application_qlovfd.delete] INFO: Executing: /tmp/tmpmRWCC4-deleting.sh
-2017-04-08 15:40:14.476  LOG <local> [my_application_qlovfd.delete] INFO: Deleting!
-2017-04-08 15:40:14.577  LOG <local> [my_application_qlovfd.delete] INFO: Execution done (return_code=0): /tmp/tmpmRWCC4-deleting.sh
-2017-04-08 15:40:14.578  CFY <local> [my_application_qlovfd.delete] Task succeeded 'script_runner.tasks.run'
-2017-04-08 15:40:14.821  CFY <local> [my_host_80nls2] Stopping node
-2017-04-08 15:40:15.665  CFY <local> [my_host_80nls2] Deleting node
-2017-04-08 15:40:16.019  CFY <local> 'uninstall' workflow execution succeeded
+2018-03-04 14:30:25.041  CFY <basic> Starting 'uninstall' workflow execution
+2018-03-04 14:30:25.159  CFY <basic> [my_application_l6mowd] Stopping node
+2018-03-04 14:30:25.346  CFY <basic> [my_application_l6mowd.stop] Sending task 'script_runner.tasks.run'
+2018-03-04 14:30:25.374  CFY <basic> [my_application_l6mowd.stop] Task started 'script_runner.tasks.run'
+2018-03-04 14:30:25.419  LOG <basic> [my_application_l6mowd.stop] INFO: Executing: /tmp/KCQG5/tmpP92y26-stopping.sh, stdout: /tmp/cloudify/logs/tasks/9ff31fb5-1507-4700-9a6e-4f9ede37845b.out, stderr: /tmp/cloudify/logs/tasks/9ff31fb5-1507-4700-9a6e-4f9ede37845b.err
+2018-03-04 14:30:25.423  LOG <basic> [my_application_l6mowd.stop] INFO: Process created, PID: 9588
+2018-03-04 14:30:25.697  LOG <basic> [my_application_l6mowd.stop] INFO: Stopping!
+2018-03-04 14:30:25.740  LOG <basic> [my_application_l6mowd.stop] INFO: Process 9588 ended
+2018-03-04 14:30:25.798  LOG <basic> [my_application_l6mowd.stop] INFO: Execution done (return_code=0): /tmp/KCQG5/tmpP92y26-stopping.sh
+2018-03-04 14:30:25.798  CFY <basic> [my_application_l6mowd.stop] Task succeeded 'script_runner.tasks.run'
+2018-03-04 14:30:26.292  CFY <basic> [my_application_l6mowd] Deleting node
+2018-03-04 14:30:26.376  CFY <basic> [my_application_l6mowd.delete] Sending task 'script_runner.tasks.run'
+2018-03-04 14:30:26.406  CFY <basic> [my_application_l6mowd.delete] Task started 'script_runner.tasks.run'
+2018-03-04 14:30:26.408  LOG <basic> [my_application_l6mowd.delete] INFO: Executing: /tmp/6A7F0/tmpDjsMX4-deleting.sh, stdout: /tmp/cloudify/logs/tasks/051e8367-9e8d-45d3-9b39-8092bdb8fccf.out, stderr: /tmp/cloudify/logs/tasks/051e8367-9e8d-45d3-9b39-8092bdb8fccf.err
+2018-03-04 14:30:26.412  LOG <basic> [my_application_l6mowd.delete] INFO: Process created, PID: 9593
+2018-03-04 14:30:26.685  LOG <basic> [my_application_l6mowd.delete] INFO: Deleting!
+2018-03-04 14:30:26.729  LOG <basic> [my_application_l6mowd.delete] INFO: Process 9593 ended
+2018-03-04 14:30:26.786  LOG <basic> [my_application_l6mowd.delete] INFO: Execution done (return_code=0): /tmp/6A7F0/tmpDjsMX4-deleting.sh
+2018-03-04 14:30:26.786  CFY <basic> [my_application_l6mowd.delete] Task succeeded 'script_runner.tasks.run'
+2018-03-04 14:30:27.023  CFY <basic> [my_host_kgn2md] Stopping node
+2018-03-04 14:30:27.817  CFY <basic> [my_host_kgn2md] Deleting node
+2018-03-04 14:30:28.098  CFY <basic> 'uninstall' workflow execution succeeded
 ```
 
 ## Invoke it all at once

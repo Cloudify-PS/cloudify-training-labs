@@ -30,7 +30,7 @@ tosca_definitions_version: <add_version_here>
 
 ### Imports
 
-* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.2/types.yaml
+* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.3/types.yaml
 * Add an import statement to a file called `include/type-definitions.yaml`.
 
 ### Add node types
@@ -71,6 +71,16 @@ later.
     
         `install_method: none`
     
+        For example:
+        
+        ```yaml
+        host:
+          <...>
+          properties:
+            agent_config:
+              install_method: none
+        ```
+
     (This will be clarified later in the course)
 2.  Add a node template called `web_server`, of type `apache`.
     *   Provide an override to the `port` property. The default is `80`, but we want port `8080` here.
@@ -97,6 +107,8 @@ The relationship type will map the `establish` operation in the `cloudify.interf
     * Add a relationship where the target is the `web_server` node, and the type is `app_contained_in_apache`.
 
 ### Add blueprint inputs
+
+(This should be done in `~/my_bp/blueprint.yaml`)
 
 1.  Add a blueprint input for the Apache listening port. The input name should be `apache_listening_port`, the type should be `integer`, with no default.
 2.  Change the `web_server` node so the value of the `port` property is taken from the `apache_listening_port` input.

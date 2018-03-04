@@ -11,7 +11,7 @@ Both approaches will be covered in this lab. You may choose to practice either, 
 
 ## Part 1: Preparations
 
-The [Cloudify Manager prerequisites page](http://docs.getcloudify.org/4.2.0/installation/bootstrapping/#prerequisites-for-installing-a-cloudify-manager) describes a few
+The [Cloudify Manager prerequisites page](http://docs.getcloudify.org/4.3.0/installation/prerequisites/) describes a few
 networking- and security-related prerequisites. You will have to ensure that you have the following:
 
 * A security group that allows access to the manager via the ports specified in the Prerequisites page:

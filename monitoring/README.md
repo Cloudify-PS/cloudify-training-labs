@@ -20,21 +20,26 @@ You can use the Diamond collectors' reference for information how to configure c
 
 ```bash
 cfy blueprints upload $LAB_ROOT/blueprint/blueprint.yaml -b monitoring
-cfy deployments create mon -b monitoring -i 'vm_ip_address=<app-vm-ip-address>'
+cfy deployments create mon -b monitoring -i vm_ip_address=<app-vm-ip-address>
 cfy executions start -d mon install
 ```
 
 ### Step 3: Show metrics in the UI
 
-1.  Log in to the UI. Make sure to write "127.0.0.1" in the "Manager IP" field.
+1.  Log in to the UI.
 2.  Go to the Deployments screen.
 3.  Click your deployment.
 4.  Click your username at the top right, and select "Edit Mode".
 5.  Click the "Add Widget" button.
 6.  Select the "Deployment metric graph" widget. Click "Add".
-7.  Click the "Add Widget" button again.
-8.  Select the "Time filter" widget. Click "Add".
-9.  Click your username at the top right, and select "Exit Edit Mode".
+7.  Click the cogwheel icon at the top right corner of the new widget.
+8.  Under "Node Filter":
+    a. Select "Deployment" and then click your deployment's name.
+    b. Select "Node Instance" and select your VM's instance ID.
+9.  In the "Charts" table, focus on the first row and click the "Metric" dropdown list. Then select `cpu_total_user`.
+10. In the "Label" field, type "CPU (Total)".
+11. Click "Save".
+12. Click your username at the top right, and select "Exit Edit Mode".
 
 The metrics widget will now appear on the screen.
 
