@@ -56,7 +56,7 @@ cfy_manager install
 ```
 
 The installation should take approximately 3-4 minutes, during which you will see the output of the installation process.
-At the end of the process you should see the IP address of the Manager printed out, as well as the passford for the
+At the end of the process you should see the IP address of the Manager printed out, as well as the password for the
 administrative user. For example:
 
 ```
