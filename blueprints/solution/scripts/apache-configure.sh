@@ -1,6 +1,5 @@
 #!/bin/bash -e
 
-port=$(ctx node properties port)
 document_root=$(ctx node properties document_root)
 ctx logger info "Configuring Apache web server to listen on port $port"
 
