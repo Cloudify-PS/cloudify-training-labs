@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
-from prettytable import PrettyTable
+from prettytable import PrettyTable, ALL
 from cloudify_cli.cli import cfy
 
 
@@ -68,23 +68,32 @@ def get_labs_info(client, deployment_id):
     for node in compute_nodes:
         display_name = node.properties['display_name']
         header_elements.append("{}".format(display_name))
-        header_elements.append("{} (private)".format(display_name))
-        if node.id in public_compute_nodes:
-            header_elements.append("{} (public)".format(display_name))
+        # header_elements.append("{} (private)".format(display_name))
+        # if node.id in public_compute_nodes:
+        #     header_elements.append("{} (public)".format(display_name))
 
-    table = PrettyTable(header_elements)
+    table = PrettyTable(header_elements,
+                        hrules=ALL)
+    table.valign = 'm'
 
     ix = 1
     for trainee in trainees:
         lst = [ix]
         for node in compute_nodes:
-            lst.append(trainees[trainee][node.id]['instance'])
-            lst.append(trainees[trainee][node.id]['private'])
+            contents = '{}\n' \
+                       '{}'.format(
+                trainees[trainee][node.id]['instance'],
+                trainees[trainee][node.id]['private']
+            )
             if node.id in public_compute_nodes:
-                lst.append(trainees[trainee][node.id]['public'])
+                contents += '\n{}'.format(
+                    trainees[trainee][node.id]['public']
+                )
+            lst.append(contents)
         table.add_row(lst)
         ix += 1
 
+    print "Note: each cell contains, from top to bottom: instance ID, private IP, public IP"
     print table
 
 if __name__ == '__main__':
