@@ -1,4 +1,4 @@
-# Lab: Manager Bootstrapping
+# Lab: Manager Installation
 
 The purpose of this lab is to install a Cloudify manager on a fresh VM.
 
@@ -46,7 +46,7 @@ Edit the file `/etc/cloudify/config.yaml`.
    ```
 
 2. By default, the `admin_password` input is set to an empty string. In that case, the manager will generate a password
-   and will display it at the end of the bootstrap process. You may uncomment that input and provide your own value
+   and will display it at the end of the installation process. You may uncomment that input and provide your own value
    instead.
 
 ### Step 4: Start the installation process
