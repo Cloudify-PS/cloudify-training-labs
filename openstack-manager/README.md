@@ -5,7 +5,7 @@ In this lab, we will create a Cloudify Manager, upload a blueprint to it, create
 There are two methods for creating a Cloudify Manager:
 
 * Via a provided image (recommended)
-* Via bootstrapping
+* Via RPM istallation
 
 Both approaches will be covered in this lab. You may choose to practice either, or both.
 
@@ -42,7 +42,7 @@ of enabling agent <-> manager communication.
 
 ### Step 1: Import the Cloudify Manager image to OpenStack
 
-The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.2.0/ga-release/cloudify-manager-4.2ga.qcow2
+The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.3.0/ga-release/cloudify-manager-4.3ga.qcow2
 
 You can use Horizon to import the QCOW2 image into OpenStack:
 
@@ -81,19 +81,28 @@ Create a virtual machine for installing the Cloudify Manager on.
 
 * Make sure that you connect the VM to the `cloudify-management` security group.
 
-### Step 2: Bootstrap
+### Step 2: RPM installation
 
-Use the instructions provided in the [Manager Bootstrapping lab](../bootstrap) to perform the bootstrap.
+Use the instructions provided in the [Manager Installation  lab](../manager-installation) to perform the bootstrap.
 
 ### Step 3: Upload plugins
  
 Once bootstrapping is complete, upload the OpenStack plugin package:
 
+CLI
 ```bash
 cd ~
-curl -J -O https://github.com/cloudify-cosmo/cloudify-openstack-plugin/releases/download/2.2.0/cloudify_openstack_plugin-2.2.0-py27-none-linux_x86_64-centos-Core.wgn
-cfy plugins upload ~/cloudify_openstack_plugin-2.2.0-py27-none-linux_x86_64-centos-Core.wgn
+curl -L -J -O https://github.com/cloudify-cosmo/cloudify-openstack-plugin/releases/download/2.6.0/cloudify_openstack_plugin-2.6.0-py27-none-linux_x86_64-centos-Core.wgn
+curl -L -J -O http://www.getcloudify.org/spec/openstack-plugin/2.6.0/plugin.yaml
+cfy plugins upload ~/cloudify_openstack_plugin-2.6.0-py27-none-linux_x86_64-centos-Core.wgn -y plugin.yaml
 ```
+
+GUI
+1. Log in to Cloudify Manager UI
+2. Go to System Resources page
+3. Paste wgn file link into wagon URL field
+4. Paste yaml file fink into yaml URL field
+5. Click upload
 
 ## Part 3: Orchestrate Application
 
@@ -131,10 +140,10 @@ cfy install ~/hello-world/openstack-blueprint.yaml -b helloworld -d helloworld -
 
 ### Step 4: Test the application
 
-Get the floating IP address of the NodeJS node which was created on OpenStack, by retrieving the deployment's outputs:
+Get the floating IP address of the server  created on OpenStack, by retrieving the deployment's outputs:
 
 ```bash
-cfy deployments outputs nc
+cfy deployments outputs helloworld
 ```
 
 Then browse to it (port 8080).
@@ -142,7 +151,7 @@ Then browse to it (port 8080).
 ### Step 5: Cleanup
 
 ```bash
-cfy executions start -d nc uninstall
-cfy deployments delete nc
-cfy blueprints delete nc
+cfy executions start -d helloworld uninstall
+cfy deployments delete helloworld
+cfy blueprints delete helloworld
 ```

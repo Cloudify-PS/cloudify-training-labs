@@ -40,6 +40,7 @@ cfy executions start -d mon install
 10. In the "Label" field, type "CPU (Total)".
 11. Click "Save".
 12. Click your username at the top right, and select "Exit Edit Mode".
+13. To see the load changes on the app vm log into it and execure a commend to generate load. For example: openssl speed
 
 The metrics widget will now appear on the screen.
 
