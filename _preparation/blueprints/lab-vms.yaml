@@ -65,9 +65,17 @@ inputs:
     type: string
     default: http://repository.cloudifysource.org/cloudify/4.3.0/ga-release/cloudify-cli-4.3ga.rpm
   github_user:
+    description: |
+      User account to use when referring to GitHub. Only required if at least one of the used
+      GitHub repositories is private.
     type: string
+    default: ''
   github_api_key:
+    description: |
+      API key to use when referring to GitHub. Only required if at least one of the used
+      GitHub repositories is private.
     type: string
+    default: ''
   # Manager (from AMI)
   cm_ami_id:
     type: string
