@@ -7,14 +7,22 @@ TEMP_LABS_ARCHIVE=$(mktemp --tmpdir labs.XXXXX)
 TEMP_PLUGIN_TEMPLATE_ARCHIVE=$(mktemp --tmpdir plugin-template.XXXXX)
 TEMP_HELLO_WORLD_ARCHIVE=$(mktemp --tmpdir hello-world.XXXXX)
 
+if [ -n "${github_user}" -a -n "${github_api_key}" ]; then
+    ctx logger info "Both GitHub user & API key provided; will use basicauth for GitHub calls"
+    BASICAUTH_PARAM="--user ${github_user}:${github_api_key}"
+else
+    ctx logger info "Either GitHub user or API key are empty; will use unauthenticated GitHub calls"
+    BASICAUTH_PARAM=""
+fi
+
 ctx logger info "Downloading labs archive: ${labs_archive} -> ${TEMP_LABS_ARCHIVE}"
-curl -L --user ${github_user}:${github_api_key} --output ${TEMP_LABS_ARCHIVE} ${labs_archive}
+curl -L ${BASICAUTH_PARAM} --output ${TEMP_LABS_ARCHIVE} ${labs_archive}
 
 ctx logger info "Downloading plugin template archive: ${plugin_template_archive} -> ${TEMP_PLUGIN_TEMPLATE_ARCHIVE}"
-curl -L --user ${github_user}:${github_api_key} --output ${TEMP_PLUGIN_TEMPLATE_ARCHIVE} ${plugin_template_archive}
+curl -L ${BASICAUTH_PARAM} --output ${TEMP_PLUGIN_TEMPLATE_ARCHIVE} ${plugin_template_archive}
 
 ctx logger info "Downloading Hello World archive: ${hello_world_archive} -> ${TEMP_HELLO_WORLD_ARCHIVE}"
-curl -L --user ${github_user}:${github_api_key} --output ${TEMP_HELLO_WORLD_ARCHIVE} ${hello_world_archive}
+curl -L ${BASICAUTH_PARAM} --output ${TEMP_HELLO_WORLD_ARCHIVE} ${hello_world_archive}
 
 ctx logger info "Extracting labs archive..."
 cat ${TEMP_LABS_ARCHIVE} | ssh "${SSH_PARMS[@]}" ${user}@${host} "rm -rf cloudify-training-labs; mkdir cloudify-training-labs; cd cloudify-training-labs; tar -zxv --strip-components=1"
