@@ -5,7 +5,7 @@ In this lab, we will create a Cloudify Manager, upload a blueprint to it, create
 There are two methods for creating a Cloudify Manager:
 
 * Via a provided image (recommended)
-* Via RPM istallation
+* Via RPM installation
 
 Both approaches will be covered in this lab. You may choose to practice either, or both.
 
@@ -73,7 +73,7 @@ Open a browser window to `http://<manager-ip-address>`. You will see the Cloudif
 
 **NOTE**: You may need to associate a floating IP to the new VM first (depending on your network setup).
 
-## Part 2: Bootstrapping a Manager
+## Part 2: Installing a Manager
 
 ### Step 1: Create a VM
 
@@ -83,26 +83,24 @@ Create a virtual machine for installing the Cloudify Manager on.
 
 ### Step 2: RPM installation
 
-Use the instructions provided in the [Manager Installation  lab](../manager-installation) to perform the bootstrap.
+Use the instructions provided in the [Manager Installation  lab](../manager-installation) to perform the installation.
 
 ### Step 3: Upload plugins
  
 Once bootstrapping is complete, upload the OpenStack plugin package:
 
-CLI
+Option 1: Using the CLI
 ```bash
 cd ~
-curl -L -J -O https://github.com/cloudify-cosmo/cloudify-openstack-plugin/releases/download/2.6.0/cloudify_openstack_plugin-2.6.0-py27-none-linux_x86_64-centos-Core.wgn
-curl -L -J -O http://www.getcloudify.org/spec/openstack-plugin/2.6.0/plugin.yaml
-cfy plugins upload ~/cloudify_openstack_plugin-2.6.0-py27-none-linux_x86_64-centos-Core.wgn -y plugin.yaml
+cfy plugins upload http://repository.cloudifysource.org/cloudify/wagons/cloudify-openstack-plugin/2.7.1/cloudify_openstack_plugin-2.7.1-py27-none-linux_x86_64-centos-Core.wgn -y http://www.getcloudify.org/spec/openstack-plugin/2.7.1/plugin.yaml
 ```
 
-GUI
+Option 2: Using the GUI
 1. Log in to Cloudify Manager UI
 2. Go to System Resources page
-3. Paste wgn file link into wagon URL field
-4. Paste yaml file fink into yaml URL field
-5. Click upload
+3. Paste the link to the Wagon file into the "Wagon URL" field
+4. Paste the link to the plugin's YAML file into the "YAML URL" field
+5. Click "Upload"
 
 ## Part 3: Orchestrate Application
 
