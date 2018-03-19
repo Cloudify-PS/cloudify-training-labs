@@ -34,7 +34,7 @@ The `execution-parameters.yaml` file should be a YAML file that you create, cont
 * `node_ids`
 * etc.
 
-The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node instance*.
+The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node*.
 
 _Tip_: Use the `execute_operation` workflow documentation.
 

@@ -27,6 +27,7 @@ Add the TOSCA definitions version directive at the top of the file:
 ```yaml
 tosca_definitions_version: <add_version_here>
 ```
+For a list of available version codes, see: http://docs.getcloudify.org/4.3.0/blueprints/spec-versioning/
 
 ### Imports
 

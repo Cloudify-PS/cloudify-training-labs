@@ -2,13 +2,15 @@
 
 ## Prerequisites
 
-If you are working on this lab as part of the Cloudify official training course, you will be receiving
-the following from the instructor:
+To be able to perform the following exercise, you will need:
 
 * Public and private IP's of the VM on which the CLI is going to be installed
 * Private key to use in order to access that VM
 
-Copy the private key, provided by the instructor, to the file system on the machine you're going to use
+If you are working on this lab as part of the official Cloudify training course, you will be receiving
+these details from the instructor.
+
+Copy the private key to the file system on the machine you're going to use
 to connect to the various VM's (most likely, that would be your own machine).
 
 **NOTE**: if you are accessing the VM's from Linux, make sure that the private key file has restrictive enough

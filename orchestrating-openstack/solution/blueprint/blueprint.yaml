@@ -2,7 +2,7 @@ tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
   - http://www.getcloudify.org/spec/cloudify/4.3/types.yaml
-  - http://www.getcloudify.org/spec/openstack-plugin/2.2.0/plugin.yaml
+  - http://www.getcloudify.org/spec/openstack-plugin/2.7.1/plugin.yaml
 
 inputs:
   keystone_username:
@@ -91,6 +91,7 @@ node_templates:
     properties:
       openstack_config: *openstack_configuration
       subnet:
+        ip_version: 4
         cidr: { get_input: cidr }
     relationships:
       - target: network
@@ -112,20 +113,31 @@ node_templates:
       openstack_config: *openstack_configuration
       private_key_path: /tmp/key.pem
 
+  port:
+    type: cloudify.openstack.nodes.Port
+    properties:
+      openstack_config: *openstack_configuration
+    relationships:
+    - type: cloudify.relationships.connected_to
+      target: network
+    - type: cloudify.relationships.depends_on
+      target: subnet
+    - type: cloudify.openstack.port_connected_to_security_group
+      target: sg
+
   server:
     type: cloudify.openstack.nodes.Server
     properties:
       openstack_config: *openstack_configuration
       image: { get_input: image }
       flavor: { get_input: flavor }
-      management_network_name: { get_attribute: [network, external_name]}
       agent_config:
         install_method: { get_input: agent_install_method }
         user: { get_input: agent_user }
         key: { get_input: agent_key }
     relationships:
-      - target: sg
-        type: cloudify.openstack.server_connected_to_security_group
+      - target: port
+        type: cloudify.openstack.server_connected_to_port
       - target: network
         type: cloudify.relationships.connected_to
       - target: keypair

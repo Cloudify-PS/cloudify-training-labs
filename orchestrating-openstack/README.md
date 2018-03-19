@@ -10,7 +10,7 @@ In this lab, we will write a blueprint that creates resources on OpenStack. We w
 
 Also, we will connect all resources together.
 
-For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.getcloudify.org/4.1/plugins/openstack/
+For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.getcloudify.org/4.3.0/plugins/openstack/
 
 ## Step 1: Create blueprint's skeleton
 
@@ -170,7 +170,7 @@ Notes:
 ## Step 5: Run the blueprint locally
 
 Prepare an inputs file, containing the values for the various inputs you had defined.
-For local invocations (using `cfy local`), you don't have to specify the `agent_*` inputs.
+For local invocations (using `local` profile), you don't have to specify the `agent_*` inputs.
 
 Then:
 
