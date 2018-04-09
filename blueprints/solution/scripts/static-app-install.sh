@@ -13,6 +13,6 @@ ctx logger info "Creating directory: ${target_dir}"
 mkdir -p ${target_dir}
 
 ctx logger info "Moving app into ${target_dir}"
-mv web_page ${target_dir}
+mv ${web_page} ${target_dir}
 
 ctx logger info "Done"

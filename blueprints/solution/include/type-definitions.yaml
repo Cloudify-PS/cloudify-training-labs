@@ -28,7 +28,7 @@ node_types:
   static_web_app:
     derived_from: cloudify.nodes.Root
     properties:
-      url:
+      web_page:
         type: string
     interfaces:
       cloudify.interfaces.lifecycle:

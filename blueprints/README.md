@@ -53,7 +53,7 @@ external to the main blueprint, and included from there.
 2.  Add a node type called `static_web_app`:
     * Derived from `cloudify.nodes.Root`.
     * Containing the following properties:
-        *   Name: `url`, type: `string` (no default value)
+        *   Name: `web_page`, type: `string` (no default value)
     * Implementing the `cloudify.interfaces.lifecycle` interface, and:
       * Mapping the `create` operation to `scripts/static-app-install.sh`
       * Mapping the `delete` operation to `scripts/static-app-uninstall.sh`
@@ -91,7 +91,7 @@ later.
     *   Provide an override to the `port` property. The default is `80`, but we want port `8080` here.
 3.  Add a node template called `my_app`, of type `static_web_app`.
     *   Provide the following property values:
-        *   `url`: `file:///home/centos/training-resources/static-app.zip`
+        *   `web_page`: `resources/hello.html`
 
 ### Add relationship type
 
@@ -117,6 +117,8 @@ The relationship type will map the `establish` operation in the `cloudify.interf
 
 1.  Add a blueprint input for the Apache listening port. The input name should be `apache_listening_port`, the type should be `integer`, with no default.
 2.  Change the `web_server` node so the value of the `port` property is taken from the `apache_listening_port` input.
+3.  Add a blueprint input for the App VM's IP address. The input name should be `ip`, the type should be `string`, with no default.
+4.  Change the `host` node so the value of the `ip` property is taken from the `ip` input.
 
 ### Add a property reference
 
@@ -142,7 +144,7 @@ only one item called `installation_info`. Its value should be a dictionary conta
 * `port`: the value should be a property reference, obtaining the value of the `port` property from `web_server`.
 * `app_dir`: the value should be an attribute reference, obtaining the value of the `target_dir` attribute from `my_app`.
 
-### Add supporting scripts
+### Add supporting resources
 
 Copy the contents of the `solution/scripts` directory into your blueprint's directory:
 
@@ -150,28 +152,36 @@ Copy the contents of the `solution/scripts` directory into your blueprint's dire
 cp -R ~/cloudify-training-labs/blueprints/solution/scripts ~/my_bp
 ```
 
+Now, copy the contens of the `solution/resources` directory into your blueprint's directory:
+
+```bash
+cp -R ~/cloudify-training-labs/blueprints/solution/resources ~/my_bp
+```
+
 ## Run the blueprint
 
 Now that the blueprint is ready, try running it:
 
 ```bash
-cfy install ~/my_bp/blueprint.yaml -i 'apache_listening_port=8080' -b bp_test
+cfy install ~/my_bp/blueprint.yaml -i apache_listening_port=8080 -i ip=<your-app-VM-IP> -b bp_test -d dep1
 ```
+
+(Replace `<your-app-VM-IP>` with your App VM's IP address)
 
 When installation is done, obtain the outputs:
 
 ```bash
-cfy deployments outputs -b bp_test
+cfy deployments outputs dep1
 ```
 
 You should receive the value of the `outputs` section defined in the blueprint, with values calculated in
 real time.
 
-You should now be able to point your browser at `http://<cli-public-ip>:8080/app/hello.html` and get the static
+You should now be able to point your browser at `http://<app-vm-public-ip>:8080/app/hello.html` and get the static
 app that had just been deployed.
 
 Once done, invoke the `uninstall` workflow to clean up:
 
 ```bash
-cfy uninstall -b bp_test
+cfy uninstall dep1
 ```

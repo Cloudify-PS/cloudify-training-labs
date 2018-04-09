@@ -369,27 +369,6 @@ node_templates:
       - target: cli_vm
         type: cloudify.relationships.contained_in
 
-  cli_resources:
-    type: cloudify.nodes.Root
-    interfaces:
-      cloudify.interfaces.lifecycle:
-        create:
-          implementation: fabric.fabric_plugin.tasks.run_script
-          inputs:
-            fabric_env: *cli_fabric_env
-            script_path: scripts/create-resources.sh
-            resources_root: ~/cloudify-training-labs/_preparation/resources
-            resources_target: ~/training-resources
-    relationships:
-      - target: cli_vm
-        type: cloudify.relationships.contained_in
-      # Ensure that all packages are installed before proceeding.
-      - target: cli_configuration
-        type: cloudify.relationships.depends_on
-      # Ensure the labs are installed on the CLI machine before we create the resources package.
-      - target: cli_labs
-        type: cloudify.relationships.depends_on
-
   manager_ip:
     type: cloudify.aws.nodes.ElasticIP
     properties:
