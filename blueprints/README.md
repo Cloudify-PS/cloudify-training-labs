@@ -30,7 +30,7 @@ tosca_definitions_version: <add_version_here>
 
 ### Imports
 
-* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.3/types.yaml
+* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
 * Add an import statement to a file called `include/type-definitions.yaml`.
 
 ### Add node types
@@ -67,9 +67,13 @@ later.
 **Back in `~/my_bp/blueprint.yaml`**, we will now create some node templates.
 
 1.  Add a node template called `host`, of type `cloudify.nodes.Compute`.
+    *   Add a property called `ip`, with the value being the IP address of your **App VM**.
     *   Add a property called `agent_config`, with the value being a dictionary containing the following:
     
-        `install_method: none`
+        ```
+        user: centos
+        key: /etc/cloudify/cfy-training.pem
+        ```
     
         For example:
         
@@ -77,11 +81,12 @@ later.
         host:
           <...>
           properties:
+            ip: 192.178.0.10
             agent_config:
-              install_method: none
+              user: centos
+              key: /etc/cloudify/cfy-training.pem
         ```
 
-    (This will be clarified later in the course)
 2.  Add a node template called `web_server`, of type `apache`.
     *   Provide an override to the `port` property. The default is `80`, but we want port `8080` here.
 3.  Add a node template called `my_app`, of type `static_web_app`.

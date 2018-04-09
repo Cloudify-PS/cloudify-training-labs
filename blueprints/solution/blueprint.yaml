@@ -1,7 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/4.3/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
   - include/type-definitions.yaml
 
 inputs:
@@ -12,9 +12,10 @@ node_templates:
   host:
     type: cloudify.nodes.Compute
     properties:
+      ip: REPLACE_WITH_IP_ADDRESS
       agent_config:
-        install_method: none
-      ip: 127.0.0.1
+        user: centos
+        key: /etc/cloudify/cfy-training.pem
 
   web_server:
     type: apache
@@ -27,7 +28,7 @@ node_templates:
   my_app:
     type: static_web_app
     properties:
-      url: file:///home/centos/training-resources/static-app.zip
+      web_page: resources/hello.html
     relationships:
       - target: web_server
         type: app_contained_in_apache
