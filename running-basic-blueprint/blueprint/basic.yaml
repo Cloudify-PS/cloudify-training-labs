@@ -1,0 +1,27 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+
+node_templates:
+
+  my_host:
+    type: cloudify.nodes.Compute
+    properties:
+      ip: REPLACE_WITH_IP_ADDRESS
+      agent_config:
+        user: centos
+        key: /etc/cloudify/cfy-training.pem
+
+  my_application:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create: scripts/creating.sh
+        configure: scripts/configuring.sh
+        start: scripts/starting.sh
+        stop: scripts/stopping.sh
+        delete: scripts/deleting.sh
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: my_host

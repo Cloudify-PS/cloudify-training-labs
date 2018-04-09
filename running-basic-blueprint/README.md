@@ -2,18 +2,34 @@
 
 In this lab, we will run a very basic blueprint using Cloudify.
 
-As we are going to run this blueprint locally, we need to initialize the CLI's local profile first:
+## Add your IP address
+
+Edit the file `~/cloudify-training-labs/running-basic-blueprint/blueprint/basic.yaml`,
+and replace the string `REPLACE_WITH_IP_ADDRESS` with your **APP VM**'s IP address.
+It doesn't matter which of the IP addresses (private / public) you use, as long as
+the IP address is routable from within the Cloudify Manager (in the official Cloudify Training Course,
+both IP addresses are routable).
+
+## Upload the blueprint
 
 ```bash
-cfy init ~/cloudify-training-labs/running-basic-locally/blueprint/basic.yaml -b basic
+cfy blueprints upload ~/cloudify-training-labs/running-basic-blueprint/blueprint/basic.yaml -b basic
 ```
 
-That initializes the current user's local Cloudify profile by setting the provided blueprint as a context.
+Now the blueprint is available on the Cloudify Manager, with the ID `basic`.
 
-## Invoke the `install` workflow
+## Create a deployment
 
 ```bash
-cfy executions start install -b basic
+cfy deployments create dep1 -b basic
+```
+
+This will create an "instance" of the blueprint called `basic`. The "instance"'s name is `dep1`.
+
+## Run the `install` workflow
+
+```bash
+cfy executions start install -d dep1
 ```
 
 The output should be similar to the following:

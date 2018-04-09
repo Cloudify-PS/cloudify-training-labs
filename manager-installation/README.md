@@ -20,13 +20,13 @@ of the training labs, in favour of simplicity.
 ### Step 1: Download Cloudify Manager's RPM
 
 ```bash
-curl -J -O http://repository.cloudifysource.org/cloudify/4.3.0/ga-release/cloudify-manager-install-4.3ga.rpm
+curl -J -O http://repository.cloudifysource.org/cloudify/4.3.1/ga-release/cloudify-manager-install-4.3.1ga.rpm
 ```
 
 ### Step 2: Install Cloudify Manager's RPM
 
 ```bash
-sudo yum -y install cloudify-manager-install-4.3ga.rpm
+sudo yum -y install cloudify-manager-install-4.3.1ga.rpm
 ```
 
 ### Step 3: Edit the installation's configuration file
@@ -112,7 +112,7 @@ You should get the Cloudify Manager's UI login page:
 
 Enter `admin` as the username, and the manager's password. Upon logging in, you'll see the Cloudify UI.
 
-### Step 6: Create a CLI profile pointing at the manager
+### Step 7: Create a CLI profile pointing at the manager
 
 Log into your CLI VM and use the `cfy profiles` command to create a profile pointing at your manager:
 
@@ -125,3 +125,13 @@ You can use the `cfy status` command to ensure proper connection and function:
 ```bash
 cfy status
 ```
+
+### Step 8: Copy training course's key
+
+We are going to have Cloudify Manager use the training course's private key file.
+
+1.  From your CLI VM, copy the file '~/cfy-training.pem' into your manager's VM, into the directory `/etc/cloudify`.
+2.  Change the file's ownership so it is readable by the `cfyuser` account. For example:
+    ```bash
+    sudo chown cfyuser:cfyuser /etc/cloudify/cfy-training.pem
+    ```
