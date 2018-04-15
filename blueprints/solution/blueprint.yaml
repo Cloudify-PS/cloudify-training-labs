@@ -38,6 +38,5 @@ node_templates:
 outputs:
   installation_info:
     value:
-      ip: { get_property: [ host, ip ] }
-      port: { get_property: [ web_server, port ] }
+      url: { concat: [ 'http://', { get_property: [ host, ip ] }, ':', { get_property: [ web_server, port ] }, '/app/hello.html' ] }
       app_dir: { get_attribute: [ my_app, target_dir ] }

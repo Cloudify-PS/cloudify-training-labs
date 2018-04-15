@@ -17,7 +17,7 @@ Otherwise, use the `cfy profiles use` command to switch to a Cloudify Manager pr
 ## Step 2: Upload the blueprint
 
 ```bash
-cfy blueprints upload ~/hello-world/singlehost-blueprint.yaml -b helloworld
+cfy blueprints upload ~/hello-world/no-monitoring-singlehost-blueprint.yaml -b helloworld
 ```
 
 ## Step 3: Create an inputs file

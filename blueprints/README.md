@@ -1,6 +1,6 @@
 # Lab: Creating a Simple Blueprint
 
-This lab accompanies the "Blueprints" section of the training. It is meant to be completed gradually, alongside the
+This lab accompanies the "Blueprints" section of the training. It is meant to be completed incrementally, alongside the
 presentation of the training slide deck.
 
 ## Preparations
@@ -141,7 +141,12 @@ In a previous step, you created a relationship type called `app_contained_in_apa
 Edit the main blueprint file again (`blueprint.yaml`) and add an `outputs` section. The `outputs` section should contain
 only one item called `installation_info`. Its value should be a dictionary containing two elements:
 
-* `port`: the value should be a property reference, obtaining the value of the `port` property from `web_server`.
+* `url`: the value should be a string of the form: `http://<ip-address>:<port>/app/hello.html`, where:
+    * `ip-address` is the IP address of the VM running the example
+    * `port` is the port on which Apache is going to listen (hint: use `get_property` to obtain the value of the
+      relevant property from `web_server`)
+
+  (hint: use the `concat` function)
 * `app_dir`: the value should be an attribute reference, obtaining the value of the `target_dir` attribute from `my_app`.
 
 ### Add supporting resources
@@ -152,7 +157,7 @@ Copy the contents of the `solution/scripts` directory into your blueprint's dire
 cp -R ~/cloudify-training-labs/blueprints/solution/scripts ~/my_bp
 ```
 
-Now, copy the contens of the `solution/resources` directory into your blueprint's directory:
+Now, copy the contents of the `solution/resources` directory into your blueprint's directory:
 
 ```bash
 cp -R ~/cloudify-training-labs/blueprints/solution/resources ~/my_bp

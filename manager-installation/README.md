@@ -131,7 +131,10 @@ cfy status
 We are going to have Cloudify Manager use the training course's private key file.
 
 1.  From your CLI VM, copy the file '~/cfy-training.pem' into your manager's VM, into the directory `/etc/cloudify`.
-2.  Change the file's ownership so it is readable by the `cfyuser` account. For example:
-    ```bash
-    sudo chown cfyuser:cfyuser /etc/cloudify/cfy-training.pem
-    ```
+2.  Change the file's ownership so it is readable by the `cfyuser` account.
+
+```bash
+scp -i ~/cfy-training.pem ~/cfy-training.pem centos@<manager's-ip>:~/
+ssh -i ~/cfy-training.pem centos@<manager's-ip> 'sudo mv ~/cfy-training.pem /etc/cloudify'
+ssh -i ~/cfy-training.pem centos@<manager's-ip> 'sudo chown cfyuser:cfyuser /etc/cloudify/cfy-training.pem'
+```
