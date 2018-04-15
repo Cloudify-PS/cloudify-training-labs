@@ -108,7 +108,7 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the Cloudify Manager's UI login page:
 
-![Cloudify 4.3 Login](../../../raw/4.3/manager-installation/cfy-ui-login.png "Cloudify UI: Login")
+![Cloudify 4.3.1 Login](../../../raw/4.3.1/manager-installation/cfy-ui-login.png "Cloudify UI: Login")
 
 Enter `admin` as the username, and the manager's password. Upon logging in, you'll see the Cloudify UI.
 

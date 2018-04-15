@@ -60,7 +60,7 @@ inputs:
     default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.3.1.tar.gz
   hello_world_archive:
     type: string
-    default: https://github.com/Cloudify-PS/cloudify-hello-world-example/archive/4.0-maint.tar.gz
+    default: https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.3.1.tar.gz
   cli_rpm:
     type: string
     default: http://repository.cloudifysource.org/cloudify/4.3.1/ga-release/cloudify-cli-4.3.1ga.rpm

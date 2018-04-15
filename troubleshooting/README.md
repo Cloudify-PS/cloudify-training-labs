@@ -8,7 +8,7 @@ This lab contains a blueprint ([failed-task/blueprint.yaml](failed-task/blueprin
 always fail. You will run it, and then practice inspecting the relevant logs.
 
 The blueprint is structured so the failing script is being run twice: once on the manager, and once on an agent. For an
-agent, we will pick one of the VM's we have in our disposal - say, the NodeJS VM.
+agent, we will use the App VM.
 
 ### Preparation
 
