@@ -189,20 +189,6 @@ node_templates:
           from_port: 22
           to_port: 22
           cidr_ip: 0.0.0.0/0
-        - ip_protocol: tcp
-          from_port: 80
-          to_port: 80
-          cidr_ip: 0.0.0.0/0
-        # Required for the "Running NodeCellar Locally" lab
-        - ip_protocol: tcp
-          from_port: 8080
-          to_port: 8080
-          cidr_ip: 0.0.0.0/0
-        # Required for the "Using Scripts" lab
-        - ip_protocol: tcp
-          from_port: 8081
-          to_port: 8081
-          cidr_ip: 0.0.0.0/0
     relationships:
       - target: vpc
         type: cloudify.aws.relationships.security_group_contained_in_vpc
@@ -282,7 +268,7 @@ node_templates:
           cidr_ip: 0.0.0.0/0
         - ip_protocol: tcp
           from_port: 8080
-          to_port: 8080
+          to_port: 8081
           cidr_ip: 0.0.0.0/0
         - ip_protocol: tcp
           from_port: 80

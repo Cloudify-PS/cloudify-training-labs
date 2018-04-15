@@ -24,13 +24,13 @@ grep -r "REPLACE_WITH" $LAB_ROOT
 Once you're done, you can run the application in local mode:
 
 ```bash
-cfy install $LAB_ROOT/blueprint/blueprint.yaml -b tomcat -i $LAB_ROOT/inputs/local.yaml
+cfy install $LAB_ROOT/blueprint/blueprint.yaml -b tomcat -i vm_ip_address=<your-app-VM-public-IP-address>
 ```
 
 Then, run the following CLI command:
 
 ```bash
-cfy deployments outputs -b tomcat
+cfy deployments outputs tomcat
 ```
 
 This command will display the deployment's outputs, as defined in the application's blueprint.

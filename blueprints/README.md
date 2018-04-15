@@ -168,7 +168,7 @@ cp -R ~/cloudify-training-labs/blueprints/solution/resources ~/my_bp
 Now that the blueprint is ready, try running it:
 
 ```bash
-cfy install ~/my_bp/blueprint.yaml -i apache_listening_port=8080 -i ip=<your-app-VM-IP> -b bp_test -d dep1
+cfy install ~/my_bp/blueprint.yaml -i apache_listening_port=8080 -i ip=<your-app-VM-public-IP> -b bp_test -d dep1
 ```
 
 (Replace `<your-app-VM-IP>` with your App VM's IP address)

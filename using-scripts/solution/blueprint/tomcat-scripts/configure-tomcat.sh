@@ -52,7 +52,7 @@ sed -i -e "s/port=\"8080\"/port=\"${new_port}\"/g" ${server_xml_file}
 public_ip=$1
 ctx logger info "Public IP: ${public_ip}"
 
-application_url=${public_ip}:${new_port}/${application_name}/
+application_url=http://${public_ip}:${new_port}/${application_name}
 ctx logger info "Application URL: ${application_url}"
 
 ctx instance runtime_properties application_url ${application_url}
