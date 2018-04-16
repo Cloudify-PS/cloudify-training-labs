@@ -75,7 +75,7 @@ in order to verify proper installation, these applications have to be accessible
 If you don't have a Manager VM provided to you, or you would like to use your own image:
 
 * Use a CentOS 7.x image
-* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.getcloudify.org/4.2.0/manager/prerequisites/),
+* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (http://docs.cloudify.co/4.2.0/manager/prerequisites/),
 with the following exceptions:
   * The minimum amount of RAM should be 4GB.
   * The security group to which this VM is connected should have more permissive rules than the ones stated,

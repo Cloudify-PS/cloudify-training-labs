@@ -10,7 +10,7 @@ In this lab, we will write a blueprint that creates resources on OpenStack. We w
 
 Also, we will connect all resources together.
 
-For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.getcloudify.org/4.1/plugins/openstack/
+For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.cloudify.co/4.1/plugins/openstack/
 
 ## Step 1: Create blueprint's skeleton
 
@@ -39,7 +39,7 @@ All inputs should be of type `string`.
 
 ## Step 3: Add OpenStack endpoint DSL definition
 
-(Reference: http://docs.getcloudify.org/4.3.0/blueprints/spec-dsl-definitions/)
+(Reference: http://docs.cloudify.co/4.3.0/blueprints/spec-dsl-definitions/)
 
 Add a DSL definition called `openstack_configuration`. The value should be a dictionary with the following keys:
 
@@ -64,7 +64,7 @@ node_templates:
 
 ### Add the external network
 
-Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-openstack-nodes-network
+Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-openstack-nodes-network
 
 Notes:
 
@@ -76,7 +76,7 @@ Notes:
 
 ### Add a router
 
-Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-openstack-nodes-router
+Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-openstack-nodes-router
 
 *   The router needs to be connected to the external network. To achieve that, establish a `cloudify.relationships.connected_to`
     relationship between the router and the external network node.
@@ -84,18 +84,18 @@ Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-ope
 
 ### Add a network
 
-Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-openstack-nodes-network
+Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-openstack-nodes-network
 
 *   Don't forget to provide the new network's name through the `resource_id` property.
 *   Avoid hard-coding a network name; use an input instead.
 
 ### Add a subnet
 
-Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-openstack-nodes-subnet
+Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-openstack-nodes-subnet
 
 *   The subnet needs to be contained within the network that you had created. To achieve that, create a
     `cloudify.relationships.contained_in` relationship between the subnet and the network.
-*   The subnet needs to have a "leg" in the router. To achieve that: http://docs.getcloudify.org/4.1/plugins/openstack/#cloudify-openstack-subnet-connected-to-router
+*   The subnet needs to have a "leg" in the router. To achieve that: http://docs.cloudify.co/4.1/plugins/openstack/#cloudify-openstack-subnet-connected-to-router
 *   Parameters for the subnet should be passed as entries in a dictionary property called `subnet`, as follows:
 
     ```yaml
@@ -108,20 +108,20 @@ Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-ope
 
 ###  Add a security group
 
-Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-openstack-nodes-securitygroup
+Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-openstack-nodes-securitygroup
 
 We need only one rule: allow ingress traffic on port 22, from anywhere.
 
 ### Add a keypair
 
-Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-openstack-nodes-keypair
+Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-openstack-nodes-keypair
 
 We want to create a new keypair. Therefore, make sure to set the `private_key_path` property to a proper path to receive
 the generated private key.
 
 ### Add a virtual machine
 
-Documentation: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-openstack-nodes-server
+Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-openstack-nodes-server
 
 Notes:
 
@@ -149,7 +149,7 @@ Notes:
     ```bash
     nova flavor-list
     ```
-*   The server needs to be connected to the security group. To achieve that: http://docs.getcloudify.org/4.3.0/plugins/openstack/#cloudify-openstack-server-connected-to-security-group
+*   The server needs to be connected to the security group. To achieve that: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-openstack-server-connected-to-security-group
 *   The server needs to be associated with a keypair. To achieve that, use the `cloudify.openstack.server_connected_to_keypair` relationship.
 *   The server needs to be connected to the network. To achieve that, use a `cloudify.relationships.connected_to` relationship
     between the server and the network.

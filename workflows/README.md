@@ -19,16 +19,21 @@ Your task consists of:
 
 Grep the blueprint for `REPLACE_WITH`. Replace that string with an operation definition.
 
-### Step 2: Run in local mode
+### Step 2: Test your changes
 
-Run the `execute_operation` workflow in local mode:
+Install the blueprint on the manager:
 
 ```bash
-cfy init $LAB_ROOT/blueprint/blueprint.yaml -b workflows
-cfy executions start -b workflows -p ~/execution-parameters.yaml execute_operation
+cfy install $LAB_ROOT/blueprint/blueprint.yaml -b workflows -d workflows -i ip=<your-app-vm-ip>
 ```
 
-The `execution-parameters.yaml` file should be a YAML file that you create, containing parameters to pass to the `execute_operation` workflow, such as:
+Run the `execute_operation` workflow:
+
+```bash
+cfy executions start execute_operation -d workflows -p ~/execution-parameters.yaml
+```
+
+The `~/execution-parameters.yaml` file should be a YAML file that you create, containing parameters to pass to the `execute_operation` workflow, such as:
 
 * `operation`
 * `node_ids`
@@ -47,7 +52,7 @@ First, we need to find the instance ID of the node we would like to heal. Rememb
 To find the node instance, execute the following command (from the CLI VM):
 
 ```bash
-cfy node-instances -b workflows
+cfy node-instances list -d workflows
 ```
 
 The output shows all node instances in the topology. For each node instance, both the instance ID and the node ID are shown. The node ID is the name of the
@@ -56,7 +61,7 @@ node in the blueprint; the node instance ID is the ID of the particular instance
 Then, execute the `heal` workflow. For example:
 
 ```bash
-cfy executions start -b workflows -p 'node_instance_id=lab_vm_a644a' heal
+cfy executions start heal -d workflows -p node_instance_id=lab_vm_a644a
 ```
 
 ## Part III: Uninstall

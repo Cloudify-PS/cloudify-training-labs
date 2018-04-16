@@ -19,7 +19,8 @@ logger.setLevel(logging.DEBUG)
 def _events_logger(events):
     for event in events:
         output = create_event_message_prefix(event)
-        logger.info(output)
+        if output is not None:
+            logger.info(output)
 
 
 def _wait(client, execution):

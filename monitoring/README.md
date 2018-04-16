@@ -46,7 +46,7 @@ The metrics widget will now appear on the screen.
 ### Step 5: Uninstall the application
 
 ```bash
-cfy executions start -d mon uninstall
+cfy executions start uninstall -d mon
 cfy deployments delete mon
 cfy blueprints delete monitoring
 ```
