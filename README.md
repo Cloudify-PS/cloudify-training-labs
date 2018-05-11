@@ -25,11 +25,9 @@ This project contains the labs material for the official Cloudify training cours
 
 If you don't have a CLI VM provided to you, or you would like to use your own image:
 
-* Use a CentOS 7.x image
-* Allow at least 1GB of RAM and 5GB of storage
-* Make sure that `iptables` is disabled. This is not a requirement of the CLI per-se, but rather
-a requirement of the training labs; the labs involve using Cloudify in "local mode" to install applications locally, and
-in order to verify proper installation, these applications have to be accessible through their designated ports.
+* Use a CentOS 7.x image.
+* Allow at least 1GB of RAM and 5GB of storage.
+* Make sure that `iptables` is disabled.
   * If you are using `firewalld`, stop it and mask it:
 
     ```bash
