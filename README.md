@@ -40,9 +40,7 @@ If you don't have a CLI VM provided to you, or you would like to use your own im
     sudo systemctl stop iptables
     sudo systemctl mask iptables
     ```
-* Make sure that the VM is connected to a security group that is very permissive (same reasoning as for
-`iptables`).
-
+* Make sure that the VM is connected to a security group that is very permissive
 * Install `unzip` and `git` (needed for the labs; not Cloudify prerequisites)
 
   ```bash
