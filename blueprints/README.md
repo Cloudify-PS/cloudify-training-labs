@@ -119,7 +119,7 @@ The relationship type will map the `establish` operation in the `cloudify.interf
 **Back in `~/my_bp/blueprint.yaml`**:
 
 *   To the `web_server` node:
-    * Add a relationship where the target is the `host` node, and the type is the standard containment type.
+    * Add a relationship where the target is the `host` node, and the type is the standard containment type (`cloudify.relationships.contained_in`).
 *   To the `my_app` node:
     * Add a relationship where the target is the `web_server` node, and the type is `app_contained_in_apache`.
 
@@ -134,7 +134,7 @@ The relationship type will map the `establish` operation in the `cloudify.interf
 
 ### Add a property reference
 
-Open `include/type-definitions.yaml`. For the `configure` operation in the `apache` node type, add an input called `port`,
+Open `include/type-definitions.yaml`. For the `configure` operation in the `apache` node type, add an operation input called `port`,
 of type `integer`. The default value for the input should be defined so the following happens: when the `configure`
 operation is called, Cloudify retrieves the value of the `port` property for the same node instance that the
 operation runs on.
