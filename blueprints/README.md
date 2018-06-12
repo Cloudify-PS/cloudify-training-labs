@@ -12,6 +12,18 @@ mkdir ~/my_bp
 cd ~/my_bp
 ```
 
+Copy the contents of the `solution/scripts` directory into your blueprint's directory:
+
+```bash
+cp -R ~/cloudify-training-labs/blueprints/solution/scripts ~/my_bp
+```
+
+Now, copy the contents of the `solution/resources` directory into your blueprint's directory:
+
+```bash
+cp -R ~/cloudify-training-labs/blueprints/solution/resources ~/my_bp
+```
+
 Create a new file to contain the blueprint:
 
 ```bash
@@ -148,20 +160,6 @@ only one item called `installation_info`. Its value should be a dictionary conta
 
   (hint: use the `concat` function)
 * `app_dir`: the value should be an attribute reference, obtaining the value of the `target_dir` attribute from `my_app`.
-
-### Add supporting resources
-
-Copy the contents of the `solution/scripts` directory into your blueprint's directory:
-
-```bash
-cp -R ~/cloudify-training-labs/blueprints/solution/scripts ~/my_bp
-```
-
-Now, copy the contents of the `solution/resources` directory into your blueprint's directory:
-
-```bash
-cp -R ~/cloudify-training-labs/blueprints/solution/resources ~/my_bp
-```
 
 ## Run the blueprint
 
