@@ -28,7 +28,7 @@ The `hello-world` blueprint requires a few inputs. For convenience, prepare a YA
 vi ~/hw-inputs.yaml
 ```
 
-Populate the following parameters:
+Provide the following contents:
 
 ```yaml
 server_ip: <your-app-vm-ip-address>
