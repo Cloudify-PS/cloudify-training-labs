@@ -1,18 +1,20 @@
 # Lab: Multitenancy
 
-The purpose of this lab is to show the multitenancy feature implemented in Cloudify.
+The purpose of this lab is to show the multitenancy feature of Cloudify.
 
 Multi-tenancy is a function that enables you to create multiple independent logical groups as isolated environments, which can be managed by a single Cloudify Manager.
 
-A tenant is a logical entity that contains all its resources, for example, blueprint, deployment, workflows and so on. Using multi-tenancy is useful when you want to limit access to a specific set of data (the tenant) to a defined set of users.
+A tenant is a logical entity that contains resources, such as blueprints, deployments, plugins and so on.
+Using multi-tenancy is useful when you want to limit access to a specific set of data (the tenant) to a defined set of users.
 
-When you install Cloudify, a default tenant, named default-tenant, is also installed. You can use the default tenant or create one or more new tenants.
+When you install Cloudify, a default tenant, named `default_tenant`, is created.
+You can use the default tenant, or create additional tenants, depending on your needs.
  
 ## Step 1: Log in as admin
 
-```bash
-cfy profiles use -u admin -p <password> <manager-ip-address>
-```
+Ensure that your active CLI profile is configured to use the `admin` user when communicating with the manager (use the
+`cfy profiles list` command to verify). If that is not the case, either create a new profile or use the `cfy profiles
+set -u <user> -p <password>` command to adjust the current profile.
 
 ## Step 2: Create two tenants
 
@@ -71,8 +73,8 @@ cfy user-groups add-user -g group_a user_2
 ## Step 7: Assign users and groups to tenants
 
 ```bash
-cfy tenants add-user-group -t tenant_a group_a
-cfy tenants add-user -t tenant_b user_3
+cfy tenants add-user-group -t tenant_a group_a -r user
+cfy tenants add-user -t tenant_b user_3 -r manager
 
 ```
 **NOTE**: `tenant_a` should contain one user group and and two users. `tenant_b` should contain one user, no groups.
@@ -94,7 +96,7 @@ Tenants:
 ## Step 8: Upload a blueprint to a tenant
 
 ```bash
-cfy blueprints upload -b mt_lab -t tenant_a ~/hello-world/singlehost-blueprint.yaml
+cfy blueprints upload -b mt_lab -t tenant_a ~/hello-world/no-monitoring-singlehost-blueprint.yaml
 ```
 
 ## Step 9: List all blueprints
@@ -155,11 +157,11 @@ You should only see blueprints that belong to this tenant.
 Listing all blueprints...
 
 Blueprints:
-+--------+----------------------+---------------------------+--------------------------+--------------------------+------------+-------------+------------+
-|   id   |     description      |       main_file_name      |        created_at        |        updated_at        | permission | tenant_name | created_by |
-+--------+----------------------+---------------------------+--------------------------+--------------------------+------------+-------------+------------+
-| mt_lab | This blueprint ins.. | singlehost-blueprint.yaml | 2017-11-06 13:34:44.580  | 2017-11-06 13:34:44.580  |    None    |   tenant_a  |   admin    |
-+--------+----------------------+---------------------------+--------------------------+--------------------------+------------+-------------+------------+
++--------+----------------------+-----------------------------------------+--------------------------+--------------------------+------------+-------------+------------+
+|   id   |     description      |              main_file_name             |        created_at        |        updated_at        | visibility | tenant_name | created_by |
++--------+----------------------+-----------------------------------------+--------------------------+--------------------------+------------+-------------+------------+
+| mt_lab | This blueprint ins.. | no-monitoring-singlehost-blueprint.yaml | 2018-04-22 11:30:21.122  | 2018-04-22 11:30:21.122  |   tenant   |   tenant_a  |   admin    |
++--------+----------------------+-----------------------------------------+--------------------------+--------------------------+------------+-------------+------------+
 ```
 
 ## Step 13: Attempt accessing disallowed tenant
@@ -170,7 +172,7 @@ Try accessing `tenant_b` with `user_1`:
 cfy profiles set -u user_1 -p password -t tenant_b 
 ```
 
-Manager output should contian information about the error:
+Manager output should contain information about the error:
 ```
 401: User unauthorized: <User username=`user_1`> is not associated with <Tenant name=`tenant_b`>.
 ```

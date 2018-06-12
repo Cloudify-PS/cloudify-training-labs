@@ -114,7 +114,7 @@ Enter `admin` as the username, and the manager's password. Upon logging in, you'
 
 ### Step 7: Create a CLI profile pointing at the manager
 
-Log into your CLI VM and use the `cfy profiles` command to create a profile pointing at your manager:
+**On your CLI VM**, use the `cfy profiles` command to create a profile pointing at your manager:
 
 ```bash
 cfy profiles use <manager-public-ip> -u admin -p <admin-password> -t default_tenant
@@ -130,7 +130,7 @@ cfy status
 
 We are going to have Cloudify Manager use the training course's private key file.
 
-1.  From your CLI VM, copy the file '~/cfy-training.pem' into your manager's VM, into the directory `/etc/cloudify`.
+1.  **From your CLI VM**, copy the file `~/cfy-training.pem` into your manager's VM, into the directory `/etc/cloudify`.
 2.  Change the file's ownership so it is readable by the `cfyuser` account.
 
 ```bash
