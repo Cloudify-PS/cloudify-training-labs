@@ -24,7 +24,7 @@ grep -r "REPLACE_WITH" $LAB_ROOT
 Once you're done, you can run the application in local mode:
 
 ```bash
-cfy install $LAB_ROOT/blueprint/blueprint.yaml -b tomcat -i vm_ip_address=<your-app-VM-public-IP-address>
+cfy install $LAB_ROOT/blueprint/blueprint.yaml -b tomcat -d tomcat -i vm_ip_address=<your-app-VM-public-IP-address>
 ```
 
 Then, run the following CLI command:
@@ -49,5 +49,5 @@ curl -L http://<cli-machine-public-ip>:8081/helloworld
 To clean up:
 
 ```bash
-cfy uninstall -b tomcat
+cfy uninstall tomcat
 ```
