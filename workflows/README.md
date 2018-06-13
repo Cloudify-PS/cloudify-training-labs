@@ -27,19 +27,17 @@ Install the blueprint on the manager:
 cfy install $LAB_ROOT/blueprint/blueprint.yaml -b workflows -d workflows -i ip=<your-app-vm-ip>
 ```
 
-Run the `execute_operation` workflow:
-
-```bash
-cfy executions start execute_operation -d workflows -p ~/execution-parameters.yaml
-```
-
-The `~/execution-parameters.yaml` file should be a YAML file that you create, containing parameters to pass to the `execute_operation` workflow, such as:
+Prepare a file, `~/execution-parameters.yaml`, containing parameters to pass to the `execute_operation` workflow, such as:
 
 * `operation`
 * `node_ids`
 * etc.
 
-The execution should pass a message as a parameter (rather than the message being an input of the operation in the blueprint). *Note that the operation should only be performed on the relevant node instance*.
+Run the `execute_operation` workflow, providing the `~/execution-parameters.yaml` file as an input:
+
+```bash
+cfy executions start execute_operation -d workflows -p ~/execution-parameters.yaml
+```
 
 _Tip_: Use the `execute_operation` workflow documentation.
 
