@@ -1,4 +1,0 @@
-operation: my_custom_interface.log
-node_ids: [lab]
-operation_kwargs:
-  message: SUCCESS
