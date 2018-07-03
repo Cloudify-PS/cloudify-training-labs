@@ -1,0 +1,498 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+  - plugin:cloudify-fabric-plugin
+  - plugin:cloudify-aws-plugin
+
+inputs:
+  # General
+  students_count:
+    type: integer
+    default: 0
+  aws_access_key_id:
+    type: string
+  aws_secret_access_key:
+    type: string
+  ec2_region_name:
+    type: string
+    default: us-east-1
+  agents_security_group_id:
+    type: string
+  resources_prefix:
+    type: string
+    default: ''
+  # Keypair
+  keypair_name:
+    type: string
+  private_key_path:
+    type: string
+  # Subnet
+  use_existing_subnet:
+    type: boolean
+    default: true
+  subnet_id:
+    type: string
+  # VPC
+  use_existing_vpc:
+    type: boolean
+    default: true
+  vpc_id:
+    type: string
+    default: ''
+  cidr_block:
+    type: string
+  # CLI
+  cli_image_id:
+    type: string
+    default: ami-6d1c2007
+  cli_instance_type:
+    type: string
+    default: t2.micro
+  cli_ssh_user:
+    type: string
+    default: centos
+  labs_archive:
+    type: string
+    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.3.1.tar.gz
+  plugin_template_archive:
+    type: string
+    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.3.1.tar.gz
+  hello_world_archive:
+    type: string
+    default: https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.3.1.tar.gz
+  cli_rpm:
+    type: string
+    default: http://repository.cloudifysource.org/cloudify/4.3.1/ga-release/cloudify-cli-4.3.1ga.rpm
+  github_user:
+    description: |
+      User account to use when referring to GitHub. Only required if at least one of the used
+      GitHub repositories is private.
+    type: string
+    default: ''
+  github_api_key:
+    description: |
+      API key to use when referring to GitHub. Only required if at least one of the used
+      GitHub repositories is private.
+    type: string
+    default: ''
+  # Manager (from AMI)
+  cm_ami_id:
+    type: string
+    default: ami-7c943401
+  cm_instance_type:
+    type: string
+    default: t2.medium
+  # Manager (blank)
+  manager_image_id:
+    type: string
+    default: ami-6d1c2007
+  manager_instance_type:
+    type: string
+    default: t2.medium
+  manager_ssh_user:
+    type: string
+    default: centos
+  # App
+  app_image_id:
+    type: string
+    default: ami-6d1c2007
+  app_instance_type:
+    type: string
+    default: t2.micro
+  app_ssh_user:
+    type: string
+    default: centos
+
+dsl_definitions:
+  aws_config: &aws_config
+    aws_access_key_id: { get_input: aws_access_key_id }
+    aws_secret_access_key: { get_input: aws_secret_access_key }
+    ec2_region_name: { get_input: ec2_region_name }
+  cli_fabric_env: &cli_fabric_env
+    host_string: { get_attribute: [ cli_vm, ip ]}
+    user: { get_input: cli_ssh_user }
+    key_filename: { get_property: [ keypair, private_key_path ] }
+  mgr_fabric_env: &mgr_fabric_env
+    host_string: { get_attribute: [ manager_vm, ip ]}
+    user: { get_input: manager_ssh_user }
+    key_filename: { get_property: [ keypair, private_key_path ] }
+  cli_ssh_parms: &cli_ssh_parms
+    host: { get_attribute: [ cli_vm, public_ip_address ]}
+    user: { get_input: cli_ssh_user }
+    key_filename: { get_property: [ keypair, private_key_path ] }
+  app_fabric_env: &app_fabric_env
+    host_string: { get_attribute: [ app_vm, ip ]}
+    user: { get_input: app_ssh_user }
+    key_filename: { get_property: [ keypair, private_key_path ] }
+
+node_types:
+  vm_base:
+    derived_from: cloudify.aws.nodes.Instance
+    properties:
+      aws_config:
+        default: *aws_config
+      display_name:
+        type: string
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure:
+          implementation: aws.cloudify_aws.ec2.instance.modify_attributes
+          inputs:
+            new_attributes:
+              default:
+                blockDeviceMapping: ['/dev/sda1=true']
+
+  lab_vm:
+    derived_from: vm_base
+    properties:
+      agent_config:
+        default:
+          install_method: none
+
+node_templates:
+  keypair:
+    type: cloudify.aws.nodes.KeyPair
+    properties:
+      aws_config: *aws_config
+      use_external_resource: true
+      resource_id: { get_input: keypair_name }
+      private_key_path: { get_input: private_key_path }
+
+  vpc:
+    type: cloudify.aws.nodes.VPC
+    properties:
+      aws_config: *aws_config
+      use_external_resource: { get_input: use_existing_vpc }
+      resource_id: { get_input: vpc_id }
+      cidr_block: { get_input: cidr_block }
+
+  subnet:
+    type: cloudify.aws.nodes.Subnet
+    properties:
+      aws_config: *aws_config
+      use_external_resource: { get_input: use_existing_subnet }
+      resource_id: { get_input: subnet_id }
+      cidr_block: ''
+    relationships:
+      - type: cloudify.aws.relationships.subnet_contained_in_vpc
+        target: vpc
+
+  cli_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      resource_id: { concat: [ { get_input: resources_prefix }, '-cli-sg'] }
+      description: Cloudify Training (CLI)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
+  manager_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      resource_id: { concat: [ { get_input: resources_prefix }, '-mgr-sg'] }
+      description: Cloudify Training (manager)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 443
+          to_port: 443
+          cidr_ip: 0.0.0.0/0
+        # Cloudify Composer port
+        - ip_protocol: tcp
+          from_port: 8443
+          to_port: 8443
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 53229
+          to_port: 53229
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 53333
+          to_port: 53333
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 5671
+          to_port: 5671
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8300
+          to_port: 8300
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8301
+          to_port: 8301
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: udp
+          from_port: 8301
+          to_port: 8301
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 8500
+          to_port: 8500
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 15432
+          to_port: 15432
+          cidr_ip: { get_input: cidr_block }
+        - ip_protocol: tcp
+          from_port: 22000
+          to_port: 22000
+          cidr_ip: { get_input: cidr_block }
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
+  app_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      resource_id: { concat: [ { get_input: resources_prefix }, '-app-sg'] }
+      description: Cloudify Training (App)
+      rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 8080
+          to_port: 8081
+          cidr_ip: 0.0.0.0/0
+        - ip_protocol: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
+  cli_ip:
+    type: cloudify.aws.nodes.ElasticIP
+    properties:
+      aws_config: *aws_config
+      domain: vpc
+  cli_vm:
+    type: lab_vm
+    properties:
+      image_id: { get_input: cli_image_id }
+      instance_type: { get_input: cli_instance_type }
+      name: { concat: [{ get_input: resources_prefix }, 'cli']}
+      display_name: CLI
+    relationships:
+      - target: keypair
+        type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: cli_ip
+        type: cloudify.aws.relationships.instance_connected_to_elastic_ip
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: cli_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
+  cli_configuration:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: fabric.fabric_plugin.tasks.run_commands
+          inputs:
+            commands:
+              - sudo yum -y install zip unzip git nano gcc python-devel
+              # pip and virtualenv are not needed by Cloudify as of 3.4, but needed by the
+              # developing-simple-plugin lab
+              - curl https://bootstrap.pypa.io/get-pip.py | sudo python
+              - sudo pip install virtualenv
+              - sudo pip install virtualenvwrapper
+              # Needed to work around https://cloudifysource.atlassian.net/browse/CY-153
+              - echo PATH=$PATH:/opt/cfy/embedded/bin >> ~/.bashrc
+            fabric_env: *cli_fabric_env
+        configure:
+          implementation: scripts/configure.sh
+          executor: central_deployment_agent
+          inputs: *cli_ssh_parms
+      custom:
+        install_cli:
+          implementation: fabric.fabric_plugin.tasks.run_commands
+          inputs:
+            commands:
+              - { concat: ['sudo yum -y install ', { get_input: cli_rpm }] }
+            fabric_env: *cli_fabric_env
+    relationships:
+      - target: cli_vm
+        type: cloudify.relationships.contained_in
+
+  cli_labs:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        # "create" can also be used to refresh the labs.
+        # It'd be nicer to implement "delete" and use the "heal" workflow...
+        # but "heal" (at least currently) kills entire VM's...
+        create:
+          implementation: scripts/refresh-labs.sh
+          executor: central_deployment_agent
+          inputs:
+            <<: *cli_ssh_parms
+            labs_archive: { get_input: labs_archive }
+            plugin_template_archive: { get_input: plugin_template_archive }
+            hello_world_archive: { get_input: hello_world_archive }
+            github_user: { get_input: github_user }
+            github_api_key: { get_input: github_api_key }
+    relationships:
+      - target: cli_vm
+        type: cloudify.relationships.contained_in
+
+  manager_ip:
+    type: cloudify.aws.nodes.ElasticIP
+    properties:
+      aws_config: *aws_config
+      domain: vpc
+  manager_vm:
+    type: lab_vm
+    properties:
+      image_id: { get_input: manager_image_id }
+      instance_type: { get_input: manager_instance_type }
+      name: { concat: [{ get_input: resources_prefix }, 'manager']}
+      display_name: Manager
+    relationships:
+      - target: keypair
+        type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: manager_ip
+        type: cloudify.aws.relationships.instance_connected_to_elastic_ip
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: manager_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
+  manager_configuration:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: fabric.fabric_plugin.tasks.run_commands
+          inputs:
+            commands:
+              - sudo yum -y install nano openssl
+            fabric_env: *mgr_fabric_env
+    relationships:
+      - target: manager_vm
+        type: cloudify.relationships.contained_in
+
+  cm_ip:
+    type: cloudify.aws.nodes.ElasticIP
+    properties:
+      aws_config: *aws_config
+      domain: vpc
+  cm_vm:
+    type: lab_vm
+    properties:
+      image_id: { get_input: cm_ami_id }
+      instance_type: { get_input: cm_instance_type }
+      name: { concat: [{ get_input: resources_prefix }, 'cm-ami']}
+      display_name: Manager (AMI)
+    relationships:
+      - target: keypair
+        type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: cm_ip
+        type: cloudify.aws.relationships.instance_connected_to_elastic_ip
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: manager_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
+
+  app_ip:
+    type: cloudify.aws.nodes.ElasticIP
+    properties:
+      aws_config: *aws_config
+      domain: vpc
+  app_vm:
+    type: lab_vm
+    properties:
+      image_id: { get_input: app_image_id }
+      instance_type: { get_input: app_instance_type }
+      name: { concat: [{ get_input: resources_prefix }, 'app']}
+      display_name: App
+    relationships:
+      - target: keypair
+        type: cloudify.aws.relationships.instance_connected_to_keypair
+      - target: app_ip
+        type: cloudify.aws.relationships.instance_connected_to_elastic_ip
+      - target: app_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: lab_vm_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: agents_security_group
+        type: cloudify.aws.relationships.instance_connected_to_security_group
+      - target: subnet
+        type: cloudify.aws.relationships.instance_connected_to_subnet
+  app_configuration:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: fabric.fabric_plugin.tasks.run_commands
+          inputs:
+            commands:
+              # Required for monitoring lab
+              - sudo yum -y install unzip
+            fabric_env: *app_fabric_env
+    relationships:
+      - target: app_vm
+        type: cloudify.relationships.contained_in
+
+  lab_vm_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      resource_id: { concat: [ { get_input: resources_prefix }, '-lab-sg'] }
+      description: For all lab VMs
+    # No rules. This is for future use.
+    relationships:
+      - target: vpc
+        type: cloudify.aws.relationships.security_group_contained_in_vpc
+
+  agents_security_group:
+    type: cloudify.aws.nodes.SecurityGroup
+    properties:
+      aws_config: *aws_config
+      use_external_resource: true
+      resource_id: { get_input: agents_security_group_id }
+      description: ''
+
+  training_info:
+    type: cloudify.nodes.Root
+
+groups:
+  trainee:
+    members: [cli_vm, cli_ip, app_vm, app_ip, cm_vm, cm_ip, manager_vm, manager_ip]
+
+policies:
+  trainee_policy:
+    type: cloudify.policies.scaling
+    properties:
+      default_instances: { get_input: students_count }
+    targets: [trainee]
+
+outputs:
+  training_info:
+    value: { get_attribute: [ training_info, info ] }

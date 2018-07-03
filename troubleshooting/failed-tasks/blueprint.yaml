@@ -1,0 +1,34 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+
+inputs:
+  vm_ip:
+    type: string
+
+node_templates:
+  vm:
+    type: cloudify.nodes.Compute
+    properties:
+      ip: { get_input: vm_ip }
+      agent_config:
+        user: centos
+        key: /etc/cloudify/cfy-training.pem
+  agent_script:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/fail.py
+    relationships:
+      - target: vm
+        type: cloudify.relationships.contained_in
+
+  manager_script:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/fail.py
+          executor: central_deployment_agent

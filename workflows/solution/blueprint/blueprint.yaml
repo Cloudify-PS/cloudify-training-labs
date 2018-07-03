@@ -1,0 +1,27 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+
+inputs:
+  ip:
+    type: string
+
+node_templates:
+  lab_vm:
+    type: cloudify.nodes.Compute
+    properties:
+      ip: { get_input: ip }
+      agent_config:
+        user: centos
+        key: /etc/cloudify/cfy-training.pem
+
+  lab:
+    type: cloudify.nodes.Root
+    interfaces:
+      my_custom_interface:
+        log:
+          implementation: scripts/my-logging-operation.sh
+    relationships:
+      - target: lab_vm
+        type: cloudify.relationships.contained_in

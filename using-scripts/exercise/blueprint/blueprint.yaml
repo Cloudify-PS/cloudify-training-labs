@@ -1,0 +1,92 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+
+inputs:
+  vm_ip_address:
+    type: string
+  agent_user:
+    type: string
+    default: centos
+  agent_private_key:
+    type: string
+    default: /etc/cloudify/cfy-training.pem
+  port:
+    type: integer
+    default: 8081
+  download_path:
+    type: string
+    default: https://s3.amazonaws.com/cloudify-training-resources/labs/apache-tomcat-7.0.82.tar.gz
+  war_url:
+    type: string
+    default: https://s3.amazonaws.com/cloudify-training-resources/labs/helloworld.war
+  war_filename:
+    type: string
+    default: helloworld.war
+  java_url:
+    type: string
+    default: https://s3.amazonaws.com/cloudify-training-resources/labs/jdk-8u151-linux-x64.tar.gz
+  application_name:
+    type: string
+    default: helloworld
+
+node_types:
+  web_server:
+    derived_from: cloudify.nodes.WebServer
+    properties:
+      download_path:
+        type: string
+        description: URL for the Tomcat installation tar.gz file
+      war_url:
+        type: string
+        description: URL for the sample WAR file
+      war_filename:
+        type: string
+        description: Name of the WAR file name (e.g. 'helloworld.war')
+      java_url:
+        type: string
+        description: URL for the JDK installation tar.gz file
+      application_name:
+        type: string
+        description: Application's name (e.g. 'helloworld')
+
+node_templates:  
+  tomcat_vm:
+    type: cloudify.nodes.Compute
+    properties:
+      ip: { get_input: vm_ip_address }
+      agent_config:
+        user: { get_input: agent_user }
+        key: { get_input: agent_private_key }
+
+  tomcat_server:
+    type: web_server
+    properties:
+      port: { get_input: port }
+      download_path: { get_input: download_path }
+      war_url: { get_input: war_url }
+      war_filename: { get_input: war_filename }
+      java_url: { get_input: java_url }
+      application_name: { get_input: application_name }
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create: REPLACE_WITH_APPROPRIATE_SCRIPT
+        configure:
+          implementation: REPLACE_WITH_APPROPRIATE_SCRIPT
+          inputs:
+            process:
+              args: [get_input: vm_ip_address]
+        start: REPLACE_WITH_APPROPRIATE_SCRIPT
+        stop: REPLACE_WITH_APPROPRIATE_SCRIPT
+        delete: REPLACE_WITH_APPROPRIATE_SCRIPT
+
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: tomcat_vm
+
+outputs:
+  endpoint:
+    description: My application endpoint
+    value:
+      application_url: { get_attribute: [ tomcat_server , application_url ] }

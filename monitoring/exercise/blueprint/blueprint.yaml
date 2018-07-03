@@ -1,0 +1,37 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+  - http://www.getcloudify.org/spec/diamond-plugin/1.3.6/plugin.yaml
+
+inputs:
+  vm_ip_address:
+    type: string
+  ssh_user:
+    type: string
+    default: centos
+  key_filename:
+    type: string
+    default: /root/cfy-training.pem
+
+node_templates:  
+  host:
+    type: cloudify.nodes.Compute
+    properties:
+      ip: { get_input: vm_ip_address }
+      agent_config:
+        user: { get_input: ssh_user }
+        key: { get_input: key_filename }
+    interfaces:
+      cloudify.interfaces.monitoring_agent:
+        install:
+          implementation: diamond.diamond_agent.tasks.install
+          inputs:
+            diamond_config:
+              interval: 1
+        start: diamond.diamond_agent.tasks.start
+        stop: diamond.diamond_agent.tasks.stop
+        uninstall: diamond.diamond_agent.tasks.uninstall
+      cloudify.interfaces.monitoring:
+        start:
+          REPLACE_WITH_MONITORING_COLLECTORS
