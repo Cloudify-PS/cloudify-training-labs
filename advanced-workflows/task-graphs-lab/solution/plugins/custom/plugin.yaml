@@ -1,0 +1,29 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+plugins:
+  pkg:
+    executor: central_deployment_agent
+    package_name: lab-wf-graphs-plugin
+    package_version: '0.1'
+    source: custom
+
+
+node_types:
+  hacker.aws.nodes.Instance:
+    derived_from: cloudify.aws.nodes.Instance
+    properties:
+      image_id:
+        required: false
+      instance_type:
+        required: false
+    interfaces:
+      hacker.interfaces.lifecycle:
+        stop: pkg.plugin.operations.stop
+        start: pkg.plugin.operations.start
+        delete_snapshots: pkg.plugin.operations.delete_snapshots
+
+
+workflows:
+  refresh_snapshots:
+    # Package.Module.File.Function
+    mapping: pkg.plugin.workflows.refresh_snapshots
