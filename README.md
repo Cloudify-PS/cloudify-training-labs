@@ -5,7 +5,7 @@ This project contains the labs material for the official Cloudify training cours
 ## Labs Order
 
 1.  [CLI Installation](cli-installation)
-2.  [Running Basic Blueprint Locally](running-basic-locally)
+2.  [Running Basic Blueprint](running-basic-blueprint)
 3.  [Creating a Simple Blueprint](blueprints)
 4.  [Using Scripts in Lifecycle Events](using-scripts)
 5.  [Developing a Simple Plugin](developing-simple-plugin)
