@@ -7,13 +7,17 @@ Ensure that the `LAB_ROOT` environment variable points to the exercise's root di
 ```bash
 export LAB_ROOT=~/cloudify-training-labs/monitoring/exercise
 ```
+### Step 0: Upload diamond plugin
+```bash
+cfy plugins upload -y http://www.getcloudify.org/spec/diamond-plugin/1.3.8/plugin.yaml http://repository.cloudifysource.org/cloudify/wagons/cloudify-diamond-plugin/1.3.8/cloudify_diamond_plugin-1.3.8-py27-none-linux_x86_64-centos-Core.wgn
+```
 
 ### Step 1: Replace the placeholders
 
 You need to replace all the occurrences of the placeholders (`REPLACE_WITH`) in `inputs.yaml` and in `blueprint/blueprint.yaml` to add monitoring to the blueprint.
 
 You can use the Diamond collectors' reference for information how to configure collectors: https://github.com/python-diamond/Diamond/wiki/Collectors
- 
+
 ### Step 2: Upload and install the blueprint
 
 **NOTE**: Replace `<app-vm-ip-address>` with the private IP address of your application VM.

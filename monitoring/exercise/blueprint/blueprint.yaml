@@ -12,7 +12,7 @@ inputs:
     default: centos
   key_filename:
     type: string
-    default: /root/cfy-training.pem
+    default: ~/cfy-training.pem
 
 node_templates:
   host:
