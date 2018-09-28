@@ -20,7 +20,7 @@ networking- and security-related prerequisites. You will have to ensure that you
   * Ports 5671, 5672, 53229, and 53333 from any VM that:
     * Is going to be created by Cloudify; and
     * Is going to have the Cloudify Agent installed on it.
-* A security group that allows access to agents, as specified in the [Agent prerequisites description](http://docs.cloudify.co/4.2.0/agents/overview/).
+* A security group that allows access to agents, as specified in the [Agent prerequisites description](https://docs.cloudify.co/4.3.0/install_maintain/agents/).
 * A network to connect the Cloudify Manager to.
 * A keypair to use for SSH'ing into the Cloudify Manager VM.
 
@@ -42,7 +42,7 @@ of enabling agent <-> manager communication.
 
 ### Step 1: Import the Cloudify Manager image to OpenStack
 
-The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.2.0/ga-release/cloudify-manager-4.2ga.qcow2
+The official Cloudify Manager image is located at: http://repository.cloudifysource.org/cloudify/4.3.2/ga-release/cloudify-manager-4.3.2ga.qcow2
 
 You can use Horizon to import the QCOW2 image into OpenStack:
 
@@ -83,16 +83,22 @@ Create a virtual machine for installing the Cloudify Manager on.
 
 ### Step 2: Bootstrap
 
-Use the instructions provided in the [Manager Bootstrapping lab](../bootstrap) to perform the bootstrap.
+Use the instructions provided in the [Manager Bootstrapping lab](../manager-installation) to perform the bootstrap.
 
 ### Step 3: Upload plugins
- 
-Once bootstrapping is complete, upload the OpenStack plugin package:
+
+Once bootstrapping is complete, upload the OpenStack plugin and Diamond-plugin packages:
 
 ```bash
 cd ~
 curl -J -O https://github.com/cloudify-cosmo/cloudify-openstack-plugin/releases/download/2.2.0/cloudify_openstack_plugin-2.2.0-py27-none-linux_x86_64-centos-Core.wgn
-cfy plugins upload ~/cloudify_openstack_plugin-2.2.0-py27-none-linux_x86_64-centos-Core.wgn
+curl -J -O http://www.getcloudify.org/spec/openstack-plugin/2.2.0/plugin.yaml
+cfy plugins upload -y plugin.yaml cloudify_openstack_plugin-2.2.0-py27-none-linux_x86_64-centos-Core.wgn
+cfy plugins upload -y http://www.getcloudify.org/spec/openstack-plugin/2.0.1/plugin.yaml http://repository.cloudifysource.org/cloudify/wagons/cloudify-openstack-plugin/2.0.1/cloudify_openstack_plugin-2.0.1-py27-none-linux_x86_64-centos-Core.wgn
+cfy plugins upload -y http://www.getcloudify.org/spec/diamond-plugin/1.3.14/plugin.yaml http://repository.cloudifysource.org/cloudify/wagons/cloudify-diamond-plugin/1.3.14/cloudify_diamond_plugin-1.3.14-py27-none-linux_x86_64-centos-Core.wgn
+curl -J -O http://repository.cloudifysource.org/cloudify/wagons/cloudify-openstack-plugin/2.9.6/cloudify_openstack_plugin-2.9.6-py27-none-linux_x86_64-centos-Core.wgn
+curl -J -O http://www.getcloudify.org/spec/openstack-plugin/2.9.6/plugin.yaml
+cfy plugins upload -y plugin.yaml ~/cloudify_openstack_plugin-2.9.6-py27-none-linux_x86_64-centos-Core.wgn
 ```
 
 ## Part 3: Orchestrate Application

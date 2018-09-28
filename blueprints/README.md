@@ -31,7 +31,7 @@ vi blueprint.yaml
 ```
 
 ## Create the blueprint
- 
+
 ### TOSCA definitions version
 
 Add the TOSCA definitions version directive at the top of the file:
@@ -42,7 +42,7 @@ tosca_definitions_version: <add_version_here>
 
 ### Imports
 
-* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.3.2/types.yaml
 * Add an import statement to a file called `include/type-definitions.yaml`.
 
 ### Add node types
@@ -81,14 +81,14 @@ later.
 1.  Add a node template called `host`, of type `cloudify.nodes.Compute`.
     *   Add a property called `ip`, with the value being the IP address of your **App VM**.
     *   Add a property called `agent_config`, with the value being a dictionary containing the following:
-    
+
         ```
         user: centos
         key: /etc/cloudify/cfy-training.pem
         ```
-    
+
         For example:
-        
+
         ```yaml
         host:
           <...>

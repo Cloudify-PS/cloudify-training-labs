@@ -1,8 +1,8 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
-  - http://www.getcloudify.org/spec/diamond-plugin/1.3.6/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.3.2/types.yaml
+  - plugin:cloudify-diamond-plugin
 
 inputs:
   vm_ip_address:
@@ -12,9 +12,9 @@ inputs:
     default: centos
   key_filename:
     type: string
-    default: /root/cfy-training.pem
+    default:  ~/cfy-training.pem
 
-node_templates:  
+node_templates:
   host:
     type: cloudify.nodes.Compute
     properties:

@@ -13,13 +13,13 @@ already met, so you can skip this sction.
 To develop a plugin, you will need to install the following:
 
 *   `pip`: Most Linux distributions already contain this. Otherwise:
-    
+
     ```bash
     curl https://bootstrap.pypa.io/get-pip.py | sudo python
     ```
 
 *   `virtualenv`: Can be installed via:
-    
+
     ```bash
     sudo pip install virtualenv
     ```
@@ -28,10 +28,10 @@ To develop a plugin, you will need to install the following:
     1.  Create a new virtual environment (for example: `virtualenv /tmp/my-env`)
     2.  Activate it (`source /tmp/my-env/bin/activate`)
     3.  Install Cloudify's development libraries using `pip install`:
-        * `cloudify-dsl-parser==4.2`
-        * `cloudify-rest-client==4.2`
-        * `cloudify-plugins-common==4.2`
-        * `cloudify-script-plugin==1.5.1`
+        * `cloudify-dsl-parser==4.3.2`
+        * `cloudify-rest-client==4.3.2`
+        * `cloudify-plugins-common==4.3.2`
+        * `cloudify-script-plugin==1.5.3`
 
 **NOTE**: The plugin development template is already available for you on your CLI VM, under `~/plugin-template`.
 
