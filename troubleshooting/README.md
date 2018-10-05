@@ -21,7 +21,7 @@ export LAB_ROOT=~/cloudify-training-labs/troubleshooting/failed-tasks
 ```bash
 cfy blueprints upload -b fail $LAB_ROOT/blueprint.yaml
 cfy deployments create -b fail -i 'vm_ip=<nodejs-vm-private-ip>' fail
-cfy executions start -d fail -w install
+cfy executions start -d fail install
 ```
 
 ### Analysis
