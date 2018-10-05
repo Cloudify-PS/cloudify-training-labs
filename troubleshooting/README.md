@@ -4,7 +4,7 @@ In this lab, we will walk through a few troubleshooting scenarios.
 
 ## Failing tasks
 
-This lab contains a blueprint ([failed-task/blueprint.yaml](failed-task/blueprint.yaml)) that runs a script that will
+This lab contains a blueprint ([failed-tasks/blueprint.yaml](failed-task/blueprint.yaml)) that runs a script that will
 always fail. You will run it, and then practice inspecting the relevant logs.
 
 The blueprint is structured so the failing script is being run twice: once on the manager, and once on an agent. For an
@@ -13,7 +13,7 @@ agent, we will use the App VM.
 ### Preparation
 
 ```bash
-export LAB_ROOT=~/cfy-training-labs/troubleshooting/failed-tasks
+export LAB_ROOT=~/cloudify-training-labs/troubleshooting/failed-tasks
 ```
 
 ### Execute the blueprint
