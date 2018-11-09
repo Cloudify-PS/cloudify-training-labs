@@ -42,7 +42,7 @@ tosca_definitions_version: <add_version_here>
 
 ### Imports
 
-* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.4/types.yaml
+* Add Cloudify's global `types.yaml` file using an `import` statement. The file's URL is: http://www.getcloudify.org/spec/cloudify/4.5/types.yaml
 * Add an import statement to a file called `include/type-definitions.yaml`.
 
 ### Add node types

@@ -46,7 +46,7 @@ Active profile:
 
 ## Step 5: Upload a blueprint as private:
 ```
-cfy blueprints upload -b openstack-blueprint.yaml -t TenantA --private-resource https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.4.zip
+cfy blueprints upload -b openstack-blueprint.yaml -t TenantA --private-resource https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.5.zip
 ```
 
 ## Step 6: Show the tenant’s resources - the current user can see all of them. Pay attention to the “created_by” field:
