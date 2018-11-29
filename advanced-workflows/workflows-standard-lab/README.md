@@ -19,7 +19,7 @@ cfy blueprints upload -b lab-std-wf exercise/blueprint.yaml
 cfy deployments create lab-std-wf-01 -b lab-std-wf
 
 # Execute the custom workflow
-cfy executions start -d lab-std-wf-01 check_wind_speed -l
+cfy executions start -d lab-std-wf-01 check_wind_speed
 ```
 
 ## Lab tasks
