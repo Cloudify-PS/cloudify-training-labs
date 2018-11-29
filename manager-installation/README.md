@@ -44,8 +44,15 @@ Edit the file `/etc/cloudify/config.yaml`.
    ```yaml
    minimum_required_total_physical_memory_in_mb: 3500
    ```
+2. By default the manager installation skips installing the monitoring tools make sure you enable them
+    
+   ```yaml
+    monitoring_install: &monitoring_install
+    # This will cause the monitoring components not to be installed if set to true
+    skip_installation: false
+   ```
 
-2. By default, the `admin_password` input is set to an empty string. In that case, the manager will generate a password
+3. By default, the `admin_password` input is set to an empty string. In that case, the manager will generate a password
    and will display it at the end of the installation process. You may uncomment that input and provide your own value
    instead.
 
