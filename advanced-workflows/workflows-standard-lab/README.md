@@ -19,27 +19,8 @@ cfy blueprints upload -b lab-std-wf exercise/blueprint.yaml
 cfy deployments create lab-std-wf-01 -b lab-std-wf
 
 # Execute the custom workflow
-cfy executions start -d lab-std-wf-01 -w check_wind_speed -l
+cfy executions start -d lab-std-wf-01 check_wind_speed -l
 ```
-
-**Running locally** _(requires being in a VirtualEnv)_
-
-```bash
-# Uninstall any previously installed version of the plugin
-# Windows users: If using Cygwin, use "winpty" before "pip".
-pip uninstall -y lab-wf-standard-plugin
-
-# Install the local plugin into your VirtualEnv
-pip install ./exercise/plugins/lab/
-
-# Initialize the deployment and execute the custom workflow
-cfy local install --install-plugins --debug \
-	--blueprint-path exercise/blueprint.yaml \
-    --inputs exercise/inputs.yaml \
-    --task-retries 60 --task-retry-interval 15 \
-    --workflow refresh_snapshots
-```
-
 
 ## Lab tasks
 
