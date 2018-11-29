@@ -13,10 +13,10 @@ Since this lab folder includes both the blueprint as well as the needed plugin, 
 
 ```bash
 # Upload the blueprint (and plugin) to a manager
-cfy blueprints upload -b lab-std-wf -p exercise/blueprint.yaml
+cfy blueprints upload -b lab-std-wf exercise/blueprint.yaml
 
 # Create a new deployment from the blueprint
-cfy deployments create -d lab-std-wf-01 -b lab-std-wf
+cfy deployments create lab-std-wf-01 -b lab-std-wf
 
 # Execute the custom workflow
 cfy executions start -d lab-std-wf-01 -w check_wind_speed -l
