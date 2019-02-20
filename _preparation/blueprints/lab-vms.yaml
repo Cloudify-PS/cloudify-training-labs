@@ -1,7 +1,7 @@
-tosca_definitions_version: cloudify_dsl_1_3
+uditosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.3.2/types.yaml
   - plugin:cloudify-fabric-plugin
   - plugin:cloudify-aws-plugin
 
@@ -54,16 +54,16 @@ inputs:
     default: centos
   labs_archive:
     type: string
-    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.3.1.tar.gz
+    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.3.2.tar.gz
   plugin_template_archive:
     type: string
-    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.3.1.tar.gz
+    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.3.2.tar.gz
   hello_world_archive:
     type: string
-    default: https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.3.1.tar.gz
+    default: https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.3.2.tar.gz
   cli_rpm:
     type: string
-    default: http://repository.cloudifysource.org/cloudify/4.3.1/ga-release/cloudify-cli-4.3.1ga.rpm
+    default: http://repository.cloudifysource.org/cloudify/4.3.2/ga-release/cloudify-cli-4.3.2ga.rpm
   github_user:
     description: |
       User account to use when referring to GitHub. Only required if at least one of the used

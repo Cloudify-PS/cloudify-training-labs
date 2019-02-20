@@ -18,7 +18,7 @@ For the preparation of this lab, you will have to use the official OpenStack plu
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/4.3.1/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.3.2/types.yaml
   - http://www.getcloudify.org/spec/openstack-plugin/2.6.0/plugin.yaml
 ```
 

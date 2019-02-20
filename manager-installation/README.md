@@ -20,13 +20,13 @@ of the training labs, in favour of simplicity.
 ### Step 1: Download Cloudify Manager's RPM
 
 ```bash
-curl -J -O http://repository.cloudifysource.org/cloudify/4.3.1/ga-release/cloudify-manager-install-4.3.1ga.rpm
+curl -J -O http://repository.cloudifysource.org/cloudify/4.3.2/ga-release/cloudify-manager-install-4.3.2ga.rpm
 ```
 
 ### Step 2: Install Cloudify Manager's RPM
 
 ```bash
-sudo yum -y install cloudify-manager-install-4.3.1ga.rpm
+sudo yum -y install cloudify-manager-install-4.3.2ga.rpm
 ```
 
 ### Step 3: Edit the installation's configuration file
@@ -108,7 +108,7 @@ Using your browser, navigate to your Cloudify Manager's public IP address. For e
 
 You should get the Cloudify Manager's UI login page:
 
-![Cloudify 4.3.1 Login](../../../raw/4.3.1/manager-installation/cfy-ui-login.png "Cloudify UI: Login")
+![Cloudify 4.3.2 Login](../../../raw/4.3.2/manager-installation/cfy-ui-login.png "Cloudify UI: Login")
 
 Enter `admin` as the username, and the manager's password. Upon logging in, you'll see the Cloudify UI.
 
