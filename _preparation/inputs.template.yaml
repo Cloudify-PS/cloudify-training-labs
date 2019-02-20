@@ -1,6 +1,7 @@
 students_count: 1
 aws_access_key_id: ''
 aws_secret_access_key: ''
+ec2_region_name: us-east-1
 agents_security_group_id: sg-12265563
 keypair_name: cfy-training
 private_key_path: /etc/cloudify/cfy-training.pem

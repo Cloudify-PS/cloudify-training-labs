@@ -2,6 +2,8 @@
 
 In this lab, we will run a very basic blueprint using Cloudify.
 
+**NOTE**: This lab should be run on your **CLI VM**.
+
 ## Add your IP address
 
 Edit the file `~/cloudify-training-labs/running-basic-blueprint/blueprint/basic.yaml`,

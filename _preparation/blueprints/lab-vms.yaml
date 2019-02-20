@@ -1,7 +1,7 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-  - http://www.getcloudify.org/spec/cloudify/4.5/types.yaml
+  - http://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
   - plugin:cloudify-fabric-plugin
   - plugin:cloudify-aws-plugin
 
@@ -16,7 +16,7 @@ inputs:
     type: string
   ec2_region_name:
     type: string
-    default: us-east-1
+    #default: us-east-1
   agents_security_group_id:
     type: string
   resources_prefix:
@@ -45,7 +45,8 @@ inputs:
   # CLI
   cli_image_id:
     type: string
-    default: ami-6d1c2007
+    # ami-04cf43aca3e6f3de3: CentOS 7 in EU-Frankfurt
+    default: ami-04cf43aca3e6f3de3
   cli_instance_type:
     type: string
     default: t2.micro
@@ -54,16 +55,19 @@ inputs:
     default: centos
   labs_archive:
     type: string
-    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.5.tar.gz
+    default: https://github.com/Cloudify-PS/cloudify-training-labs/archive/4.5.5.tar.gz
   plugin_template_archive:
     type: string
-    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.5.tar.gz
+    default: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/4.5.5.tar.gz
   hello_world_archive:
     type: string
-    default: https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.5.tar.gz
+    default: https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.5.5.tar.gz
   cli_rpm:
     type: string
-    default: http://cloudify-release-eu.s3.amazonaws.com/cloudify/4.5.0/ga-release/cloudify-cli-4.5.0~ga.el6.x86_64.rpm
+    default: http://repository.cloudifysource.org/cloudify/4.5.5/ga-release/cloudify-cli-4.5.5ga.rpm
+  manager_rpm:
+    type: string
+    default: http://repository.cloudifysource.org/cloudify/4.5.5/ga-release/cloudify-manager-install-4.5.5ga.rpm
   github_user:
     description: |
       User account to use when referring to GitHub. Only required if at least one of the used
@@ -76,27 +80,22 @@ inputs:
       GitHub repositories is private.
     type: string
     default: ''
-  # Manager (from AMI)
-  cm_ami_id:
-    type: string
-    default: ami-dcf0f2a3 # ami-7c943401
-  cm_instance_type:
-    type: string
-    default: t2.medium
   # Manager (blank)
   manager_image_id:
     type: string
-    default: ami-6d1c2007
+    # ami-04cf43aca3e6f3de3: CentOS 7 in EU-Frankfurt
+    default: ami-04cf43aca3e6f3de3
   manager_instance_type:
     type: string
-    default: t2.medium
+    default: t2.large
   manager_ssh_user:
     type: string
     default: centos
   # App
   app_image_id:
     type: string
-    default: ami-6d1c2007
+    # ami-04cf43aca3e6f3de3: CentOS 7 in EU-Frankfurt
+    default: ami-04cf43aca3e6f3de3
   app_instance_type:
     type: string
     default: t2.micro
@@ -287,8 +286,8 @@ node_templates:
     properties:
       image_id: { get_input: cli_image_id }
       instance_type: { get_input: cli_instance_type }
-      name: { concat: [{ get_input: resources_prefix }, 'cli']}
-      display_name: CLI
+      name: { concat: [{ get_input: resources_prefix }, '-', { get_attribute: [SELF, node_instance_id] }]}
+      display_name: 'CLI VM'
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -365,8 +364,8 @@ node_templates:
     properties:
       image_id: { get_input: manager_image_id }
       instance_type: { get_input: manager_instance_type }
-      name: { concat: [{ get_input: resources_prefix }, 'manager']}
-      display_name: Manager
+      name: { concat: [{ get_input: resources_prefix }, '-', { get_attribute: [SELF, node_instance_id] }]}
+      display_name: 'Manager VM'
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -380,6 +379,7 @@ node_templates:
         type: cloudify.aws.relationships.instance_connected_to_security_group
       - target: subnet
         type: cloudify.aws.relationships.instance_connected_to_subnet
+
   manager_configuration:
     type: cloudify.nodes.Root
     interfaces:
@@ -390,35 +390,17 @@ node_templates:
             commands:
               - sudo yum -y install nano openssl
             fabric_env: *mgr_fabric_env
+      custom:
+        install_manager:
+          implementation: fabric.fabric_plugin.tasks.run_commands
+          inputs:
+            commands:
+              - { concat: ['sudo yum -y install ', { get_input: manager_rpm }] }
+              - { concat: ['cfy_manager install --private-ip ', { get_attribute: [ manager_vm, ip ] } ,' --public-ip ', { get_attribute: [ manager_ip, aws_resource_id ]}] }
+            fabric_env: *mgr_fabric_env
     relationships:
       - target: manager_vm
         type: cloudify.relationships.contained_in
-
-  cm_ip:
-    type: cloudify.aws.nodes.ElasticIP
-    properties:
-      aws_config: *aws_config
-      domain: vpc
-  cm_vm:
-    type: lab_vm
-    properties:
-      image_id: { get_input: cm_ami_id }
-      instance_type: { get_input: cm_instance_type }
-      name: { concat: [{ get_input: resources_prefix }, 'cm-ami']}
-      display_name: Manager (AMI)
-    relationships:
-      - target: keypair
-        type: cloudify.aws.relationships.instance_connected_to_keypair
-      - target: cm_ip
-        type: cloudify.aws.relationships.instance_connected_to_elastic_ip
-      - target: agents_security_group
-        type: cloudify.aws.relationships.instance_connected_to_security_group
-      - target: manager_security_group
-        type: cloudify.aws.relationships.instance_connected_to_security_group
-      - target: lab_vm_security_group
-        type: cloudify.aws.relationships.instance_connected_to_security_group
-      - target: subnet
-        type: cloudify.aws.relationships.instance_connected_to_subnet
 
   app_ip:
     type: cloudify.aws.nodes.ElasticIP
@@ -430,8 +412,8 @@ node_templates:
     properties:
       image_id: { get_input: app_image_id }
       instance_type: { get_input: app_instance_type }
-      name: { concat: [{ get_input: resources_prefix }, 'app']}
-      display_name: App
+      name: { concat: [{ get_input: resources_prefix }, '-', { get_attribute: [SELF, node_instance_id] }]}
+      display_name: 'App VM'
     relationships:
       - target: keypair
         type: cloudify.aws.relationships.instance_connected_to_keypair
@@ -484,7 +466,7 @@ node_templates:
 
 groups:
   trainee:
-    members: [cli_vm, cli_ip, app_vm, app_ip, cm_vm, cm_ip, manager_vm, manager_ip]
+    members: [cli_vm, cli_ip, app_vm, app_ip, manager_vm, manager_ip]
 
 policies:
   trainee_policy:

@@ -19,9 +19,9 @@ To search:
 grep -r "REPLACE_WITH" $LAB_ROOT
 ```
 
-### Step 2: Run in local mode
+### Step 2: Run the blueprint
 
-Once you're done, you can run the application in local mode:
+Once you're done, you can install the application on Cloudify Manager:
 
 ```bash
 cfy install $LAB_ROOT/blueprint/blueprint.yaml -b tomcat -d tomcat -i vm_ip_address=<your-app-VM-public-IP-address>
@@ -37,7 +37,7 @@ This command will display the deployment's outputs, as defined in the applicatio
 
 Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application should show up:
 
-![HelloWorld app](../../../raw/4.5/using-scripts/helloworld.png "HelloWorld app")
+![HelloWorld app](../../../raw/4.5.5/using-scripts/helloworld.png "HelloWorld app")
 
 **NOTE**: if you use `curl` instead of a browser, you must use the `-L` flag to have `curl` follow
 redirects:

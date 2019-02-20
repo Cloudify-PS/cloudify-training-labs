@@ -141,6 +141,17 @@ def install_cli(client, deployment_id, **kwargs):
 
 
 @cfy.pass_client()
+def install_manager(client, deployment_id, **kwargs):
+    execution = client.executions.start(
+        deployment_id,
+        'execute_operation',
+        {'operation': 'custom.install_manager',
+         'node_ids': ['manager_configuration']})
+    print 'Execution ID: {}'.format(execution.id)
+    _wait(client, execution)
+
+
+@cfy.pass_client()
 def refresh_labs(client, deployment_id, **kwargs):
     execution = client.executions.start(
         deployment_id,
@@ -299,6 +310,9 @@ if __name__ == '__main__':
 
     install_cli_parser = subparsers.add_parser('install-cli', parents=[common_parser])
     install_cli_parser.set_defaults(func=install_cli)
+
+    install_manager_parser = subparsers.add_parser('install-manager', parents=[common_parser])
+    install_manager_parser.set_defaults(func=install_manager)
 
     heal_parser = subparsers.add_parser('heal', parents=[common_parser])
     heal_parser.add_argument('node_instance_id',
