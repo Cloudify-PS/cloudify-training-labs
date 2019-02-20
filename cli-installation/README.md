@@ -25,8 +25,8 @@ chmod 0400 <pem_file>
 Run the following commands to download the CLI RPM package and install it:
 
 ```bash
-curl -J -O http://repository.cloudifysource.org/cloudify/4.3.2/ga-release/cloudify-cli-4.3.2ga.rpm
-sudo yum install -y cloudify-cli-4.3.2ga.rpm
+curl -J -O http://cloudify-release-eu.s3.amazonaws.com/cloudify/4.3.2/ga-release/cloudify-cli-4.3.2~ga.el6.x86_64.rpm
+sudo yum install -y cloudify-cli-4.3.2~ga.el6.x86_64.rpm
 ```
 
 ### Check Cloudify's version

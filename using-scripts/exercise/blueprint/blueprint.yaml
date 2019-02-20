@@ -51,7 +51,7 @@ node_types:
         type: string
         description: Application's name (e.g. 'helloworld')
 
-node_templates:  
+node_templates:
   tomcat_vm:
     type: cloudify.nodes.Compute
     properties:

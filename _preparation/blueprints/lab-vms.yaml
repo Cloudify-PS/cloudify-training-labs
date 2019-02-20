@@ -79,7 +79,7 @@ inputs:
   # Manager (from AMI)
   cm_ami_id:
     type: string
-    default: ami-7c943401
+    default: ami-8dd962f2
   cm_instance_type:
     type: string
     default: t2.medium

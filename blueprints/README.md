@@ -31,7 +31,7 @@ vi blueprint.yaml
 ```
 
 ## Create the blueprint
- 
+
 ### TOSCA definitions version
 
 Add the TOSCA definitions version directive at the top of the file:
@@ -81,14 +81,14 @@ later.
 1.  Add a node template called `host`, of type `cloudify.nodes.Compute`.
     *   Add a property called `ip`, with the value being the IP address of your **App VM**.
     *   Add a property called `agent_config`, with the value being a dictionary containing the following:
-    
+
         ```
         user: centos
         key: /etc/cloudify/cfy-training.pem
         ```
-    
+
         For example:
-        
+
         ```yaml
         host:
           <...>

@@ -12,7 +12,7 @@ export LAB_ROOT=~/cloudify-training-labs/using-scripts/exercise
 
 You need to replace **_all_** the occurrences of the placeholders (“`REPLACE_WITH`”) wherever they are located under
 `$LAB_ROOT`, with the suitable values and to add missing parts as well.
- 
+
 To search:
 
 ```bash

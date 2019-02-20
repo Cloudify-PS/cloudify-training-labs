@@ -10,7 +10,7 @@ In this lab, we will write a blueprint that creates resources on OpenStack. We w
 
 Also, we will connect all resources together.
 
-For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: http://docs.cloudify.co/4.1/plugins/openstack/
+For the preparation of this lab, you will have to use the official OpenStack plugin documentation, located at: https://docs.cloudify.co/4.3.2/working_with/official_plugins/openstack/
 
 ## Step 1: Create blueprint's skeleton
 
@@ -19,7 +19,7 @@ tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
   - http://www.getcloudify.org/spec/cloudify/4.3.2/types.yaml
-  - http://www.getcloudify.org/spec/openstack-plugin/2.6.0/plugin.yaml
+  - plugin:cloudify-openstack-plugin
 ```
 
 This will import the standard Cloudify types, as well as the OpenStack plugin.
@@ -103,7 +103,7 @@ Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-opensta
       subnet:
         cidr: a.b.c.d/e
     ```
-    
+
     You may come up with any CIDR you'd like. Again, to avoid hard-coding, use an input.
 
 ###  Add a security group
@@ -125,27 +125,27 @@ Documentation: http://docs.cloudify.co/4.3.0/plugins/openstack/#cloudify-opensta
 
 Notes:
 
-*   The server has to be based on a CentOS 7.0 image. You will need to get the ID of an image on your OpenStack installation,
-    which represents a CentOS 7.0 image. To do that, you can use any OpenStack API (or Horizon).
-    
+*   The server has to be based on a CentOS 7.x image. You will need to get the ID of an image on your OpenStack installation,
+    which represents a CentOS 7.x image. To do that, you can use any OpenStack API (or Horizon).
+
     Using the OpenStack REST API:
-    
+
     (GET) `<glance-endpoint-url>/v2/images`
-    
+
     Or using the Python OpenStack client:
-    
+
     ```bash
     glance image-list
     ```
-    
+
     (`glance` is provided by the `python-glanceclient` package. To install it: `pip install python-glanceclient`)
 *   You can use any flavour. Since Horizon doesn't provide the functionality of viewing flavour ID's unless you're an administrator,
     you should use the OpenStack API for that:
-    
+
     (GET) `<nova-endpoint-url>/flavors`
-    
+
     Or, with Python:
-    
+
     ```bash
     nova flavor-list
     ```
@@ -166,7 +166,7 @@ Notes:
     Also, add the relevant input definitions to the `input:` section. The type of all three inputs should be `string`.
     The default for `agent_install_method` should be `none`, and the default for the two others should be an empty string
     (`''`).
-    
+
 ## Step 5: Run the blueprint locally
 
 Prepare an inputs file, containing the values for the various inputs you had defined.

@@ -20,7 +20,7 @@ of the training labs, in favour of simplicity.
 ### Step 1: Download Cloudify Manager's RPM
 
 ```bash
-curl -J -O http://repository.cloudifysource.org/cloudify/4.3.2/ga-release/cloudify-manager-install-4.3.2ga.rpm
+curl -J -O http://cloudify-release-eu.s3.amazonaws.com/cloudify/4.3.2/ga-release/cloudify-manager-install-4.3.2ga.rpm
 ```
 
 ### Step 2: Install Cloudify Manager's RPM
@@ -40,7 +40,7 @@ Edit the file `/etc/cloudify/config.yaml`.
 
 1. If deploying on a system with less than 3700MB RAM, you'll have to adjust the `minimum_required_total_physical_memory_in_mb`
    input:
-   
+
    ```yaml
    minimum_required_total_physical_memory_in_mb: 3500
    ```

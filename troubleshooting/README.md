@@ -4,7 +4,7 @@ In this lab, we will walk through a few troubleshooting scenarios.
 
 ## Failing tasks
 
-This lab contains a blueprint ([failed-task/blueprint.yaml](failed-task/blueprint.yaml)) that runs a script that will
+This lab contains a blueprint ([failed-tasks/blueprint.yaml](failed-task/blueprint.yaml)) that runs a script that will
 always fail. You will run it, and then practice inspecting the relevant logs.
 
 The blueprint is structured so the failing script is being run twice: once on the manager, and once on an agent. For an
@@ -13,15 +13,15 @@ agent, we will use the App VM.
 ### Preparation
 
 ```bash
-export LAB_ROOT=~/cfy-training-labs/troubleshooting/failed-tasks
+export LAB_ROOT=~/cloudify-training-labs/troubleshooting/failed-tasks
 ```
 
 ### Execute the blueprint
 
 ```bash
-cfy blueprints create -b fail -p $LAB_ROOT/blueprint.yaml
-cfy deployments create -b fail -d fail -i 'vm_ip=<nodejs-vm-private-ip>'
-cfy executions start -d fail -w install -l
+cfy blueprints upload -b fail $LAB_ROOT/blueprint.yaml
+cfy deployments create -b fail -i 'vm_ip=<nodejs-vm-private-ip>' fail
+cfy executions start -d fail install
 ```
 
 ### Analysis
@@ -117,4 +117,5 @@ For agent-side operations, logs are located in `<agent-user-home>/<node_instance
 * `agent-user-home` is the home directory of the user that Cloudify uses to run the agent
 * `node_instance_id` is the ID of the node instance representing this particular `cloudify.nodes.Compute` node.
 
-**TODO** continue this
+work directory contains another subdirectory - logs, where a logfile wth the same name as deployemnt is located.
+It also contains a log file name the same as Compute node.  Ths log constains simlar information to the one on Manager, providing node instance id and failed task details.

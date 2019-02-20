@@ -13,7 +13,7 @@ This lab shows the following procedures:
 
 ## Step 1: Login as admin:
 ```
-cfy profiles set -u admin -p <password> -t TenantA 
+cfy profiles set -u admin -p <password> -t TenantA
 ```
 
 **NOTE**: Use the password provided by bootstrap process in Manager Bootstrapping lab
@@ -25,12 +25,12 @@ cfy users set-role -r admin User2
 
 ## Step 3: Login as User2:
 ```
-cfy profiles set -u User2 -p password -t TenantA 
+cfy profiles set -u User2 -p password -t TenantA
 ```
 
 ## Step 4: Show current profile
 ```
-cfy profiles show-current 
+cfy profiles show-current
 ```
 
 Example output:
@@ -46,7 +46,8 @@ Active profile:
 
 ## Step 5: Upload a blueprint as private:
 ```
-cfy blueprints upload -b openstack-blueprint.yaml -t TenantA --private-resource https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/master.zip
+cfy plugins upload -t TenantA --private-resource -y http://www.getcloudify.org/spec/diamond-plugin/1.3.6/plugin.yaml http://repository.cloudifysource.org/cloudify/wagons/cloudify-diamond-plugin/1.3.6/cloudify_diamond_plugin-1.3.6-py27-none-linux_x86_64-centos-Core.wgn
+cfy blueprints upload -b openstack-blueprint.yaml -t TenantA --private-resource https://github.com/cloudify-cosmo/cloudify-hello-world-example/archive/4.3.2.zip
 ```
 
 ## Step 6: Show the tenant’s resources - the current user can see all of them. Pay attention to the “created_by” field:
@@ -70,12 +71,12 @@ Blueprints:
 
 ## Step 7: Login as User1
 ```
-cfy profiles set -u User1 -p password -t TenantA 
+cfy profiles set -u User1 -p password -t TenantA
 ```
 
 ## Step 8: Show the tenant’s resources - the current user can only see the public resources in the tenant:
 ```
-cfy blueprints list 
+cfy blueprints list
 ```
 
 example output:
@@ -94,7 +95,7 @@ Blueprints:
 
 ## Step 9: Login as admin:
 ```
-cfy profiles set -u admin -p <password> 
+cfy profiles set -u admin -p <password>
 ```
 
 **NOTE**: Use the password provided by bootstrap process in Manager Bootstrapping lab
@@ -120,7 +121,7 @@ Blueprints:
 
 ## Step 11: Deactivate User1:
 ```
-cfy users deactivate User1 
+cfy users deactivate User1
 ```
 
 ## Step 12: Try to login as User1
@@ -129,4 +130,3 @@ cfy profiles set -u User1 -p password -t tenantA
 ```
 
 You should receive the error -  <User username=`User1`> is not active.
-
