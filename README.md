@@ -60,7 +60,7 @@ If you don't have a CLI VM provided to you, or you would like to use your own im
   ```
 
 * Clone the training labs (replace `<labs-branch>` with the branch corresponding to the Cloudify version you are
-  training for. For example: `4.5`)
+  training for. For example: `4.6`)
 
   ```bash
   git clone -b <labs-branch> https://github.com/Cloudify-PS/cloudify-training-labs.git
@@ -71,7 +71,7 @@ If you don't have a CLI VM provided to you, or you would like to use your own im
 If you don't have a Manager VM provided to you, or you would like to use your own image:
 
 * Use a CentOS 7.x image
-* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (https://docs.cloudify.co/4.5.0/install_maintain/installation/prerequisites/),
+* Ensure that the VM answers to the prerequisites documented in Cloudify's documentation website (https://docs.cloudify.co/4.6/install_maintain/installation/prerequisites/),
 with the following exceptions:
   * The minimum amount of RAM should be 4GB.
   * The security group to which this VM is connected should have more permissive rules than the ones stated,
