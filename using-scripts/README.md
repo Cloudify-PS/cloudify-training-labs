@@ -33,12 +33,16 @@ To search:
 grep -r "REPLACE_WITH" $LAB_ROOT
 ```
 
-### Step 2: Run install workflow
+### Step 2: Prepare inputs file containing the needed inputs for the blueprint
+
+Use the Cloudify labs to get the information about the needed values
+
+### Step 3: Run install workflow
 
 Once you're done, you can onboard the application:
 
 ```bash
-cfy install $LAB_ROOT/blueprint/blueprint.yaml -b tomcat -d tomcat -i vm_ip_address=<your-app-VM-public-IP-address>
+cfy install $LAB_ROOT/blueprint/blueprint.yaml -b tomcat -d tomcat -i inputs.yaml
 ```
 
 Then, run the following CLI command:
