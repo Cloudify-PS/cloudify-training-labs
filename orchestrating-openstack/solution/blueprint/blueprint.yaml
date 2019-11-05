@@ -107,6 +107,19 @@ node_templates:
         - port: 22
           remote_ip_prefix: 0.0.0.0/0
 
+  port:
+    type: cloudify.openstack.nodes.Port
+    properties:
+      openstack_config: *openstack_configuration
+      resource_id: port
+    relationships:
+      - target: network
+        type: cloudify.relationships.connected_to
+      - target: subnet
+        type: cloudify.openstack.port_connected_to_subnet
+      - target: sg
+        type: cloudify.openstack.port_connected_to_security_group
+
   keypair:
     type: cloudify.openstack.nodes.KeyPair
     properties:
@@ -119,12 +132,13 @@ node_templates:
       openstack_config: *openstack_configuration
       image: { get_input: image }
       flavor: { get_input: flavor }
-      management_network_name: { get_attribute: [network, external_name]}
       agent_config:
         install_method: { get_input: agent_install_method }
         user: { get_input: agent_user }
         key: { get_input: agent_key }
     relationships:
+      - target: port
+        type: cloudify.openstack.server_connected_to_port
       - target: sg
         type: cloudify.openstack.server_connected_to_security_group
       - target: network
