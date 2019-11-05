@@ -3,14 +3,18 @@
 The purpose of this lab is to fix a broken blueprint and install it locally.
 
 Log in to you CLI VM and install git and Cloudify CLI if not already installed:
-```sudo yum install git
-curl -O http://repository.cloudifysource.org/cloudify/5.0.0/ga-release/cloudify-cli-5.0.0~ga.el6.x86_64.rpm && rpm -i cloudify-cli-5.0.0~ga.el6.x86_64.rpm
+```bash
+sudo yum install git
+curl -O http://repository.cloudifysource.org/cloudify/5.0.0/ga-release/cloudify-cli-5.0.0~ga.el6.x86_64.rpm && sudo rpm -i cloudify-cli-5.0.0~ga.el6.x86_64.rpm
 ```
 
 Clone github repository into users home directory and checkout branch 5.0.0
-```cd; git clone https://github.com/Cloudify-PS/cloudify-training-labs.git
+```bash
+cd; git clone https://github.com/Cloudify-PS/cloudify-training-labs.git
 cd cloudify-training-labs && git checkout 5.0.0
 ```
+
+Set you CLI to interact with the lab manager as descripted in the Cloudify labs page.
 
 Ensure that the `LAB_ROOT` environment variable points to the exercise's root directory by executing:
 
@@ -29,9 +33,9 @@ To search:
 grep -r "REPLACE_WITH" $LAB_ROOT
 ```
 
-### Step 2: Run in local mode
+### Step 2: Run install workflow
 
-Once you're done, you can run the application in local mode:
+Once you're done, you can onboard the application:
 
 ```bash
 cfy install $LAB_ROOT/blueprint/blueprint.yaml -b tomcat -d tomcat -i vm_ip_address=<your-app-VM-public-IP-address>

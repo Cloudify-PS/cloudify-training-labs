@@ -11,7 +11,7 @@ inputs:
     default: centos
   agent_private_key:
     type: string
-    default: /etc/cloudify/cfy-training.pem
+    default: { get_secret: agent_key_private }
   port:
     type: integer
     default: 8081
