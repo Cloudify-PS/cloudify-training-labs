@@ -91,6 +91,7 @@ node_templates:
     properties:
       openstack_config: *openstack_configuration
       subnet:
+        ip_version: 4
         cidr: { get_input: cidr }
     relationships:
       - target: network

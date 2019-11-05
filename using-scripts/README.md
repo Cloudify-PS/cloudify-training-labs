@@ -53,7 +53,7 @@ cfy deployments outputs tomcat
 
 This command will display the deployment's outputs, as defined in the application's blueprint.
 
-Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application should show up:
+Browse to `http://<cli-machine-public-ip>/helloworld`. The test application should show up:
 
 ![HelloWorld app](../../../raw/4.6/using-scripts/helloworld.png "HelloWorld app")
 
@@ -61,7 +61,7 @@ Browse to `http://<cli-machine-public-ip>:8081/helloworld`. The test application
 redirects:
 
 ```bash
-curl -L http://<cli-machine-public-ip>:8081/helloworld
+curl -L http://<cli-machine-public-ip>/helloworld
 ```
 
 To clean up:

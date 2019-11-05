@@ -7,8 +7,6 @@ by multiple blueprints.
 
 ## Prerequisites
 
-**NOTE**: If you are doing this lab using VM's prepared for you as part of an official course, all prerequisites are
-already met, so you can skip this sction.
 
 To develop a plugin, you will need to install the following:
 
@@ -28,17 +26,22 @@ To develop a plugin, you will need to install the following:
     1.  Create a new virtual environment (for example: `virtualenv /tmp/my-env`)
     2.  Activate it (`source /tmp/my-env/bin/activate`)
     3.  Install Cloudify's development libraries using `pip install`:
-        * `cloudify-dsl-parser==4.3.3`
-        * `cloudify-rest-client==4.3.3`
-        * `cloudify-plugins-common==4.3.3`
+        * `cloudify-dsl-parser==5.0.0`
+        * `cloudify-rest-client==5.0.0`
+        * `cloudify-plugins-common==5.0.0`
         * `cloudify-script-plugin==1.5.4`
 
-**NOTE**: The plugin development template is already available for you on your CLI VM, under `~/plugin-template`.
+Clone plugin template repository
+```bash
+git clone https://github.com/cloudify-cosmo/cloudify-plugin-template.git
+cd cloudify-plugin-template
+git checkout 5.0.0
+```
 
 ## Step 1: Edit `setup.py`
 
 ```bash
-cd plugin-template
+cd cloudify-plugin-template
 vi setup.py
 ```
 
@@ -97,7 +100,7 @@ libraries. Therefore, we will create a virtual environment and work from there:
 
 ```bash
 virtualenv ~/dev-env
-~/dev-env/bin/pip install -r ~/plugin-template/dev-requirements.txt
+~/dev-env/bin/pip install -r ~/cloudify-plugin-template/dev-requirements.txt
 ```
 
 ## Step 8: Run the unit test

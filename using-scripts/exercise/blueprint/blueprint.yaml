@@ -13,7 +13,7 @@ inputs:
     type: string
   port:
     type: integer
-    default: 8081
+    default: 80
   download_path:
     type: string
     default: https://s3.amazonaws.com/cloudify-training-resources/labs/apache-tomcat-7.0.82.tar.gz

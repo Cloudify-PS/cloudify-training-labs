@@ -39,7 +39,7 @@ All inputs should be of type `string`.
 
 ## Step 3: Add OpenStack endpoint DSL definition
 
-(Reference: https://docs.cloudify.co/4.6/developer/blueprints/spec-dsl-definitions/)
+(Reference: https://docs.cloudify.co/5.0.0/developer/blueprints/spec-dsl-definitions/)
 
 Add a DSL definition called `openstack_configuration`. The value should be a dictionary with the following keys:
 
@@ -64,7 +64,7 @@ node_templates:
 
 ### Add the external network
 
-Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.network
+Documentation: https://docs.cloudify.co/5.0.0/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.network
 
 Notes:
 
@@ -76,7 +76,7 @@ Notes:
 
 ### Add a router
 
-Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.router
+Documentation: https://docs.cloudify.co/5.0.0/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.router
 
 *   The router needs to be connected to the external network. To achieve that, establish a `cloudify.relationships.connected_to`
     relationship between the router and the external network node.
@@ -84,14 +84,14 @@ Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infras
 
 ### Add a network
 
-Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.network
+Documentation: https://docs.cloudify.co/5.0.0/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.network
 
 *   Don't forget to provide the new network's name through the `resource_id` property.
 *   Avoid hard-coding a network name; use an input instead.
 
 ### Add a subnet
 
-Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.subnet
+Documentation: https://docs.cloudify.co/5.0.0/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.subnet
 
 *   The subnet needs to be contained within the network that you had created. To achieve that, create a
     `cloudify.relationships.contained_in` relationship between the subnet and the network.
@@ -108,20 +108,20 @@ Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infras
 
 ###  Add a security group
 
-Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.securitygroup
+Documentation: https://docs.cloudify.co/5.0.0/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.securitygroup
 
 We need only one rule: allow ingress traffic on port 22, from anywhere.
 
 ### Add a keypair
 
-Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.keypair
+Documentation: https://docs.cloudify.co/5.0.0/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.keypair
 
 We want to create a new keypair. Therefore, make sure to set the `private_key_path` property to a proper path to receive
 the generated private key.
 
 ### Add a virtual machine
 
-Documentation: https://docs.cloudify.co/4.6/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.server
+Documentation: https://docs.cloudify.co/5.0.0/working_with/official_plugins/infrastructure/openstack/#cloudify.openstack.nodes.server
 
 Notes:
 

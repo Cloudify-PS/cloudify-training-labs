@@ -53,7 +53,7 @@ tomcat_home=~/tomcat
 ctx logger info "Starting Tomcat in ${tomcat_home}..."
 
 command="${tomcat_home}/bin/catalina.sh run"
-nohup ${command} > /dev/null 2>&1 &
+nohup sudo ${command} > /dev/null 2>&1 &
 PID=$!
 
 wait_for_server ${tomcat_port}
