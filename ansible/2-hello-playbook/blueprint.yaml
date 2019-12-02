@@ -1,0 +1,49 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://cloudify.co/spec/cloudify/5.0.0/types.yaml
+  - plugin:cloudify-ansible-plugin
+
+inputs:
+
+  ip:
+    type: string
+    description: The VM IP.
+
+  username:
+    type: string
+    description: The VM SSH user.
+    default: centos
+
+  private_key:
+    type: string
+    description: Full path to the VM's private key.
+    default: /etc/cloudify/cfy-training.pem
+
+
+node_templates:
+
+  vm:
+    type: cloudify.nodes.Compute
+    properties:
+      ip: { get_input: ip }
+      agent_config:
+        install_method: none
+        user: { get_input: username }
+        key: { get_input: private_key }
+
+  playbook:
+    type: cloudify.nodes.ansible.Playbook
+    properties:
+      playbook_path: playbooks/start.yaml
+      run_data:
+        IP: { get_property: [vm, ip] }
+    relationships:
+      - type: cloudify.ansible.relationships.run_on_host
+        target: vm
+        source_interfaces:
+          cloudify.interfaces.relationship_lifecycle:
+            unlink:
+              implementation: ansible.cloudify_ansible.tasks.run
+              inputs:
+                playbook_path: playbooks/stop.yaml

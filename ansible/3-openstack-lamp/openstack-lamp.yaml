@@ -1,0 +1,89 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/5.0.0/types.yaml
+  - plugin:cloudify-ansible-plugin
+  - plugin:cloudify-openstack-plugin
+  - plugin:cloudify-utilities-plugin
+  - imports/common.yaml
+  - imports/web.yaml
+  - imports/db.yaml
+
+inputs:
+
+  keystone_username:
+    description: OS_USERNAME as specified in Openstack RC file.
+    default: { get_secret: keystone_username }
+
+  keystone_password:
+    description: Openstack user password.
+    default: { get_secret: keystone_password }
+
+  keystone_tenant_name:
+    description: OS_TENANT_NAME as specified in Openstack RC file.
+    default: { get_secret: keystone_tenant_name }
+
+  keystone_url:
+    description: OS_AUTH_URL as specified in Openstack RC file.
+    default: { get_secret: keystone_url }
+
+  keystone_region:
+    description: OS_REGION_NAME as specified in Openstack RC file.
+    default: { get_secret: keystone_region }
+
+  flavor_id:
+    type: string
+    default: 2
+
+  image_id:
+    type: string
+    default: { get_secret: centos_core_image }
+
+  playbook_path:
+    type: string
+    default: lamp_simple/site.yml
+
+dsl_definitions:
+
+  client_config: &client_config
+    password: { get_input: keystone_password }
+    username: { get_input: keystone_username }
+    tenant_name: { get_input: keystone_tenant_name }
+    region: { get_input: keystone_region }
+    auth_url: { get_input: keystone_url }
+
+node_templates:
+
+  playbook:
+    type: cloudify.nodes.ansible.Executor
+    properties:
+      playbook_path: { get_input: playbook_path }
+      # dump more information about ssh connection
+      debug_level: 5
+    relationships:
+      - type: cloudify.ansible.relationships.connected_to_host
+        target: web
+        source_interfaces:
+          cloudify.interfaces.relationship_lifecycle:
+            preconfigure:
+              inputs:
+                group_name: webservers
+                hostname: web
+                host_config:
+                  ansible_host: { get_attribute: [ web_public_floating_ip_address, floating_ip_address ] }
+                  ansible_user: centos
+                  ansible_ssh_private_key_file: { get_secret: agent_key_private }
+                  ansible_become: true
+      - type: cloudify.ansible.relationships.connected_to_host
+        target: db
+        source_interfaces:
+          cloudify.interfaces.relationship_lifecycle:
+            preconfigure:
+              inputs:
+                group_name: dbservers
+                hostname: db
+                host_config:
+                  ansible_host: { get_attribute: [ db_public_floating_ip_address, floating_ip_address ] }
+                  ansible_user: centos
+                  ansible_ssh_private_key_file: { get_secret: agent_key_private }
+                  ansible_become: true

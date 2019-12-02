@@ -1,0 +1,21 @@
+---
+- name: Uninstall nginx
+  hosts: all
+  become: true
+  tasks:
+  - name: Stop NGiNX
+    service:
+      name: nginx
+      state: stopped
+  - name: Delete Index Page
+    file:
+      path: /usr/share/nginx/html/index.html
+      state: absent
+  - name: Uninstall nginx
+    yum:
+      name: nginx
+      state: absent
+  - name: Remove epel-release repo
+    yum:
+      name: epel-release
+      state: absent
