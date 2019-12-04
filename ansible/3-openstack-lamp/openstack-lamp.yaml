@@ -33,7 +33,7 @@ inputs:
 
   flavor_id:
     type: string
-    default: 2
+    default: 3
 
   image_id:
     type: string

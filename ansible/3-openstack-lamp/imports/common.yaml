@@ -13,15 +13,29 @@ node_templates:
     type: cloudify.openstack.nodes.Network
     properties:
       openstack_config: *client_config
-      use_external_resource: true
+      use_external_resource: True
       resource_id: { get_secret: external_network_name }
 
   public_network:
     type: cloudify.openstack.nodes.Network
     properties:
       openstack_config: *client_config
-      use_external_resource: true
+      use_external_resource: True
       resource_id: { get_secret: public_network_name }
+
+  security_group:
+    type: cloudify.openstack.nodes.SecurityGroup
+    properties:
+      openstack_config: *client_config
+      security_group:
+        description: lamp_security_group
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          port: 22
+        - remote_ip_prefix: 0.0.0.0/0
+          port: 80
+        - remote_ip_prefix: 0.0.0.0/0
+          port: 3306
 
   image:
     type: cloudify.openstack.nodes.Image

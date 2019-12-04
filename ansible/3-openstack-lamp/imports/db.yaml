@@ -31,6 +31,8 @@ node_templates:
       target: public_network
     - type: cloudify.openstack.port_connected_to_floating_ip
       target: db_public_floating_ip_address
+    - type: cloudify.openstack.port_connected_to_security_group
+      target: security_group
 
   db:
     type: cloudify.openstack.nodes.Server
