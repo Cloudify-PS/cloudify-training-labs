@@ -42,8 +42,8 @@ node_templates:
                 hosts:
                   web:
                     ansible_host: { get_property: [SELF, ip] }
-                    ansible_user: { get_property: [SELF, user] }
-                    ansible_ssh_private_key_file: { get_property: [SELF, key] }
+                    ansible_user: { get_property: [SELF, agent_config, user] }
+                    ansible_ssh_private_key_file: { get_property: [SELF, agent_config, key] }
                     ansible_become: True
                     ansible_ssh_common_args: -o StrictHostKeyChecking=no
         stop:
