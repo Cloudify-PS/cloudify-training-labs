@@ -1,0 +1,59 @@
+dsl_definitions:
+
+  client_config: &client_config
+    password: { get_input: keystone_password }
+    username: { get_input: keystone_username }
+    tenant_name: { get_input: keystone_tenant_name }
+    region: { get_input: keystone_region }
+    auth_url: { get_input: keystone_url }
+
+node_templates:
+
+  web_public_floating_ip_address:
+    type: cloudify.openstack.nodes.FloatingIP
+    properties:
+      openstack_config: *client_config
+      use_external_resource: false
+      floatingip:
+        floating_network_name: { get_attribute: [external_network, external_name] }
+    relationships:
+      - type: cloudify.relationships.depends_on
+        target: external_network
+
+  web_public_port:
+    type: cloudify.openstack.nodes.Port
+    properties:
+      openstack_config: *client_config
+      port:
+        name: "web_public_port"
+    relationships:
+    - type: cloudify.relationships.contained_in
+      target: public_network
+    - type: cloudify.openstack.port_connected_to_floating_ip
+      target: web_public_floating_ip_address
+    - type: cloudify.openstack.port_connected_to_security_group
+      target: security_group
+
+  web:
+    type: cloudify.openstack.nodes.Server
+    properties:
+      openstack_config: *client_config
+      agent_config:
+        install_method: none
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          inputs:
+            args:
+              name: "web_vm"
+              image: { get_input: image_id }
+              flavor: { get_input: flavor_id }
+              key_name: ''
+              userdata: { get_attribute: [ cloud_config, cloud_config ] }
+    relationships:
+    - type: cloudify.openstack.server_connected_to_port
+      target: web_public_port
+    - type: cloudify.relationships.depends_on
+      target: image
+    - type: cloudify.relationships.depends_on
+      target: cloud_config
