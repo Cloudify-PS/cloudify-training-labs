@@ -1,0 +1,10 @@
+rest_calls:
+- path: /api/v3.1/deployments?id={{DEPLOYMENT_ID}}
+  method: GET
+  auth:
+    user: {{USERNAME}}
+    password: {{PASSWORD}}
+  headers:
+    Tenant: {{TENANT_NAME}}
+  response_format: json
+  response_translation: [deployment]

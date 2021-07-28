@@ -1,0 +1,75 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+
+description: >
+  This blueprint sends a REST request to the Cloudify Manager to fetch
+  information about the single deployment specified in inputs.
+
+
+imports:
+  - https://cloudify.co/spec/cloudify/5.1.0/types.yaml
+  - plugin:cloudify-utilities-plugin
+
+
+inputs:
+
+  host_address:
+    description: >
+      IP address of the Cloudify Manager
+    type: string
+    default: localhost
+
+  username:
+    description: >
+      Username to authenticate in Cloudify Manager
+    type: string
+    default: { get_secret: cfy_user }
+
+  password:
+    description: >
+      Password to authenticate in Cloudify Manager
+    type: string
+    default: { get_secret: cfy_password }
+
+  tenant_name:
+    description: >
+      Tenant to authenticate in Cloudify Manager
+    type: string
+    default: { get_secret: cfy_tenant }
+
+  deployment_name:
+    description: >
+      Name of the deployment we would like to fetch some data about
+    type: string
+
+
+node_templates:
+
+  get_deployment:
+    type: cloudify.rest.Requests
+    properties:
+      hosts:
+      - { get_input: host_address }
+      ssl: false
+      verify: false
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          inputs:
+            template_file: templates/get-deployment.yaml
+            prerender: true
+            params:
+              USERNAME: { get_input: username }
+              PASSWORD: { get_input: password }
+              TENANT_NAME: { get_input: tenant_name }
+              DEPLOYMENT_ID: { get_input: deployment_name }
+
+
+capabilities:
+
+  deployment:
+    value: { get_attribute: [get_deployment, result_properties] }
+
+
+
+
