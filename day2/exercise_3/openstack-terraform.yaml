@@ -1,0 +1,110 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+
+description: >
+  This blueprint creates infrastructure on OpenStack using Terraform.
+  Then runs ansible playbook that installs an application on top of it.
+
+
+imports:
+  - https://cloudify.co/spec/cloudify/5.1.0/types.yaml
+  - plugin:cloudify-terraform-plugin?version= >=0.15.0
+  - plugin:cloudify-utilities-plugin?version= >=1.22.1
+  - includes/hello-world-ansible.yaml
+
+
+inputs:
+
+  agent_user:
+    description: >
+      The username of the agent running on the instance created from the image.
+    type: string
+    default: 'ubuntu'
+
+  agent_key_name:
+    type: string
+    default: agent_key
+
+  external_network_id:
+    type: string
+    description: A network that provisions floating IPs.
+    default: { get_secret: external_network_name }
+
+  image_id:
+    type: string
+    description: The UUID of an Ubuntu Trusty 14.04 image in your Openstack account.
+    default: { get_secret: ubuntu_trusty_image }
+
+  flavor_id:
+    type: string
+    description: The UUID of small flavor in your Openstack account.
+    default: { get_secret: small_image_flavor }
+
+  network_id:
+    type: string
+    description: A name for your new Openstack Network.
+    default: { get_secret: public_network_name }
+
+  subnet_id:
+    type: string
+    description: A name for your new Openstack Subnet.
+    default: { get_secret: public_subnet_name }
+
+
+node_templates:
+
+  terraform:
+    type: cloudify.nodes.terraform
+    properties:
+      resource_config:
+        installation_source: https://releases.hashicorp.com/terraform/0.14.6/terraform_0.14.6_linux_amd64.zip
+        use_existing_resource: false
+
+  vm:
+    type: cloudify.nodes.terraform.Module
+    properties:
+      resource_config:
+        source:
+          location: resources/terraform/template.zip
+        variables:
+          openstack_username: { get_secret: openstack_username }
+          openstack_password: { get_secret: openstack_password }
+          openstack_tenant_name: { get_secret: openstack_tenant_name }
+          openstack_auth_url: { get_secret: openstack_auth_url }
+          openstack_region: { get_secret: region }
+          openstack_user_domain_name: default
+          openstack_project_domain_name: default
+          external_network_id: { get_input: external_network_id }
+          network_id: { get_input: network_id }
+          subnet_id: { get_input: subnet_id }
+          image_id: { get_input: image_id }
+          flavor_id: { get_input: flavor_id }
+          admin_user: { get_input: agent_user }
+          admin_key_public: { get_attribute: [agent_key, public_key_export] }
+    relationships:
+      - target: terraform
+        type: cloudify.terraform.relationships.run_on_host
+      - target: agent_key
+        type: cloudify.relationships.depends_on
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        poststart:
+          implementation: scripts/expose_ip.py
+          executor: central_deployment_agent
+          inputs:
+            ip: { get_attribute: [ SELF, resources, ip, instances, 0, attributes, address ] }
+
+  agent_key:
+    type: cloudify.keys.nodes.RSAKey
+    properties:
+      resource_config:
+        key_name: { get_input: agent_key_name }
+        openssh_format: true
+      use_secret_store: true
+      use_secrets_if_exist: true
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: keys.cloudify_ssh_key.operations.create
+          inputs:
+            store_private_key_material: true

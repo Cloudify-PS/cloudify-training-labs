@@ -1,0 +1,56 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+
+imports:
+  - plugin:cloudify-ansible-plugin
+
+
+description: Installs NGINX with Ansible.
+
+
+inputs:
+
+  hello_message:
+    type: string
+    default: Hello Ansible!
+
+    
+node_templates:
+
+  hello-world:
+    type: cloudify.nodes.ansible.Playbook
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        poststart: {}
+    relationships:
+      - type: cloudify.ansible.relationships.run_on_host
+        target: vm
+        source_interfaces:
+          cloudify.interfaces.relationship_lifecycle:
+            establish:
+              inputs:
+                playbook_path: resources/ansible/start.yaml
+                sources: &sources
+                  vms:
+                    hosts:
+                      vm:
+                        ansible_host: { get_attribute: [ TARGET, ip ] }
+                        ansible_user: { get_input: agent_user }
+                        ansible_ssh_private_key_file: { get_attribute: [agent_key, private_key_export] }
+                        ansible_become: True
+                        ansible_ssh_common_args: -o StrictHostKeyChecking=no
+                run_data:
+                  IP: { get_attribute: [ TARGET, ip ] }
+                  MESSAGE: { get_input: hello_message }
+            unlink:
+              implementation: ansible.cloudify_ansible.tasks.run
+              inputs:
+                playbook_path: resources/ansible/stop.yaml
+                sources: *sources
+
+
+capabilities:
+
+  application_endpoint:
+   description: The external endpoint of the application.
+   value: { concat: [ 'http://', { get_attribute: [ vm, ip ] } ] }
