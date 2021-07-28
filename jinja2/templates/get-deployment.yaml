@@ -1,5 +1,5 @@
 rest_calls:
-- path: /api/v3.1/deployments?id={{DEPLOYMENT_ID}}
+- path: /api/v3.1/deployments?id={{DEPLOYMENT_ID}}&_include=id
   method: GET
   auth:
     user: {{USERNAME}}
