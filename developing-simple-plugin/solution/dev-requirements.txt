@@ -1,0 +1,4 @@
+git+https://github.com/cloudify-cosmo/cloudify-common@6.3.1-build#egg=cloudify-common==6.3.1
+PyYAML==5.4.1
+networkx==1.9.1
+nose

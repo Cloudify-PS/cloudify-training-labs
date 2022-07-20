@@ -7,33 +7,11 @@ by multiple blueprints.
 
 ## Prerequisites
 
-**NOTE**: If you are doing this lab using VM's prepared for you as part of an official course, all prerequisites are
-already met, so you can skip this sction.
-
-To develop a plugin, you will need to install the following:
-
-*   `pip`: Most Linux distributions already contain this. Otherwise:
-
-    ```bash
-    curl https://bootstrap.pypa.io/get-pip.py | sudo python
-    ```
-
-*   `virtualenv`: Can be installed via:
-
-    ```bash
-    sudo pip install virtualenv
-    ```
-
-*   Cloudify's libraries:
-    1.  Create a new virtual environment (for example: `virtualenv /tmp/my-env`)
-    2.  Activate it (`source /tmp/my-env/bin/activate`)
-    3.  Install Cloudify's development libraries using `pip install`:
-        * `cloudify-dsl-parser==4.3.3`
-        * `cloudify-rest-client==4.3.3`
-        * `cloudify-plugins-common==4.3.3`
-        * `cloudify-script-plugin==1.5.4`
-
-**NOTE**: The plugin development template is already available for you on your CLI VM, under `~/plugin-template`.
+To develop a plugin, please git clone this repository on your CLI VM and go to `developing-simple-plugin` directory:
+```
+git clone https://github.com/Cloudify-PS/cloudify-training-labs.git
+cd cloudify-training-labs/developing-simple-plugin
+```
 
 ## Step 1: Edit `setup.py`
 
@@ -42,7 +20,9 @@ cd plugin-template
 vi setup.py
 ```
 
-Edit the `setup.py` file for your needs. In particular, note the `install_requires` and `test_requires` keys: these ensure that proper dependencies are provided to the plugin during build and runtime.
+Edit the `setup.py` file for your needs. Fill in all the missing values beginning with `ENTER`. 
+
+**NOTE**: the `install_requires` and `test_requires` keys: these ensure that proper dependencies are provided to the plugin during build and runtime.
 
 ## Step 2: Edit `tasks.py`
 
@@ -96,8 +76,8 @@ It is a good practice to install packages into a Python virtual environment, rat
 libraries. Therefore, we will create a virtual environment and work from there:
 
 ```bash
-virtualenv ~/dev-env
-~/dev-env/bin/pip install -r ~/plugin-template/dev-requirements.txt
+python3 -m venv ~/dev-env
+~/dev-env/bin/pip install -r dev-requirements.txt
 ```
 
 ## Step 8: Run the unit test
