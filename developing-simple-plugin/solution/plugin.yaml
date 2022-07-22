@@ -24,3 +24,43 @@ plugins:
     # ensure it passes YAML parsing as a string (by default, the value "1.0" [without quotes]
     # will be parsed as a float).
     package_version: '1.0'
+
+node_types:
+  test.nodes.Concat:
+    derived_from: cloudify.nodes.Root
+    properties:
+      str1:
+        type: string
+      str2:
+        type: string
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          implementation: test_plugin.plugin.tasks.my_task
+          inputs:
+            # my_task accepts a single property named
+            # some property. Here we inject this property
+            # from the input provided by the test
+            # (or 'default_test_input' if no input was provided)
+            str1:
+              type: string
+              default: { get_property: [SELF, str1] }
+            str2:
+              type: string
+              default: { get_property: [SELF, str2] }
+      ## for additional custom workflow
+      test.interfaces.operations:
+        upper:
+          implementation: test_plugin.plugin.tasks.upper
+          inputs:
+            log_output:
+              type: boolean
+              default: false
+
+workflows:
+  uppercase:
+    mapping: test_plugin.plugin.workflows.uppercase
+    parameters:
+      log_output:
+        type: boolean
+        default: true

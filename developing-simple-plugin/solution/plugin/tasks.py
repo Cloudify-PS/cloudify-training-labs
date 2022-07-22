@@ -23,3 +23,10 @@ def my_task(ctx, str1, str2, **kwargs):
     ctx.logger.info("String 2: {}".format(str2))
     result = str1 + str2
     ctx.instance.runtime_properties['result'] = result
+
+def upper(ctx, log_output, **kwargs):
+    current_result = ctx.instance.runtime_properties.get('result')
+    result = current_result.upper()
+    ctx.instance.runtime_properties['result'] = result
+    if log_output:
+        ctx.logger.info("Upper workflow: {}".format(result))
