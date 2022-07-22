@@ -1,0 +1,14 @@
+scale_transaction_field: ""
+scalable_entity_properties:
+  branch:
+  - config:
+      tree_name: tree0
+      branch_name: branch1
+  - ADD ANOTHER BRANCH HERE
+
+  leaf:
+  - config:
+      tree_name: tree0
+      branch_name: branch1
+      leaf_name: leaf1-1
+  - ADD REST OF LEAVES HERE

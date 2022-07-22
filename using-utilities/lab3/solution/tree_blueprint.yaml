@@ -1,0 +1,103 @@
+# create branch0
+# cfy install tree_blueprint.yaml -b tree
+# add branch1 and branch2
+# cfy executions start scaleuplist -p tree_scaleup_params.yaml -d tree
+# remove branch0 (created by install)
+# cfy executions start scaledownlist -p tree_remove_branch_precreated.yaml -d tree
+# update width for branch1
+# cfy executions start update_operation_filtered -p tree_update_branch_params.yaml -d tree
+# remove everything
+# cfy uninstall tree
+
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Tree Blueprint
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/5.0.0/types.yaml
+  - plugin:cloudify-utilities-plugin
+  - tree_types.yaml
+
+inputs:
+
+  tree_name:
+    type: string
+    description: >
+       Tree name
+    default: tree0
+
+  branch_name:
+    type: string
+    description: >
+       Branch name
+    default: branch0
+
+  leaf_name:
+    type: string
+    description: >
+       Leaf name
+    default: leaf0
+
+node_templates:
+
+  root:
+    type: cloudify.nodes.Root
+
+  tree:
+    type: tree_node
+    properties:
+      name: { get_input: tree_name }
+
+  branch:
+    type: branch_node
+    properties:
+      name: { get_input: tree_name }
+      branch_name: { get_input: branch_name }
+
+  leaf:
+    type: leaf_node
+    properties:
+      name: { get_input: tree_name }
+      branch_name: { get_input: branch_name }
+      leaf_name: { get_input: leaf_name }
+
+groups:
+
+  full_scale:
+    members:
+      - tree
+      - branch
+      - leaf
+
+  tree_scale:
+    members:
+      - tree
+
+  branch_scale:
+    members:
+      - branch
+
+  leaf_scale:
+    members:
+      - leaf
+
+policies:
+
+  tree_scaling_policy:
+    type: cloudify.policies.scaling
+    properties:
+      default_instances:  1
+    targets: [tree_scale]
+
+  branch_scaling_policy:
+    type: cloudify.policies.scaling
+    properties:
+      default_instances:  1
+    targets: [branch_scale]
+
+  leaf_scaling_policy:
+    type: cloudify.policies.scaling
+    properties:
+      default_instances:  0
+    targets: [leaf_scale]

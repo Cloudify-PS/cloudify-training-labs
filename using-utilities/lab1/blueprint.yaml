@@ -1,0 +1,31 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/6.3.1/types.yaml
+  - plugin:cloudify-utilities-plugin
+
+
+node_types:
+  custom.nodes.Base:
+    derived_from: cloudify.nodes.ApplicationModule
+    interfaces:
+      custom:
+        first:
+          implementation: scripts/first.py
+          executor: central_deployment_agent
+        second:
+          implementation: scripts/second.py
+          executor: central_deployment_agent
+
+
+node_templates:
+  A:
+    type: custom.nodes.Base
+
+  B:
+    type: custom.nodes.Base
+
+
+workflows:
+  # PUT WORKFLOW DEFINITION HERE

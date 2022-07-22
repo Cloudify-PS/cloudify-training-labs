@@ -1,0 +1,102 @@
+node_types:
+
+  leaf_node:
+    derived_from: cloudify.nodes.Root
+    properties:
+      convert_inputs:
+        description: >
+          Map blueprint inputs <-> runtime name
+        default:
+          tree_name: name
+      name:
+        description: >
+          tree name
+        default: ""
+      branch_name:
+        description: >
+          Branch name
+        default: ""
+      leaf_name:
+        description: >
+          Toplology name
+        default: ""
+      width:
+        description: >
+          width value
+        default: "narrow"
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/leaf_create.py
+          executor: central_deployment_agent
+          inputs: {}
+        update:
+          implementation: scripts/leaf_update.py
+          executor: central_deployment_agent
+          inputs: {}
+        delete:
+          implementation: scripts/leaf_delete.py
+          executor: central_deployment_agent
+          inputs: {}
+
+  branch_node:
+    derived_from: cloudify.nodes.Root
+    properties:
+      convert_inputs:
+        description: >
+          Map blueprint inputs <-> runtime name
+        default:
+          tree_name: name
+      name:
+        description: >
+          tree name
+        default: ""
+      branch_name:
+        description: >
+          Branch name
+        default: ""
+      width:
+        description: >
+          width value
+        default: "narrow"
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/branch_create.py
+          executor: central_deployment_agent
+          inputs: {}
+        update:
+          implementation: scripts/branch_update.py
+          executor: central_deployment_agent
+          inputs: {}
+        delete:
+          implementation: scripts/branch_delete.py
+          executor: central_deployment_agent
+          inputs: {}
+
+  tree_node:
+    derived_from: cloudify.nodes.Root
+    properties:
+      convert_inputs:
+        description: >
+          Map blueprint inputs <-> runtime name
+        default:
+          tree_name: name
+      name:
+        description: >
+          tree name
+        default: ""
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/tree_create.py
+          executor: central_deployment_agent
+          inputs: {}
+        update:
+          implementation: scripts/tree_update.py
+          executor: central_deployment_agent
+          inputs: {}
+        delete:
+          implementation: scripts/tree_delete.py
+          executor: central_deployment_agent
+          inputs: {}

@@ -1,0 +1,2 @@
+scale_node_field: ['config', 'branch_name']
+scale_node_field_value: PUT BRANCH NAME HERE
