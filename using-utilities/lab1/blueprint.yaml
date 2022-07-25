@@ -12,10 +12,10 @@ node_types:
     interfaces:
       custom:
         first:
-          implementation: scripts/first.py
+          implementation: # PUT PATH TO THE FIRST SCRIPT
           executor: central_deployment_agent
         second:
-          implementation: scripts/second.py
+          implementation: # PUT PATH TO THE SECOND SCRIPT
           executor: central_deployment_agent
 
 
